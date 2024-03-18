@@ -1,0 +1,46 @@
+﻿namespace Adecco.API.WelcomePage;
+
+public class CustomWelcomePageMiddleware
+{
+    public CustomWelcomePageMiddleware(RequestDelegate next, CustomWelcomePageOptions options, ILogger<CustomWelcomePageMiddleware> logger)
+    {
+        _next = next;
+        _options = options;
+        _logger = logger;
+    }
+
+    private readonly RequestDelegate _next;
+    private readonly CustomWelcomePageOptions _options;
+    private readonly ILogger<CustomWelcomePageMiddleware> _logger;
+
+    public async Task InvokeAsync(HttpContext context)
+    {
+        context.Response.ContentType = "text/html";
+        var page = $@"<!DOCTYPE html>
+<html lang=""en"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Bem-vindo</title>
+    <link href=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"" rel=""stylesheet"" integrity=""sha384-UG55wVHrS6K2u4l6LX6X7VyjtKr+Es7iMnd9bg5bsvMX3yxKKbrQSo0fJXDWmzrN"" crossorigin=""anonymous"">
+</head>
+<body>
+    <div class=""container mt-5"">
+        <div class=""card"">
+            <div class=""card-header"">
+                <h1 class=""card-title"">Bem-vindo à API</h1>
+            </div>
+            <div class=""card-body"">
+                <p class=""card-text"">{_options.Message}</p>
+                <p class=""card-text"">Essa e uma pagina de produção</p>
+                <p class=""card-text"">Se esta vendo isso, prod esta funcionando!</p>
+            </div>
+        </div>
+    </div>
+    <script src=""https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"" integrity=""sha384-rDp7OSyoj8R8XZkTf1f7rjy7CsbbVHH2KfWz9L4N6hP0WlRByeRxprWbqs+2lc4l"" crossorigin=""anonymous""></script>
+</body>
+</html>
+";
+        await context.Response.WriteAsync(page);
+    }
+}
