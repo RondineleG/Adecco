@@ -25,7 +25,7 @@ public class ClientesController : Controller
     [HttpGet("/cliente/listar")]
     public async Task<IEnumerable<ClienteResponseDto>> ListAsync(string? nome, string? email, string? cpf)
     {
-        var clientes = await _clienteService.ListAsync(nome, email, cpf);
+        var clientes = await _clienteService.ListAsync(nome?.Trim(), email?.Trim(), cpf?.Trim());
         var response = _mapper.Map<IEnumerable<Cliente>, IEnumerable<ClienteResponseDto>>(clientes);
         return response;
     }
