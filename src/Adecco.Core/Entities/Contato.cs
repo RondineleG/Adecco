@@ -5,7 +5,8 @@ namespace Adecco.Core.Entities;
 public sealed class Contato : BaseEntity
 {
     [JsonConstructor]
-    public Contato() { }
+    public Contato()
+    { }
 
     public string Nome { get; private set; }
 

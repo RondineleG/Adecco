@@ -1,5 +1,4 @@
 ﻿using Adecco.Application.AutoMapper;
-using Adecco.Core.Interfaces.Services;
 using Adecco.Core.Interfaces.Validations;
 
 var builder = WebApplication.CreateBuilder(args);

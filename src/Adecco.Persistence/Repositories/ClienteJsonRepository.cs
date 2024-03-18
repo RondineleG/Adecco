@@ -13,6 +13,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
     }
 
     private readonly string _filePath;
+
     public async Task<List<ClienteResponse>> ObterTodos()
     {
         if (!File.Exists(_filePath)) return new List<ClienteResponse>();
@@ -26,7 +27,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         try
         {
             var jsonData = await File.ReadAllTextAsync(_filePath, Encoding.UTF8);
-            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponse>();     
+            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponse>();
 
             var clientes = JsonSerializer.Deserialize<List<Cliente>>(jsonData, options);
             if (clientes == null) return new List<ClienteResponse>();
@@ -52,7 +53,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         return clientes;
     }
 
-
     public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
     {
         var clienteResponse = await ObterTodos();
@@ -73,7 +73,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         return await Task.FromResult<IEnumerable<Cliente>>(clientes);
     }
 
-
     public async Task<Cliente> BuscarClientePodId(int clienteId)
     {
         var clienteResponse = await ObterTodos();
@@ -84,8 +83,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         }
         return cliente;
     }
-
-
 
     public async Task<ClienteResponse> AdicionarCliente(Cliente cliente)
     {
@@ -111,9 +108,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         return new ClienteResponse(cliente);
     }
 
-
-
-
     public async Task<ClienteResponse> AtualizarCliente(int clienteId, Cliente clienteAtualizado)
     {
         var clienteResponse = await ObterTodos();
@@ -129,7 +123,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         await File.WriteAllTextAsync(_filePath, jsonData);
         return new ClienteResponse(clienteAtualizado);
     }
-
 
     public async void RemoverCliente(int clienteId)
     {
@@ -209,8 +202,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
         return new EnderecoResponse(endereco);
     }
-
-
 
     public async void RemoverContato(int clienteId, int contatoId)
     {

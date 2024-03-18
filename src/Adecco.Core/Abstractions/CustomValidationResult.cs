@@ -2,7 +2,7 @@
 
 public sealed class CustomValidationResult
 {
-    private List<string> _errors = new List<string>();
+    private readonly List<string> _errors = new List<string>();
 
     public IEnumerable<string> Errors => _errors;
     public bool IsValid => !_errors.Any();

@@ -1,6 +1,5 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v2;

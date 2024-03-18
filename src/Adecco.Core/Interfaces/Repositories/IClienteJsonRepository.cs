@@ -3,6 +3,7 @@
 public interface IClienteJsonRepository
 {
     Task<List<ClienteResponse>> ObterTodos();
+
     Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf);
 
     Task<Cliente> BuscarClientePodId(int clienteId);

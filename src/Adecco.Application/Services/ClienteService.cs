@@ -23,7 +23,7 @@ public sealed class ClienteService : IClienteService
     private readonly IEnderecoService _enderecoService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidacaoService _validacaoService;
-    private List<string> _errosValidacao;
+    private readonly List<string> _errosValidacao;
 
     public async Task<IEnumerable<Cliente>> ListAsync(string? nome, string? email, string? cpf)
     {

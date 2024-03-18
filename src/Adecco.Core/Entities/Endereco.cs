@@ -4,9 +4,9 @@ namespace Adecco.Core.Entities;
 
 public sealed class Endereco : BaseEntity
 {
-
     [JsonConstructor]
-    public Endereco() { }
+    public Endereco()
+    { }
 
     public string Nome { get; private set; }
 

@@ -1,6 +1,5 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v1;
@@ -75,7 +74,7 @@ public sealed class ClientesController : BaseController
         await _clienteService.IncluirContato(cliente.Id, contato);
         return Ok();
     }
-        
+
     [HttpPut("/cliente/atualizar/{clienteId}")]
     public async Task<IActionResult> PutAsync(
         int clienteId,

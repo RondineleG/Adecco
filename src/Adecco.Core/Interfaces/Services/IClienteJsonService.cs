@@ -3,8 +3,11 @@
 public interface IClienteJsonService
 {
     Task<IEnumerable<Cliente>> ListarClientes(string nome, string email, string cpf);
+
     Task<Cliente> BuscarClientePodId(int clienteId);
+
     Task<ClienteResponse> AdicionarCliente(Cliente cliente);
+
     Task<ClienteResponse> AtualizarCliente(int id, Cliente cliente);
 
     void RemoverCliente(int id);

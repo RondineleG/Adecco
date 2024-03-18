@@ -1,5 +1,4 @@
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v1;
@@ -24,7 +23,6 @@ public sealed class EnderecosController : ControllerBase
     private readonly ILogger<ClientesController> _logger;
     private readonly IMapper _mapper;
     private readonly IValidacaoService _validacaoService;
-
 
     [HttpPut("/atualizar/{clienteId}/endereco")]
     public async Task<IActionResult> AtualizarEndereco(int clienteId, [FromBody] EnderecoRequestDto request)

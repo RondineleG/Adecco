@@ -2,7 +2,7 @@
 
 public sealed class CustomResponse
 {
-    private CustomResponse _validacaoResponse;
+    private readonly CustomResponse _validacaoResponse;
 
     public CustomResponse()
     {
@@ -16,6 +16,7 @@ public sealed class CustomResponse
 
     public bool Success { get; set; }
     public List<string> GeneralErrors { get; set; } = new List<string>();
+
     public Dictionary<string, List<string>> EntityErrors { get; set; } =
         new Dictionary<string, List<string>>();
 
