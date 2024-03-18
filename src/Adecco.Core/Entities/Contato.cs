@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Adecco.Core.Entities;
 
 public sealed class Contato : BaseEntity
 {
-    protected Contato() { }
+    [JsonConstructor]
+    public Contato() { }
 
     public string Nome { get; private set; }
 

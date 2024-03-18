@@ -1,5 +1,6 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
+using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v1;
@@ -32,9 +33,9 @@ public sealed class ClientesController : BaseController
         string cpf
     )
     {
-        var clientes = _clienteService.ListarClientes(nome?.Trim(), email?.Trim(), cpf?.Trim());
-        var response = _mapper.Map<IEnumerable<Cliente>, IEnumerable<ClienteResponseDto>>(clientes);
-        return response;
+        var clientes = await _clienteService.ListarClientes(nome?.Trim(), email?.Trim(), cpf?.Trim());
+        var clientesDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
+        return clientesDto;
     }
 
     [HttpPost("/cliente/criar")]
@@ -66,29 +67,15 @@ public sealed class ClientesController : BaseController
             "Endereco",
             validacaoResponse
         );
-        if (!validacaoResponse.Success)
-            return BadRequest(validacaoResponse);
-        _clienteService.AdicionarCliente(cliente);
-        _clienteService.IncluirEndereco(cliente.Id, endereco);
-        _clienteService.IncluirContato(cliente.Id, contato);
+        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        await _clienteService.AdicionarCliente(cliente);
+        endereco.AdicionarClienteId(cliente.Id);
+        contato.AdicionarClienteId(cliente.Id);
+        await _clienteService.IncluirEndereco(cliente.Id, endereco);
+        await _clienteService.IncluirContato(cliente.Id, contato);
         return Ok();
     }
-
-    [HttpPut("/atualizar/{id}")]
-    public IActionResult Atualizar(int id, Cliente clienteAtualizado)
-    {
-        try
-        {
-            _clienteService.AtualizarCliente(id, clienteAtualizado);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Erro ao atualizar cliente.");
-            return StatusCode(500, "Ocorreu um erro interno ao atualizar o cliente.");
-        }
-    }
-
+        
     [HttpPut("/cliente/atualizar/{clienteId}")]
     public async Task<IActionResult> PutAsync(
         int clienteId,
@@ -102,7 +89,7 @@ public sealed class ClientesController : BaseController
             return BadRequest(ModelState.GetErrorMessages());
         }
 
-        var clienteExistente = _clienteService.BuscarClientePodId(clienteId);
+        var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
         if (clienteExistente == null)
         {
             return NotFound($"Cliente com ID {clienteId} não encontrado.");
@@ -131,11 +118,11 @@ public sealed class ClientesController : BaseController
             var novoEndereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
             clienteExistente.AdicionarEndereco(novoEndereco);
         }
-        _clienteService.AtualizarCliente(clienteId, clienteExistente);
+        await _clienteService.AtualizarCliente(clienteId, clienteExistente);
         return Ok();
     }
 
-    [HttpDelete("/remover/{id}")]
+    [HttpDelete("/cliente/remover/{id}")]
     public IActionResult Remover(int id)
     {
         try

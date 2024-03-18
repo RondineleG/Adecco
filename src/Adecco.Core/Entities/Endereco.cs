@@ -1,8 +1,12 @@
-﻿namespace Adecco.Core.Entities;
+﻿using System.Text.Json.Serialization;
+
+namespace Adecco.Core.Entities;
 
 public sealed class Endereco : BaseEntity
 {
-    protected Endereco() { }
+
+    [JsonConstructor]
+    public Endereco() { }
 
     public string Nome { get; private set; }
 

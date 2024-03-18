@@ -9,41 +9,34 @@ public sealed class ClienteJsonService : IClienteJsonService
 
     private readonly IClienteJsonRepository _clienteRepository;
 
-    public List<Cliente> ListarClientes(string nome, string email, string cpf)
+    public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
     {
-        return _clienteRepository
-            .ObterTodos()
-            .Where(c =>
-                (string.IsNullOrEmpty(nome) || c.Nome.Contains(nome))
-                && (string.IsNullOrEmpty(email) || c.Email == email)
-                && (string.IsNullOrEmpty(cpf) || c.CPF == cpf)
-            )
-            .ToList();
+        return await _clienteRepository.ListarClientes(nome, email, cpf);
     }
 
-    public void AdicionarCliente(Cliente cliente)
+    public async Task<ClienteResponse> AdicionarCliente(Cliente cliente)
     {
-        _clienteRepository.Adicionar(cliente);
+        return await _clienteRepository.AdicionarCliente(cliente);
     }
 
-    public void AtualizarCliente(int id, Cliente clienteAtualizado)
+    public async Task<ClienteResponse> AtualizarCliente(int id, Cliente clienteAtualizado)
     {
-        _clienteRepository.Atualizar(id, clienteAtualizado);
+        return await _clienteRepository.AtualizarCliente(id, clienteAtualizado);
     }
 
     public void RemoverCliente(int id)
     {
-        _clienteRepository.Remover(id);
+        _clienteRepository.RemoverCliente(id);
     }
 
-    public void AtualizarContato(int clienteId, Contato contato)
+    public async Task<ContatoResponse> AtualizarContato(int clienteId, Contato contato)
     {
-        _clienteRepository.AtualizarContato(clienteId, contato);
+        return await _clienteRepository.AtualizarContato(clienteId, contato);
     }
 
-    public void AtualizarEndereco(int clienteId, Endereco endereco)
+    public async Task<EnderecoResponse> AtualizarEndereco(int clienteId, Endereco endereco)
     {
-        _clienteRepository.AtualizarEndereco(clienteId, endereco);
+        return await _clienteRepository.AtualizarEndereco(clienteId, endereco);
     }
 
     public void RemoverContato(int clienteId, int contatoId)
@@ -56,18 +49,18 @@ public sealed class ClienteJsonService : IClienteJsonService
         _clienteRepository.RemoverEndereco(clienteId, enderecoId);
     }
 
-    public void IncluirContato(int clienteId, Contato contato)
+    public async Task<ContatoResponse> IncluirContato(int clienteId, Contato contato)
     {
-        _clienteRepository.IncluirContato(clienteId, contato);
+        return await _clienteRepository.IncluirContato(clienteId, contato);
     }
 
-    public void IncluirEndereco(int clienteId, Endereco endereco)
+    public async Task<EnderecoResponse> IncluirEndereco(int clienteId, Endereco endereco)
     {
-        _clienteRepository.IncluirEndereco(clienteId, endereco);
+        return await _clienteRepository.IncluirEndereco(clienteId, endereco);
     }
 
-    public Cliente BuscarClientePodId(int clienteId)
+    public async Task<Cliente> BuscarClientePodId(int clienteId)
     {
-        return _clienteRepository.ObterPorId(clienteId);
+        return await _clienteRepository.BuscarClientePodId(clienteId);
     }
 }

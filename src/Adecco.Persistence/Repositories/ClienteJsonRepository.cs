@@ -1,15 +1,255 @@
-﻿namespace Adecco.Persistence.Repositories;
+﻿using Adecco.Core.Abstractions;
+
+using System.Text;
+
+namespace Adecco.Persistence.Repositories;
 
 public sealed class ClienteJsonRepository : IClienteJsonRepository
 {
     public ClienteJsonRepository()
     {
-        _filePath = Path.Combine(
-            Directory.GetCurrentDirectory(),
-            @"..\\Adecco.Persistence\\Data\\Json",
-            "clientes.json"
-        );
+        _filePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\\Adecco.Persistence\\Data\\Json", "clientes.json");
+        VerificarDiretorioEArquivo();
+    }
 
+    private readonly string _filePath;
+    public async Task<List<ClienteResponse>> ObterTodos()
+    {
+        if (!File.Exists(_filePath)) return new List<ClienteResponse>();
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true,
+        };
+
+        try
+        {
+            var jsonData = await File.ReadAllTextAsync(_filePath, Encoding.UTF8);
+            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponse>();     
+
+            var clientes = JsonSerializer.Deserialize<List<Cliente>>(jsonData, options);
+            if (clientes == null) return new List<ClienteResponse>();
+
+            var clientesResponse = clientes.Select(cliente => new ClienteResponse(cliente)).ToList();
+            return clientesResponse;
+        }
+        catch (FileNotFoundException e)
+        {
+            Console.WriteLine($"Arquivo não encontrado: {e.Message}");
+        }
+        catch (JsonException e)
+        {
+            Console.WriteLine($"Erro ao deserializar: {e.Message}");
+        }
+
+        return new List<ClienteResponse>();
+    }
+
+    public List<Cliente> RestornarListaClientes(List<ClienteResponse> clientesResponse)
+    {
+        var clientes = clientesResponse.Select(cr => cr.Cliente).ToList();
+        return clientes;
+    }
+
+
+    public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        if (!string.IsNullOrEmpty(nome))
+        {
+            clientes = clientes.Where(c => c.Nome.Contains(nome)).ToList();
+        }
+        if (!string.IsNullOrEmpty(email))
+        {
+            clientes = clientes.Where(c => c.Email.Contains(email)).ToList();
+        }
+        if (!string.IsNullOrEmpty(cpf))
+        {
+            clientes = clientes.Where(c => c.CPF.Contains(cpf)).ToList();
+        }
+
+        return await Task.FromResult<IEnumerable<Cliente>>(clientes);
+    }
+
+
+    public async Task<Cliente> BuscarClientePodId(int clienteId)
+    {
+        var clienteResponse = await ObterTodos();
+        var cliente = clienteResponse.FirstOrDefault(c => c.Cliente.Id == clienteId).Cliente;
+        if (cliente == null)
+        {
+            throw new KeyNotFoundException("Cliente não encontrado");
+        }
+        return cliente;
+    }
+
+
+
+    public async Task<ClienteResponse> AdicionarCliente(Cliente cliente)
+    {
+        if (cliente == null || string.IsNullOrEmpty(cliente.Nome) || string.IsNullOrEmpty(cliente.CPF))
+        {
+            throw new ArgumentException("Dados do cliente inválidos.");
+        }
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var novoId = clientes.Any() ? clientes.Max(c => c.Id) + 1 : 1;
+        cliente.AdicionarId(novoId);
+
+        clientes.Add(cliente);
+
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
+
+        var jsonData = JsonSerializer.Serialize(clientes, options);
+        await File.WriteAllTextAsync(_filePath, jsonData, Encoding.UTF8);
+        return new ClienteResponse(cliente);
+    }
+
+
+
+
+    public async Task<ClienteResponse> AtualizarCliente(int clienteId, Cliente clienteAtualizado)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = await BuscarClientePodId(clienteId);
+        if (clienteId == -1)
+        {
+            throw new KeyNotFoundException("Cliente não encontrado");
+        }
+
+        clientes[clienteId] = clienteAtualizado;
+        var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+        await File.WriteAllTextAsync(_filePath, jsonData);
+        return new ClienteResponse(clienteAtualizado);
+    }
+
+
+    public async void RemoverCliente(int clienteId)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = await BuscarClientePodId(clienteId);
+        if (cliente != null)
+        {
+            clientes.Remove(cliente);
+            var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+            await File.WriteAllTextAsync(_filePath, jsonData);
+        }
+    }
+
+    public async Task<ContatoResponse> AtualizarContato(int clienteId, Contato contato)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = await BuscarClientePodId(clienteId);
+        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+
+        var contatoIndex = cliente.Contatos.FindIndex(c => c.Id == contato.Id);
+        if (contatoIndex == -1) throw new KeyNotFoundException("Contato não encontrado");
+
+        cliente.Contatos[contatoIndex] = contato;
+        await SalvarDados(clientes);
+
+        return new ContatoResponse(contato);
+    }
+
+    public async Task<EnderecoResponse> AtualizarEndereco(int clienteId, Endereco endereco)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = await BuscarClientePodId(clienteId);
+        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+
+        var enderecoIndex = cliente.Enderecos.FindIndex(e => e.Id == endereco.Id);
+        if (enderecoIndex == -1) throw new KeyNotFoundException("Endereço não encontrado");
+
+        cliente.Enderecos[enderecoIndex] = endereco;
+        await SalvarDados(clientes);
+
+        return new EnderecoResponse(endereco);
+    }
+
+    public async Task<ContatoResponse> IncluirContato(int clienteId, Contato contato)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
+
+        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+
+        var novoContatoId = cliente.Contatos.Any() ? cliente.Contatos.Max(c => c.Id) + 1 : 1;
+        contato.AdicionarId(novoContatoId);
+
+        cliente.Contatos.Add(contato);
+        await SalvarDados(clientes);
+
+        return new ContatoResponse(contato);
+    }
+
+    public async Task<EnderecoResponse> IncluirEndereco(int clienteId, Endereco endereco)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
+
+        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+
+        var novoEnderecoId = cliente.Enderecos.Any() ? cliente.Enderecos.Max(e => e.Id) + 1 : 1;
+        endereco.AdicionarId(novoEnderecoId);
+
+        cliente.Enderecos.Add(endereco);
+        await SalvarDados(clientes);
+
+        return new EnderecoResponse(endereco);
+    }
+
+
+
+    public async void RemoverContato(int clienteId, int contatoId)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
+        if (cliente == null) return;
+
+        var contato = cliente.Contatos.FirstOrDefault(c => c.Id == contatoId);
+        if (contato != null)
+        {
+            cliente.Contatos.Remove(contato);
+            await SalvarDados(clientes);
+        }
+    }
+
+    public async void RemoverEndereco(int clienteId, int enderecoId)
+    {
+        var clienteResponse = await ObterTodos();
+        var clientes = RestornarListaClientes(clienteResponse);
+        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
+        if (cliente == null) return;
+
+        var endereco = cliente.Enderecos.FirstOrDefault(e => e.Id == enderecoId);
+        if (endereco != null)
+        {
+            cliente.Enderecos.Remove(endereco);
+            await SalvarDados(clientes);
+        }
+    }
+
+    private async Task SalvarDados(List<Cliente> clientes)
+    {
+        var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+        await File.WriteAllTextAsync(_filePath, jsonData);
+    }
+
+    private void VerificarDiretorioEArquivo()
+    {
         var directory = Path.GetDirectoryName(_filePath);
         if (!Directory.Exists(directory))
         {
@@ -20,179 +260,5 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         {
             File.Create(_filePath).Dispose();
         }
-    }
-
-    private readonly string _filePath;
-    private List<Cliente> _clientes;
-
-    public List<Cliente> ObterTodos()
-    {
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-        };
-        if (!File.Exists(_filePath))
-        {
-            return new List<Cliente>();
-        }
-        var jsonData = File.ReadAllText(_filePath);
-
-        try
-        {
-            var clientes = JsonSerializer.Deserialize<List<Cliente>>(jsonData, options);
-            return clientes;
-        }
-        catch (JsonException e)
-        {
-            Console.WriteLine($"Erro ao deserializar: {e.Message}");
-            Console.WriteLine($"JSON: {jsonData}");
-        }
-        return new List<Cliente>();
-    }
-
-    public Cliente ObterPorId(int id)
-    {
-        var clientes = ObterTodos();
-        return clientes.Find(c => c.Id == id);
-    }
-
-    public void Adicionar(Cliente cliente)
-    {
-        var clientes = ObterTodos();
-        var novoId = clientes.Any() ? clientes.Max(c => c.Id) + 1 : 1;
-        cliente.AdicionarId(novoId);
-        clientes.Add(cliente);
-        Salvar(clientes);
-    }
-
-    public void Atualizar(int id, Cliente clienteAtualizado)
-    {
-        var clientes = ObterTodos();
-        var index = clientes.FindIndex(c => c.Id == id);
-        if (index != -1)
-        {
-            clientes[index] = clienteAtualizado;
-            Salvar(_clientes);
-        }
-    }
-
-    public void Remover(int id)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.Find(c => c.Id == id);
-        if (cliente != null)
-        {
-            clientes.Remove(cliente);
-            Salvar(_clientes);
-        }
-    }
-
-    public void AtualizarContato(int clienteId, Contato contato)
-    {
-        var cliente = _clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var contatoExistente = cliente.Contatos.FirstOrDefault(c => c.Id == contato.Id);
-            if (contatoExistente != null)
-            {
-                cliente.Contatos.Remove(contatoExistente);
-                cliente.Contatos.Add(contato);
-            }
-            else
-            {
-                cliente.Contatos.Add(contato);
-            }
-            Salvar(_clientes);
-        }
-    }
-
-    public void AtualizarEndereco(int clienteId, Endereco endereco)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var enderecoExistente = cliente.Enderecos.FirstOrDefault(e => e.Id == endereco.Id);
-            if (enderecoExistente != null)
-            {
-                cliente.Enderecos.Remove(enderecoExistente);
-            }
-            cliente.Enderecos.Add(endereco);
-            Salvar(_clientes);
-        }
-    }
-
-    public void RemoverContato(int clienteId, int contatoId)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var contatoParaRemover = cliente.Contatos.FirstOrDefault(c => c.Id == contatoId);
-            if (contatoParaRemover != null)
-            {
-                cliente.Contatos.Remove(contatoParaRemover);
-                Salvar(clientes);
-            }
-        }
-    }
-
-    public void RemoverEndereco(int clienteId, int enderecoId)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var enderecoParaRemover = cliente.Enderecos.FirstOrDefault(e => e.Id == enderecoId);
-            if (enderecoParaRemover != null)
-            {
-                cliente.Enderecos.Remove(enderecoParaRemover);
-                Salvar(clientes);
-            }
-        }
-    }
-
-    public void IncluirContato(int clienteId, Contato contato)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var novoId = cliente.Contatos.Any() ? cliente.Contatos.Max(c => c.Id) + 1 : 1;
-            contato.AdicionarId(novoId);
-            cliente.Contatos.Add(contato);
-            Salvar(clientes);
-        }
-        else
-        {
-            throw new ArgumentException($"Cliente com ID {clienteId} não encontrado.");
-        }
-    }
-
-    public void IncluirEndereco(int clienteId, Endereco endereco)
-    {
-        var clientes = ObterTodos();
-        var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente != null)
-        {
-            var novoId = cliente.Enderecos.Any() ? cliente.Enderecos.Max(e => e.Id) + 1 : 1;
-            endereco.AdicionarId(novoId);
-            cliente.Enderecos.Add(endereco);
-            Salvar(clientes);
-        }
-        else
-        {
-            throw new ArgumentException($"Cliente com ID {clienteId} não encontrado.");
-        }
-    }
-
-    private void Salvar(List<Cliente> clientes)
-    {
-        var jsonData = JsonSerializer.Serialize(
-            clientes,
-            new JsonSerializerOptions { WriteIndented = true }
-        );
-        File.WriteAllText(_filePath, jsonData);
     }
 }

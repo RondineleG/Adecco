@@ -2,6 +2,12 @@ namespace Adecco.Application.Dtos.Cliente;
 
 public sealed class ClienteResponseDto
 {
+    public ClienteResponseDto()
+    {
+        Contatos = new List<ContatoResponseDto>();
+        Enderecos = new List<EnderecoResponseDto>();
+    }
+
     public int Id { get; set; }
 
     public string Nome { get; set; }
