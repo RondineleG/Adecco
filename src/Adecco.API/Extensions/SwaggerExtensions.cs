@@ -2,22 +2,26 @@
 
 public static class SwaggerExtensions
 {
-    public static IServiceCollection AddSwaggerAndConfigApiVersioning(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerAndConfigApiVersioning(
+        this IServiceCollection services
+    )
     {
-        services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
+        services.Configure<RouteOptions>(options =>
+        {
+            options.LowercaseUrls = true;
+        });
 
-        services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                })
-            .AddApiExplorer(
-                options =>
-                {
-                    options.GroupNameFormat = "'v'VVV";
+        services
+            .AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+            })
+            .AddApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
 
-                    options.SubstituteApiVersionInUrl = true;
-                })
+                options.SubstituteApiVersionInUrl = true;
+            })
             .EnableApiVersionBinding();
 
         return services;
@@ -39,13 +43,15 @@ public static class SwaggerExtensions
         app.UseSwaggerUI(options =>
         {
             var apiVersionProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
-            if (apiVersionProvider == null) throw new ArgumentException("Versionamento de API não registrado.");
+            if (apiVersionProvider == null)
+                throw new ArgumentException("Versionamento de API não registrado.");
 
             foreach (var description in apiVersionProvider.ApiVersionDescriptions)
             {
                 options.SwaggerEndpoint(
-                $"/swagger/{description.GroupName}/swagger.json",
-                description.GroupName);
+                    $"/swagger/{description.GroupName}/swagger.json",
+                    description.GroupName
+                );
             }
             options.RoutePrefix = string.Empty;
 

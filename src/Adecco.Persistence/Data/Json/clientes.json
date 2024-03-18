@@ -1,0 +1,50 @@
+[
+  {
+    "Nome": null,
+    "Email": null,
+    "CPF": null,
+    "RG": null,
+    "ContatoId": 0,
+    "EnderecoId": 0,
+    "Contatos": [],
+    "Enderecos": [],
+    "Id": 0
+  },
+  {
+    "Nome": "Jo\u00E3o Silva",
+    "Email": "maria@example.com",
+    "CPF": "09359020664",
+    "RG": "987654321",
+    "ContatoId": 0,
+    "EnderecoId": 0,
+    "Contatos": [
+      {
+        "Nome": "Jo\u00E3o Silva",
+        "DDD": 99,
+        "Telefone": 98469772,
+        "ClienteId": null,
+        "Cliente": null,
+        "TipoContato": 3,
+        "Id": 0
+      }
+    ],
+    "Enderecos": [
+      {
+        "Nome": "Casa",
+        "CEP": "13466210",
+        "Logradouro": "Rua das Flores",
+        "Numero": "123",
+        "Bairro": "Centro",
+        "Complemento": "Casa 1",
+        "Cidade": "Americana",
+        "Estado": "SP",
+        "Referencia": "Pr\u00F3ximo ao parque",
+        "ClienteId": null,
+        "Cliente": null,
+        "TipoEndereco": 3,
+        "Id": 0
+      }
+    ],
+    "Id": 1
+  }
+]

@@ -1,6 +1,6 @@
 namespace Adecco.Application.Services;
 
-public class ClienteService : IClienteService
+public sealed class ClienteService : IClienteService
 {
     public ClienteService(
         IClienteRepository productRepository,
@@ -44,7 +44,7 @@ public class ClienteService : IClienteService
                 var contatoExistente = await _contatoService.FindByIdAsync(contato.Id);
                 if (contatoExistente == null)
                 {
-                    return new ClienteResponse("Contato inv�lido.");
+                    return new ClienteResponse("Contato invalido.");
                 }
             }
 
@@ -53,7 +53,7 @@ public class ClienteService : IClienteService
                 var enderecoExistente = await _enderecoService.FindByIdAsync(endereco.Id);
                 if (enderecoExistente == null)
                 {
-                    return new ClienteResponse("Endere�o inv�lido.");
+                    return new ClienteResponse("Endereco invalido.");
                 }
             }
             var response = new CustomResponse();
@@ -217,51 +217,6 @@ public class ClienteService : IClienteService
         {
             var prefixo = string.IsNullOrEmpty(contexto) ? "" : $"{contexto}: ";
             _errosValidacao.AddRange(resultado.Errors.Select(erro => prefixo + erro));
-        }
-    }
-
-    private void Validar<T>(
-        IEnumerable<T> entidades,
-        Func<T, CustomValidationResult> funcValidacao,
-        string nomeEntidade,
-        CustomResponse response
-    )
-    {
-        foreach (var entidade in entidades)
-        {
-            var resultado = funcValidacao(entidade);
-            var propriedadeId = entidade.GetType().GetProperty("Id");
-            var idValor =
-                propriedadeId != null
-                    ? propriedadeId.GetValue(entidade)?.ToString()
-                    : "Desconhecido";
-            AdicionarErroSeInvalido(resultado, $"{nomeEntidade} {idValor}", response);
-        }
-    }
-
-    private void Validar<T>(
-        T entidade,
-        Func<T, CustomValidationResult> funcValidacao,
-        string nomeEntidade,
-        CustomResponse response
-    )
-    {
-        var resultado = funcValidacao(entidade);
-        AdicionarErroSeInvalido(resultado, $"{nomeEntidade}", response);
-    }
-
-    private void AdicionarErroSeInvalido(
-        CustomValidationResult resultado,
-        string contexto,
-        CustomResponse response
-    )
-    {
-        if (!resultado.IsValid)
-        {
-            foreach (var erro in resultado.Errors)
-            {
-                response.AddEntityError(contexto, erro);
-            }
         }
     }
 }

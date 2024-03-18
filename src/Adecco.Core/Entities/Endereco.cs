@@ -1,6 +1,6 @@
 ﻿namespace Adecco.Core.Entities;
 
-public class Endereco : BaseEntity
+public sealed class Endereco : BaseEntity
 {
     protected Endereco() { }
 
@@ -57,5 +57,10 @@ public class Endereco : BaseEntity
     public void AdicionarClienteId(int clienteId)
     {
         ClienteId = clienteId;
+    }
+
+    public void AdicionarId(int id)
+    {
+        Id = id;
     }
 }

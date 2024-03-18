@@ -1,6 +1,6 @@
 namespace Adecco.Application.Dtos.Cliente;
 
-public class ClienteRequestDto
+public sealed class ClienteRequestDto
 {
     [Required(ErrorMessage = "Campo {0} obrigat�rio")]
     [MaxLength(50)]

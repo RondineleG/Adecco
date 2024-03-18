@@ -1,6 +1,6 @@
 namespace Adecco.Application.Dtos.Endereco;
 
-public class EnderecoResponseDto
+public sealed class EnderecoResponseDto
 {
     public int Id { get; set; }
 

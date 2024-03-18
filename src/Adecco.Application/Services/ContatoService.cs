@@ -1,6 +1,6 @@
 namespace Adecco.Application.Services;
 
-public class ContatoService : IContatoService
+public sealed class ContatoService : IContatoService
 {
     public ContatoService(IContatoRepository contatoRepository, IUnitOfWork unitOfWork)
     {
@@ -40,7 +40,7 @@ public class ContatoService : IContatoService
         var contatoExistente = await _contatoRepository.FindByIdAsync(id);
         if (contatoExistente == null)
         {
-            return new ContatoResponse("Contato n�o encontrado.");
+            return new ContatoResponse("Contato não encontrado.");
         }
 
         contatoExistente.AtualizarDados(

@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Contexts;
 
-public class ApplicattionDataContext(DbContextOptions<ApplicattionDataContext> options)
+public sealed class ApplicattionDataContext(DbContextOptions<ApplicattionDataContext> options)
     : DbContext(options)
 {
     public DbSet<Cliente> Clientes { get; set; }

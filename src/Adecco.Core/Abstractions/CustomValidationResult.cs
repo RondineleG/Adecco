@@ -1,11 +1,10 @@
 ﻿namespace Adecco.Core.Abstractions;
 
-public class CustomValidationResult
+public sealed class CustomValidationResult
 {
     private List<string> _errors = new List<string>();
 
     public IEnumerable<string> Errors => _errors;
-
     public bool IsValid => !_errors.Any();
 
     public CustomValidationResult AddError(string errorMessage, string fieldName = "")

@@ -1,4 +1,5 @@
 ﻿using Adecco.Application.AutoMapper;
+using Adecco.Core.Interfaces.Services;
 using Adecco.Core.Interfaces.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +11,12 @@ builder.Services.AddAndConfigSwagger();
 var connection = builder.Configuration["DefaultConnection:ConnectionString"];
 builder.Services.AddDbContext<ApplicattionDataContext>(options => options.UseSqlite(connection));
 builder.Services.AddScoped<IContatoRepository, CotatoRepository>();
+
 builder.Services.AddScoped<IClienteRepository, ClenteRepository>();
 builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IClienteJsonRepository, ClienteJsonRepository>();
+builder.Services.AddScoped<IClienteJsonService, ClienteJsonService>();
 builder.Services.AddScoped<IContatoService, ContatoService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IEnderecoService, EnderecoService>();
@@ -33,7 +36,6 @@ if (app.Environment.IsStaging())
     app.UseCustomSwaggerUI();
 }
 if (app.Environment.IsProduction())
-
 {
     app.UseHsts();
     app.UseCustomWelcomePage(

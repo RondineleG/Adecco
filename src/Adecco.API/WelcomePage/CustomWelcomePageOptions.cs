@@ -1,6 +1,6 @@
 ﻿namespace Adecco.API.WelcomePage;
 
-public class CustomWelcomePageOptions
+public sealed class CustomWelcomePageOptions
 {
     public string Message { get; set; }
 }

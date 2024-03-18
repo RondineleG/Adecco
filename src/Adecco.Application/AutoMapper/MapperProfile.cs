@@ -1,6 +1,6 @@
 namespace Adecco.Application.AutoMapper;
 
-public class MapperProfile : Profile
+public sealed class MapperProfile : Profile
 {
     public MapperProfile()
     {

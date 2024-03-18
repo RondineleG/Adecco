@@ -1,6 +1,6 @@
 namespace Adecco.Application.Dtos.Contato;
 
-public class ContatoResponseDto
+public sealed class ContatoResponseDto
 {
     public int Id { get; set; }
 

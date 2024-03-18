@@ -10,7 +10,9 @@ public class SwaggerDefaultValues : IOperationFilter
 
         foreach (var responseType in context.ApiDescription.SupportedResponseTypes)
         {
-            var responseKey = responseType.IsDefaultResponse ? "default" : responseType.StatusCode.ToString();
+            var responseKey = responseType.IsDefaultResponse
+                ? "default"
+                : responseType.StatusCode.ToString();
             var response = operation.Responses[responseKey];
 
             foreach (var contentType in response.Content.Keys)
@@ -29,16 +31,23 @@ public class SwaggerDefaultValues : IOperationFilter
 
         foreach (var parameter in operation.Parameters)
         {
-            var description = apiDescription.ParameterDescriptions.First(p => p.Name == parameter.Name);
+            var description = apiDescription.ParameterDescriptions.First(p =>
+                p.Name == parameter.Name
+            );
 
             parameter.Description ??= description.ModelMetadata?.Description;
 
-            if (parameter.Schema.Default == null &&
-                 description.DefaultValue != null &&
-                 description.DefaultValue is not DBNull &&
-                 description.ModelMetadata is ModelMetadata modelMetadata)
+            if (
+                parameter.Schema.Default == null
+                && description.DefaultValue != null
+                && description.DefaultValue is not DBNull
+                && description.ModelMetadata is ModelMetadata modelMetadata
+            )
             {
-                var json = JsonSerializer.Serialize(description.DefaultValue, modelMetadata.ModelType);
+                var json = JsonSerializer.Serialize(
+                    description.DefaultValue,
+                    modelMetadata.ModelType
+                );
                 parameter.Schema.Default = OpenApiAnyFactory.CreateFromJson(json);
             }
 

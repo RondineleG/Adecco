@@ -1,4 +1,5 @@
-﻿global using Adecco.Core.Entities;
+﻿global using System.Text.Json;
+global using Adecco.Core.Entities;
 global using Adecco.Core.Interfaces.Repositories;
 global using Adecco.Persistence.Contexts;
 global using Adecco.Persistence.Repositories.Base;

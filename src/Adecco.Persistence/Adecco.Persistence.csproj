@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Json\" />
     <Folder Include="Data\Sqlite\" />
   </ItemGroup>
 

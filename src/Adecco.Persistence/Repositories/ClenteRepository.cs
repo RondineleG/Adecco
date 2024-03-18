@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Repositories;
 
-public class ClenteRepository(ApplicattionDataContext context)
+public sealed class ClenteRepository(ApplicattionDataContext context)
     : BaseRepository(context),
         IClienteRepository
 {

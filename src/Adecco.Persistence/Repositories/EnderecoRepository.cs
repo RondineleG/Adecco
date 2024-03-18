@@ -1,8 +1,6 @@
-using Adecco.Core.Entities;
-
 namespace Adecco.Persistence.Repositories;
 
-public class EnderecoRepository : BaseRepository, IEnderecoRepository
+public sealed class EnderecoRepository : BaseRepository, IEnderecoRepository
 {
     public EnderecoRepository(ApplicattionDataContext context)
         : base(context) { }

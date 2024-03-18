@@ -1,6 +1,6 @@
 namespace Adecco.Core.Abstractions;
 
-public class EnderecoResponse : BaseResponse
+public sealed class EnderecoResponse : BaseResponse
 {
     public EnderecoResponse(Endereco endereco)
         : this(true, string.Empty, endereco) { }

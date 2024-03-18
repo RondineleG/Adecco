@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 namespace Adecco.Core.Entities;
 
-public class Cliente : BaseEntity
+public sealed class Cliente : BaseEntity
 {
-    protected Cliente()
+    [JsonConstructor]
+    public Cliente()
     {
         Contatos = new List<Contato>();
         Enderecos = new List<Endereco>();
@@ -41,5 +44,10 @@ public class Cliente : BaseEntity
         Email = email ?? Email;
         CPF = cpf ?? CPF;
         RG = rg ?? RG;
+    }
+
+    public void AdicionarId(int id)
+    {
+        Id = id;
     }
 }

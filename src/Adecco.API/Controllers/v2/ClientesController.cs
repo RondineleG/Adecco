@@ -1,10 +1,11 @@
+using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
 using Adecco.Core.Interfaces.Validations;
 
-namespace Adecco.API.Controllers;
+namespace Adecco.API.Controllers.v2;
 
-[Route("/api/v1/[controller]")]
-public class ClientesController : Controller
+[ApiVersion("2.0")]
+public sealed class ClientesController : BaseController
 {
     public ClientesController(
         IClienteService productService,
@@ -30,9 +31,9 @@ public class ClientesController : Controller
 
     [HttpGet("/cliente/listar")]
     public async Task<IEnumerable<ClienteResponseDto>> ListAsync(
-        string? nome,
-        string? email,
-        string? cpf
+        string nome,
+        string email,
+        string cpf
     )
     {
         var clientes = await _clienteService.ListAsync(nome?.Trim(), email?.Trim(), cpf?.Trim());
@@ -66,7 +67,7 @@ public class ClientesController : Controller
         _validacaoService.Validar(
             new List<Endereco> { endereco },
             _validacaoService.ValidarEndereco,
-            "Endere�o",
+            "Endereco",
             validacaoResponse
         );
         if (!validacaoResponse.Success)

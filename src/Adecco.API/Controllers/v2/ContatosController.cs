@@ -1,10 +1,11 @@
+using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
 using Adecco.Core.Interfaces.Validations;
 
-namespace Adecco.API.Controllers;
+namespace Adecco.API.Controllers.v2;
 
-[Route("/api/v1/[controller]")]
-public class ContatosController : Controller
+[ApiVersion("2.0")]
+public sealed class ContatosController : BaseController
 {
     public ContatosController(
         IContatoService contatoService,

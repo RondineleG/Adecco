@@ -1,6 +1,6 @@
 ﻿namespace Adecco.Application.Validation;
 
-public class ValidacaoService : IValidacaoService
+public sealed class ValidacaoService : IValidacaoService
 {
     public CustomValidationResult ValidarEmail(string email)
     {

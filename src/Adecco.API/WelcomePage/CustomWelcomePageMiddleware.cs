@@ -1,6 +1,6 @@
 ﻿namespace Adecco.API.WelcomePage;
 
-public class CustomWelcomePageMiddleware
+public sealed class CustomWelcomePageMiddleware
 {
     public CustomWelcomePageMiddleware(
         RequestDelegate next,

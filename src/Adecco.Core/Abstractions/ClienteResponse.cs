@@ -1,6 +1,6 @@
 namespace Adecco.Core.Abstractions;
 
-public class ClienteResponse : BaseResponse
+public sealed class ClienteResponse : BaseResponse
 {
     public ClienteResponse(Cliente cliente)
         : this(true, string.Empty, cliente) { }

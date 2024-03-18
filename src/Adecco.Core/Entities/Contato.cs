@@ -1,6 +1,6 @@
 namespace Adecco.Core.Entities;
 
-public class Contato : BaseEntity
+public sealed class Contato : BaseEntity
 {
     protected Contato() { }
 

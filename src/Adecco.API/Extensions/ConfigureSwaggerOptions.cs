@@ -22,8 +22,17 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
             Title = "Adecco Teste Api",
             Version = description.ApiVersion.ToString(),
             Description = "Adecco Teste Api",
-            Contact = new OpenApiContact { Name = "Rondinele Guimarães", Email = "rondineleg@gmail.com" },
-            License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://opensource.org/licenses/MIT") }
+            Contact = new OpenApiContact
+            {
+                Name = "Rondinele Guimarães",
+                Email = "rondineleg@gmail.com",
+                Url = new Uri("https://www.linkedin.com/in/rondineleg")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "MIT",
+                Url = new Uri("https://opensource.org/licenses/MIT")
+            }
         };
 
         if (description.IsDeprecated)

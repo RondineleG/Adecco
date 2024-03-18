@@ -1,6 +1,6 @@
 namespace Adecco.Application.Dtos.Endereco;
 
-public class EnderecoRequestDto
+public sealed class EnderecoRequestDto
 {
     [Required]
     [MaxLength(30)]
