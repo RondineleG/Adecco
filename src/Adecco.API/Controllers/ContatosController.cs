@@ -6,7 +6,11 @@ namespace Adecco.API.Controllers;
 [Route("/api/v1/[controller]")]
 public class ContatosController : Controller
 {
-    public ContatosController(IContatoService contatoService, IMapper mapper, IValidacaoService validacaoService)
+    public ContatosController(
+        IContatoService contatoService,
+        IMapper mapper,
+        IValidacaoService validacaoService
+    )
     {
         _contatoService = contatoService;
         _mapper = mapper;
@@ -21,7 +25,9 @@ public class ContatosController : Controller
     public async Task<IEnumerable<ContatoResponseDto>> ListAsync(int? clienteId, int? contatoId)
     {
         var categories = await _contatoService.ListAsync(clienteId, contatoId);
-        var resources = _mapper.Map<IEnumerable<Contato>, IEnumerable<ContatoResponseDto>>(categories);
+        var resources = _mapper.Map<IEnumerable<Contato>, IEnumerable<ContatoResponseDto>>(
+            categories
+        );
 
         return resources;
     }
@@ -37,8 +43,14 @@ public class ContatosController : Controller
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
         contato.AdicionarClienteId(clienteId);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(contato, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        _validacaoService.Validar(
+            contato,
+            _validacaoService.ValidarContato,
+            "Contato",
+            validacaoResponse
+        );
+        if (!validacaoResponse.Success)
+            return BadRequest(validacaoResponse);
         var result = await _contatoService.SaveAsync(contato);
 
         if (!result.Success)

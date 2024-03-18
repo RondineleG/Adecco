@@ -7,7 +7,11 @@ namespace Adecco.API.Controllers;
 [Route("/api/v1/[controller]")]
 public class EnderecosController : Controller
 {
-    public EnderecosController(IEnderecoService enderecoService, IMapper mapper, IValidacaoService validacaoService)
+    public EnderecosController(
+        IEnderecoService enderecoService,
+        IMapper mapper,
+        IValidacaoService validacaoService
+    )
     {
         _enderecoService = enderecoService;
         _mapper = mapper;
@@ -22,7 +26,9 @@ public class EnderecosController : Controller
     public async Task<IEnumerable<EnderecoResponseDto>> ListAsync(int? clienteId, int? enderecoId)
     {
         var enderecos = await _enderecoService.ListAsync(clienteId, enderecoId);
-        var response = _mapper.Map<IEnumerable<Endereco>, IEnumerable<EnderecoResponseDto>>(enderecos);
+        var response = _mapper.Map<IEnumerable<Endereco>, IEnumerable<EnderecoResponseDto>>(
+            enderecos
+        );
         return response;
     }
 
@@ -37,8 +43,14 @@ public class EnderecosController : Controller
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
         endereco.AdicionarClienteId(clienteId);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(endereco, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        _validacaoService.Validar(
+            endereco,
+            _validacaoService.ValidarEndereco,
+            "Endereco",
+            validacaoResponse
+        );
+        if (!validacaoResponse.Success)
+            return BadRequest(validacaoResponse);
         var result = await _enderecoService.SaveAsync(endereco);
         if (!result.Success)
         {

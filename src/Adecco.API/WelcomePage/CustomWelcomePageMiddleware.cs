@@ -2,7 +2,11 @@
 
 public class CustomWelcomePageMiddleware
 {
-    public CustomWelcomePageMiddleware(RequestDelegate next, CustomWelcomePageOptions options, ILogger<CustomWelcomePageMiddleware> logger)
+    public CustomWelcomePageMiddleware(
+        RequestDelegate next,
+        CustomWelcomePageOptions options,
+        ILogger<CustomWelcomePageMiddleware> logger
+    )
     {
         _next = next;
         _options = options;
@@ -16,7 +20,8 @@ public class CustomWelcomePageMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         context.Response.ContentType = "text/html";
-        var page = $@"<!DOCTYPE html>
+        var page =
+            $@"<!DOCTYPE html>
 <html lang=""en"">
 <head>
     <meta charset=""UTF-8"">

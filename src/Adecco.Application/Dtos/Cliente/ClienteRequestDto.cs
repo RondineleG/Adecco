@@ -2,7 +2,7 @@ namespace Adecco.Application.Dtos.Cliente;
 
 public class ClienteRequestDto
 {
-    [Required(ErrorMessage = "Campo {0} obrigatório")]
+    [Required(ErrorMessage = "Campo {0} obrigatï¿½rio")]
     [MaxLength(50)]
     public string Nome { get; set; }
 
@@ -10,11 +10,11 @@ public class ClienteRequestDto
     [MaxLength(30)]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Campo {0} obrigatório")]
+    [Required(ErrorMessage = "Campo {0} obrigatï¿½rio")]
     [StringLength(11)]
     public string CPF { get; set; }
 
-    [Required(ErrorMessage = "Campo {0} obrigatório")]
+    [Required(ErrorMessage = "Campo {0} obrigatï¿½rio")]
     [StringLength(10)]
     public string RG { get; set; }
 

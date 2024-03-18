@@ -29,7 +29,9 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseHsts();
-    app.UseCustomWelcomePage(new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" });
+    app.UseCustomWelcomePage(
+        new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
+    );
 }
 
 app.UseHttpsRedirection();

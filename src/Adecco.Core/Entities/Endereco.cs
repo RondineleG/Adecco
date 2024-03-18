@@ -2,9 +2,7 @@
 
 public class Endereco : BaseEntity
 {
-    protected Endereco()
-    {
-    }
+    protected Endereco() { }
 
     public string Nome { get; private set; }
 
@@ -40,7 +38,8 @@ public class Endereco : BaseEntity
         string cidade,
         string estado,
         string referencia,
-        int tipoEndereco)
+        int tipoEndereco
+    )
     {
         Id = id;
         Nome = (!string.IsNullOrEmpty(nome)) ? nome : Nome;
@@ -56,5 +55,7 @@ public class Endereco : BaseEntity
     }
 
     public void AdicionarClienteId(int clienteId)
-    { ClienteId = clienteId; }
+    {
+        ClienteId = clienteId;
+    }
 }

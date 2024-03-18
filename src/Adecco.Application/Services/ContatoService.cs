@@ -17,7 +17,9 @@ public class ContatoService : IContatoService
     }
 
     public async Task<Contato> FindByIdAsync(int id)
-    { return await _contatoRepository.FindByIdAsync(id); }
+    {
+        return await _contatoRepository.FindByIdAsync(id);
+    }
 
     public async Task<ContatoResponse> SaveAsync(Contato contato)
     {
@@ -38,10 +40,16 @@ public class ContatoService : IContatoService
         var contatoExistente = await _contatoRepository.FindByIdAsync(id);
         if (contatoExistente == null)
         {
-            return new ContatoResponse("Contato não encontrado.");
+            return new ContatoResponse("Contato nï¿½o encontrado.");
         }
 
-        contatoExistente.AtualizarDados(id, contato.Nome, contato.DDD, contato.Telefone, (int)contato.TipoContato);
+        contatoExistente.AtualizarDados(
+            id,
+            contato.Nome,
+            contato.DDD,
+            contato.Telefone,
+            (int)contato.TipoContato
+        );
         try
         {
             _contatoRepository.Update(contatoExistente);
@@ -59,7 +67,7 @@ public class ContatoService : IContatoService
         var contatoExistente = await _contatoRepository.FindByIdAsync(id);
         if (contatoExistente == null)
         {
-            return new ContatoResponse("Contato não encontrado.");
+            return new ContatoResponse("Contato nï¿½o encontrado.");
         }
 
         try
@@ -70,7 +78,9 @@ public class ContatoService : IContatoService
         }
         catch (Exception ex)
         {
-            return new ContatoResponse($"Ocorreu um erro ao excluir o contatoExistente: {ex.Message}");
+            return new ContatoResponse(
+                $"Ocorreu um erro ao excluir o contatoExistente: {ex.Message}"
+            );
         }
     }
 }

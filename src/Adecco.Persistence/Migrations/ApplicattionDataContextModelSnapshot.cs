@@ -18,7 +18,11 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
             {
                 b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("INTEGER");
 
-                b.Property<string>("CPF").IsRequired().HasMaxLength(11).HasColumnType("TEXT").IsFixedLength();
+                b.Property<string>("CPF")
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .HasColumnType("TEXT")
+                    .IsFixedLength();
 
                 b.Property<int>("ContatoId").HasColumnType("INTEGER");
 
@@ -28,12 +32,17 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
 
                 b.Property<string>("Nome").IsRequired().HasMaxLength(50).HasColumnType("TEXT");
 
-                b.Property<string>("RG").IsRequired().HasMaxLength(11).HasColumnType("TEXT").IsFixedLength();
+                b.Property<string>("RG")
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .HasColumnType("TEXT")
+                    .IsFixedLength();
 
                 b.HasKey("Id");
 
                 b.ToTable("Clientes", (string)null);
-            });
+            }
+        );
 
         modelBuilder.Entity(
             "Adecco.Core.Entities.Contato",
@@ -56,7 +65,8 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
                 b.HasIndex("ClienteId");
 
                 b.ToTable("Contatos", (string)null);
-            });
+            }
+        );
 
         modelBuilder.Entity(
             "Adecco.Core.Entities.Endereco",
@@ -66,7 +76,11 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
 
                 b.Property<string>("Bairro").IsRequired().HasMaxLength(30).HasColumnType("TEXT");
 
-                b.Property<string>("CEP").IsRequired().HasMaxLength(8).HasColumnType("TEXT").IsFixedLength();
+                b.Property<string>("CEP")
+                    .IsRequired()
+                    .HasMaxLength(8)
+                    .HasColumnType("TEXT")
+                    .IsFixedLength();
 
                 b.Property<string>("Cidade").IsRequired().HasMaxLength(50).HasColumnType("TEXT");
 
@@ -76,7 +90,10 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
 
                 b.Property<string>("Estado").IsRequired().HasMaxLength(2).HasColumnType("TEXT");
 
-                b.Property<string>("Logradouro").IsRequired().HasMaxLength(50).HasColumnType("TEXT");
+                b.Property<string>("Logradouro")
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnType("TEXT");
 
                 b.Property<string>("Nome").IsRequired().HasMaxLength(50).HasColumnType("TEXT");
 
@@ -91,7 +108,8 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
                 b.HasIndex("ClienteId");
 
                 b.ToTable("Enderecos", (string)null);
-            });
+            }
+        );
 
         modelBuilder.Entity(
             "Adecco.Core.Entities.Contato",
@@ -103,7 +121,8 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
                     .OnDelete(DeleteBehavior.Cascade);
 
                 b.Navigation("Cliente");
-            });
+            }
+        );
 
         modelBuilder.Entity(
             "Adecco.Core.Entities.Endereco",
@@ -115,7 +134,8 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
                     .OnDelete(DeleteBehavior.Cascade);
 
                 b.Navigation("Cliente");
-            });
+            }
+        );
 
         modelBuilder.Entity(
             "Adecco.Core.Entities.Cliente",
@@ -124,7 +144,8 @@ internal partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
                 b.Navigation("Contatos");
 
                 b.Navigation("Enderecos");
-            });
+            }
+        );
 #pragma warning restore 612, 618
     }
 }

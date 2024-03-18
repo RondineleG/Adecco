@@ -8,6 +8,6 @@ public enum ETipoEndereco : byte
     [Description("Entrega")]
     Entrega = 2,
 
-    [Description("Cobrança")]
-    Cobrança = 3,
+    [Description("CobranÃ§a")]
+    Cobranca = 3,
 }

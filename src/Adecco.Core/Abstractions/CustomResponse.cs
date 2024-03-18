@@ -1,17 +1,15 @@
 ﻿namespace Adecco.Core.Abstractions;
 
-public class CustomResponse
+public class CustomResponse : BaseResponse
 {
-    public CustomResponse()
-    {
-        Success = true;
-    }
+    public List<string> GeneralErrors { get; private set; } = new List<string>();
+    public Dictionary<string, List<string>> EntityErrors { get; private set; } =
+        new Dictionary<string, List<string>>();
 
-    public bool Success { get; set; }
-    public List<string> GeneralErrors { get; set; } = new List<string>();
-    public Dictionary<string, List<string>> EntityErrors { get; set; } = new Dictionary<string, List<string>>();
+    public CustomResponse(bool success, string message)
+        : base(success, message) { }
 
-    public void AddError(string message)
+    public void AddGeneralError(string message)
     {
         Success = false;
         GeneralErrors.Add(message);
@@ -30,12 +28,9 @@ public class CustomResponse
 
     public override string ToString()
     {
-        var messages = new List<string>();
+        var messages = new List<string> { Message };
 
-        if (GeneralErrors.Any())
-        {
-            messages.AddRange(GeneralErrors);
-        }
+        messages.AddRange(GeneralErrors);
 
         foreach (var entityError in EntityErrors)
         {

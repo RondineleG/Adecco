@@ -3,7 +3,9 @@ namespace Adecco.Persistence.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     public UnitOfWork(ApplicattionDataContext context)
-    { _context = context; }
+    {
+        _context = context;
+    }
 
     private readonly ApplicattionDataContext _context;
     private IDbContextTransaction _currentTransaction;

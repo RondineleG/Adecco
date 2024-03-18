@@ -41,7 +41,7 @@ public class EnderecoService : IEnderecoService
 
         if (enderecoExistente == null)
         {
-            return new EnderecoResponse("Endereco não encontrado.");
+            return new EnderecoResponse("Endereco nï¿½o encontrado.");
         }
 
         enderecoExistente.AtualizarDados(
@@ -55,7 +55,8 @@ public class EnderecoService : IEnderecoService
             endereco.Cidade,
             endereco.Estado,
             endereco.Referencia,
-            (int)endereco.TipoEndereco);
+            (int)endereco.TipoEndereco
+        );
 
         try
         {
@@ -75,7 +76,7 @@ public class EnderecoService : IEnderecoService
 
         if (existingCategory == null)
         {
-            return new EnderecoResponse("Endereco não encontrado.");
+            return new EnderecoResponse("Endereco nï¿½o encontrado.");
         }
 
         try

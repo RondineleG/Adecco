@@ -25,10 +25,14 @@ public class Cliente : BaseEntity
     public List<Endereco> Enderecos { get; private set; }
 
     public void AdicionarContato(Contato contato)
-    { Contatos.Add(contato); }
+    {
+        Contatos.Add(contato);
+    }
 
     public void AdicionarEndereco(Endereco endereco)
-    { Enderecos.Add(endereco); }
+    {
+        Enderecos.Add(endereco);
+    }
 
     public void AtualizarCliente(int id, string nome, string email, string cpf, string rg)
     {

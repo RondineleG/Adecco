@@ -6,7 +6,13 @@ namespace Adecco.API.Controllers;
 [Route("/api/v1/[controller]")]
 public class ClientesController : Controller
 {
-    public ClientesController(IClienteService productService, IMapper mapper, IEnderecoService enderecoService, IContatoService contatoService, IValidacaoService validacaoService)
+    public ClientesController(
+        IClienteService productService,
+        IMapper mapper,
+        IEnderecoService enderecoService,
+        IContatoService contatoService,
+        IValidacaoService validacaoService
+    )
     {
         _clienteService = productService;
         _mapper = mapper;
@@ -23,7 +29,11 @@ public class ClientesController : Controller
     private readonly IMapper _mapper;
 
     [HttpGet("/cliente/listar")]
-    public async Task<IEnumerable<ClienteResponseDto>> ListAsync(string? nome, string? email, string? cpf)
+    public async Task<IEnumerable<ClienteResponseDto>> ListAsync(
+        string? nome,
+        string? email,
+        string? cpf
+    )
     {
         var clientes = await _clienteService.ListAsync(nome?.Trim(), email?.Trim(), cpf?.Trim());
         var response = _mapper.Map<IEnumerable<Cliente>, IEnumerable<ClienteResponseDto>>(clientes);
@@ -33,29 +43,54 @@ public class ClientesController : Controller
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
         cliente.AdicionarContato(contato);
         cliente.AdicionarEndereco(endereco);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse);
-        _validacaoService.Validar(new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-        _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereço", validacaoResponse);
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        _validacaoService.Validar(
+            cliente,
+            _validacaoService.ValidarCliente,
+            "Cliente",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Contato> { contato },
+            _validacaoService.ValidarContato,
+            "Contato",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Endereco> { endereco },
+            _validacaoService.ValidarEndereco,
+            "Endereï¿½o",
+            validacaoResponse
+        );
+        if (!validacaoResponse.Success)
+            return BadRequest(validacaoResponse);
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
-        if (!contatoResponse.Success) return BadRequest(contatoResponse.Message);
-        if (!enderecoResponse.Success) return BadRequest(enderecoResponse.Message);
+        if (!contatoResponse.Success)
+            return BadRequest(contatoResponse.Message);
+        if (!enderecoResponse.Success)
+            return BadRequest(enderecoResponse.Message);
         var result = await _clienteService.SaveAsync(cliente);
-        if (!result.Success) return BadRequest(result.Message);
+        if (!result.Success)
+            return BadRequest(result.Message);
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(response);
     }
 
     [HttpPut("/cliente/atualizar/{clienteId}")]
-    public async Task<IActionResult> PutAsync(int clienteId, int enderecoId, int contatoId, [FromBody] ClienteRequestDto request)
+    public async Task<IActionResult> PutAsync(
+        int clienteId,
+        int enderecoId,
+        int contatoId,
+        [FromBody] ClienteRequestDto request
+    )
     {
         if (!ModelState.IsValid)
         {
@@ -65,7 +100,7 @@ public class ClientesController : Controller
         var clienteExistente = await _clienteService.FindByIdAsync(clienteId);
         if (clienteExistente == null)
         {
-            return NotFound($"Cliente com ID {clienteId} não encontrado.");
+            return NotFound($"Cliente com ID {clienteId} nï¿½o encontrado.");
         }
 
         _mapper.Map(request, clienteExistente);

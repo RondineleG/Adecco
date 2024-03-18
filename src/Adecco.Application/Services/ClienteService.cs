@@ -7,7 +7,8 @@ public class ClienteService : IClienteService
         IContatoService contatoService,
         IUnitOfWork unitOfWork,
         IEnderecoService enderecoService,
-        IValidacaoService validacaoService)
+        IValidacaoService validacaoService
+    )
     {
         _clienteRepository = productRepository;
         _contatoService = contatoService;
@@ -30,7 +31,9 @@ public class ClienteService : IClienteService
     }
 
     public async Task<Cliente> FindByIdAsync(int id)
-    { return await _clienteRepository.FindByIdAsync(id); }
+    {
+        return await _clienteRepository.FindByIdAsync(id);
+    }
 
     public async Task<ClienteResponse> SaveAsync(Cliente cliente)
     {
@@ -41,7 +44,7 @@ public class ClienteService : IClienteService
                 var contatoExistente = await _contatoService.FindByIdAsync(contato.Id);
                 if (contatoExistente == null)
                 {
-                    return new ClienteResponse("Contato inválido.");
+                    return new ClienteResponse("Contato invï¿½lido.");
                 }
             }
 
@@ -50,13 +53,28 @@ public class ClienteService : IClienteService
                 var enderecoExistente = await _enderecoService.FindByIdAsync(endereco.Id);
                 if (enderecoExistente == null)
                 {
-                    return new ClienteResponse("Endereço inválido.");
+                    return new ClienteResponse("Endereï¿½o invï¿½lido.");
                 }
             }
             var response = new CustomResponse();
-            _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", response);
-            _validacaoService.Validar(cliente.Contatos, _validacaoService.ValidarContato, "Contato", response);
-            _validacaoService.Validar(cliente.Enderecos, _validacaoService.ValidarEndereco, "Endereço", response);
+            _validacaoService.Validar(
+                cliente,
+                _validacaoService.ValidarCliente,
+                "Cliente",
+                response
+            );
+            _validacaoService.Validar(
+                cliente.Contatos,
+                _validacaoService.ValidarContato,
+                "Contato",
+                response
+            );
+            _validacaoService.Validar(
+                cliente.Enderecos,
+                _validacaoService.ValidarEndereco,
+                "Endereï¿½o",
+                response
+            );
             if (!response.Success)
             {
                 return new ClienteResponse(response.ToString());
@@ -80,7 +98,7 @@ public class ClienteService : IClienteService
         var clienteExistente = await _clienteRepository.FindByIdAsync(id);
         if (clienteExistente == null)
         {
-            return new ClienteResponse("Cliente não encontrado.");
+            return new ClienteResponse("Cliente nï¿½o encontrado.");
         }
 
         try
@@ -101,7 +119,7 @@ public class ClienteService : IClienteService
         var clienteExistente = await _clienteRepository.FindByIdAsync(clienteId);
         if (clienteExistente == null)
         {
-            return new ClienteResponse("Cliente não encontrado.");
+            return new ClienteResponse("Cliente nï¿½o encontrado.");
         }
 
         try
@@ -109,7 +127,13 @@ public class ClienteService : IClienteService
             await _unitOfWork.BeginTransactionAsync();
             await AtualizarContato(cliente, clienteExistente);
             await AtualizarEndereco(cliente, clienteExistente);
-            clienteExistente.AtualizarCliente(clienteExistente.Id, cliente.Nome, cliente.Email, cliente.CPF, cliente.RG);
+            clienteExistente.AtualizarCliente(
+                clienteExistente.Id,
+                cliente.Nome,
+                cliente.Email,
+                cliente.CPF,
+                cliente.RG
+            );
             _clienteRepository.Update(clienteExistente);
 
             await _unitOfWork.CompleteAsync();
@@ -126,14 +150,18 @@ public class ClienteService : IClienteService
 
     private async Task AtualizarContato(Cliente cliente, Cliente clienteExistente)
     {
-        var contatosARemover = clienteExistente.Contatos.Where(c => !cliente.Contatos.Any(nc => nc.Id == c.Id)).ToList();
+        var contatosARemover = clienteExistente
+            .Contatos.Where(c => !cliente.Contatos.Any(nc => nc.Id == c.Id))
+            .ToList();
         foreach (var contato in contatosARemover)
         {
             await _contatoService.DeleteAsync(contato.Id);
         }
         foreach (var contatoNovo in cliente.Contatos)
         {
-            var contatoExistente = clienteExistente.Contatos.FirstOrDefault(c => c.Id == contatoNovo.Id);
+            var contatoExistente = clienteExistente.Contatos.FirstOrDefault(c =>
+                c.Id == contatoNovo.Id
+            );
             if (contatoExistente != null)
             {
                 await _contatoService.UpdateAsync(contatoExistente.Id, contatoNovo);
@@ -148,7 +176,9 @@ public class ClienteService : IClienteService
 
     private async Task AtualizarEndereco(Cliente cliente, Cliente clienteExistente)
     {
-        var enderecosARemover = clienteExistente.Enderecos.Where(e => !cliente.Enderecos.Any(ne => ne.Id == e.Id)).ToList();
+        var enderecosARemover = clienteExistente
+            .Enderecos.Where(e => !cliente.Enderecos.Any(ne => ne.Id == e.Id))
+            .ToList();
         foreach (var endereco in enderecosARemover)
         {
             await _enderecoService.DeleteAsync(endereco.Id);
@@ -156,7 +186,9 @@ public class ClienteService : IClienteService
 
         foreach (var enderecoNovo in cliente.Enderecos)
         {
-            var enderecoExistente = clienteExistente.Enderecos.FirstOrDefault(e => e.Id == enderecoNovo.Id);
+            var enderecoExistente = clienteExistente.Enderecos.FirstOrDefault(e =>
+                e.Id == enderecoNovo.Id
+            );
             if (enderecoExistente != null)
             {
                 await _enderecoService.UpdateAsync(enderecoExistente.Id, enderecoNovo);
@@ -169,7 +201,11 @@ public class ClienteService : IClienteService
         }
     }
 
-    private void Validar<T>(T entidade, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade)
+    private void Validar<T>(
+        T entidade,
+        Func<T, CustomValidationResult> funcValidacao,
+        string nomeEntidade
+    )
     {
         var resultado = funcValidacao(entidade);
         AdicionarErroSeInvalido(resultado, nomeEntidade);
@@ -184,24 +220,41 @@ public class ClienteService : IClienteService
         }
     }
 
-    private void Validar<T>(IEnumerable<T> entidades, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    private void Validar<T>(
+        IEnumerable<T> entidades,
+        Func<T, CustomValidationResult> funcValidacao,
+        string nomeEntidade,
+        CustomResponse response
+    )
     {
         foreach (var entidade in entidades)
         {
             var resultado = funcValidacao(entidade);
             var propriedadeId = entidade.GetType().GetProperty("Id");
-            var idValor = propriedadeId != null ? propriedadeId.GetValue(entidade)?.ToString() : "Desconhecido";
+            var idValor =
+                propriedadeId != null
+                    ? propriedadeId.GetValue(entidade)?.ToString()
+                    : "Desconhecido";
             AdicionarErroSeInvalido(resultado, $"{nomeEntidade} {idValor}", response);
         }
     }
 
-    private void Validar<T>(T entidade, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    private void Validar<T>(
+        T entidade,
+        Func<T, CustomValidationResult> funcValidacao,
+        string nomeEntidade,
+        CustomResponse response
+    )
     {
         var resultado = funcValidacao(entidade);
         AdicionarErroSeInvalido(resultado, $"{nomeEntidade}", response);
     }
 
-    private void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto, CustomResponse response)
+    private void AdicionarErroSeInvalido(
+        CustomValidationResult resultado,
+        string contexto,
+        CustomResponse response
+    )
     {
         if (!resultado.IsValid)
         {

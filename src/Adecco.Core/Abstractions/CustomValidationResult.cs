@@ -10,11 +10,17 @@ public class CustomValidationResult
 
     public CustomValidationResult AddError(string errorMessage, string fieldName = "")
     {
-        _errors.Add(string.IsNullOrWhiteSpace(fieldName) ? errorMessage : $"{fieldName}: {errorMessage}");
+        _errors.Add(
+            string.IsNullOrWhiteSpace(fieldName) ? errorMessage : $"{fieldName}: {errorMessage}"
+        );
         return this;
     }
 
-    public CustomValidationResult AddErrorIf(bool condition, string errorMessage, string fieldName = "")
+    public CustomValidationResult AddErrorIf(
+        bool condition,
+        string errorMessage,
+        string fieldName = ""
+    )
     {
         if (condition)
         {

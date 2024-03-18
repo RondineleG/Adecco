@@ -52,11 +52,21 @@ public class ValidacaoService : IValidacaoService
 
         resultado
             .AddErrorIf(contato.DDD is < 11 or > 99, "DDD inválido.", "DDD")
-            .AddErrorIf(string.IsNullOrEmpty(contato.Telefone.ToString()), "Telefone é obrigatório.", "Telefone");
+            .AddErrorIf(
+                string.IsNullOrEmpty(contato.Telefone.ToString()),
+                "Telefone é obrigatório.",
+                "Telefone"
+            );
 
         if (!string.IsNullOrEmpty(contato.Telefone.ToString()))
         {
-            var tipoContato = (contato.Telefone.ToString().StartsWith("9") && contato.Telefone.ToString().Length == 9) ? ETipoContato.Celular : ETipoContato.Residencial;
+            var tipoContato =
+                (
+                    contato.Telefone.ToString().StartsWith("9")
+                    && contato.Telefone.ToString().Length == 9
+                )
+                    ? ETipoContato.Celular
+                    : ETipoContato.Residencial;
             resultado = ValidarTelefone(contato.Telefone.ToString(), tipoContato);
         }
 
@@ -74,11 +84,27 @@ public class ValidacaoService : IValidacaoService
         resultado
             .AddErrorIf(string.IsNullOrWhiteSpace(endereco.CEP), "CEP é obrigatório.", "CEP")
             .AddErrorIf(!Regex.IsMatch(endereco.CEP, RegexPatterns.CEP), "CEP inválido.", "CEP")
-            .AddErrorIf(string.IsNullOrWhiteSpace(endereco.Logradouro), "Logradouro é obrigatório.", "Logradouro")
+            .AddErrorIf(
+                string.IsNullOrWhiteSpace(endereco.Logradouro),
+                "Logradouro é obrigatório.",
+                "Logradouro"
+            )
             .AddErrorIf(string.IsNullOrWhiteSpace(endereco.Numero), "Número inválido.", "Numero")
-            .AddErrorIf(string.IsNullOrWhiteSpace(endereco.Bairro), "Bairro é obrigatório.", "Bairro")
-            .AddErrorIf(string.IsNullOrWhiteSpace(endereco.Cidade), "Cidade é obrigatória.", "Cidade")
-            .AddErrorIf(string.IsNullOrWhiteSpace(endereco.Estado) || endereco.Estado.Length != 2, "Estado inválido.", "Estado");
+            .AddErrorIf(
+                string.IsNullOrWhiteSpace(endereco.Bairro),
+                "Bairro é obrigatório.",
+                "Bairro"
+            )
+            .AddErrorIf(
+                string.IsNullOrWhiteSpace(endereco.Cidade),
+                "Cidade é obrigatória.",
+                "Cidade"
+            )
+            .AddErrorIf(
+                string.IsNullOrWhiteSpace(endereco.Estado) || endereco.Estado.Length != 2,
+                "Estado inválido.",
+                "Estado"
+            );
         return resultado;
     }
 
@@ -103,28 +129,46 @@ public class ValidacaoService : IValidacaoService
     public CustomValidationResult ValidarCampos(string valor, string pattern, string nomeCampo)
     {
         var resultado = new CustomValidationResult();
-        if (!Regex.IsMatch(valor, pattern)) resultado.AddError($"{nomeCampo} inválido.", nomeCampo);
+        if (!Regex.IsMatch(valor, pattern))
+            resultado.AddError($"{nomeCampo} inválido.", nomeCampo);
         return resultado;
     }
 
-    public void Validar<T>(IEnumerable<T> entidades, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    public void Validar<T>(
+        IEnumerable<T> entidades,
+        Func<T, CustomValidationResult> funcValidacao,
+        string nomeEntidade,
+        CustomResponse response
+    )
     {
         foreach (var entidade in entidades)
         {
             var resultado = funcValidacao(entidade);
             var propriedadeId = entidade.GetType().GetProperty("Id");
-            var idValor = propriedadeId != null ? propriedadeId.GetValue(entidade)?.ToString() : "Desconhecido";
+            var idValor =
+                propriedadeId != null
+                    ? propriedadeId.GetValue(entidade)?.ToString()
+                    : "Desconhecido";
             AdicionarErroSeInvalido(resultado, $"{nomeEntidade} {idValor}", response);
         }
     }
 
-    public void Validar<T>(T entidade, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    public void Validar<T>(
+        T entidade,
+        Func<T, CustomValidationResult> funcValidacao,
+        string nomeEntidade,
+        CustomResponse response
+    )
     {
         var resultado = funcValidacao(entidade);
         AdicionarErroSeInvalido(resultado, $"{nomeEntidade}", response);
     }
 
-    public void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto, CustomResponse response)
+    public void AdicionarErroSeInvalido(
+        CustomValidationResult resultado,
+        string contexto,
+        CustomResponse response
+    )
     {
         if (!resultado.IsValid)
         {

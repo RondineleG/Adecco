@@ -4,16 +4,16 @@ namespace Adecco.Persistence.Repositories;
 
 public class EnderecoRepository : BaseRepository, IEnderecoRepository
 {
-    public EnderecoRepository(ApplicattionDataContext context) : base(context)
-    {
-    }
+    public EnderecoRepository(ApplicattionDataContext context)
+        : base(context) { }
 
     public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
     {
-
         IQueryable<Endereco> query = _context.Enderecos;
-        if (clienteId is not null) query = query.Where(c => c.ClienteId == clienteId);
-        if (enderecoId is not null) query = query.Where(c => c.Id == enderecoId);
+        if (clienteId is not null)
+            query = query.Where(c => c.ClienteId == clienteId);
+        if (enderecoId is not null)
+            query = query.Where(c => c.Id == enderecoId);
         return await query.ToListAsync();
     }
 

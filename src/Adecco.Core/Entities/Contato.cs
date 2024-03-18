@@ -2,9 +2,7 @@ namespace Adecco.Core.Entities;
 
 public class Contato : BaseEntity
 {
-    protected Contato()
-    {
-    }
+    protected Contato() { }
 
     public string Nome { get; private set; }
 
@@ -19,7 +17,9 @@ public class Contato : BaseEntity
     public ETipoContato TipoContato { get; private set; }
 
     public void AlterarNome(string nome)
-    { Nome = nome; }
+    {
+        Nome = nome;
+    }
 
     public void AtualizarDados(int id, string nome, int ddd, decimal telefone, int tipoContato)
     {
@@ -31,8 +31,12 @@ public class Contato : BaseEntity
     }
 
     public void AdicionarClienteId(int clienteId)
-    { ClienteId = clienteId; }
+    {
+        ClienteId = clienteId;
+    }
 
     public void AdicionarId(int id)
-    { Id = id; }
+    {
+        Id = id;
+    }
 }
