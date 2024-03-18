@@ -11,11 +11,15 @@ public class EnderecoService : IEnderecoService
     private readonly IEnderecoRepository _enderecoRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public async Task<IEnumerable<Endereco>> ListAsync()
-    { return await _enderecoRepository.ListAsync(); }
+    public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
+    {
+        return await _enderecoRepository.ListAsync(clienteId, enderecoId);
+    }
 
     public async Task<Endereco> FindByIdAsync(int id)
-    { return await _enderecoRepository.FindByIdAsync(id); }
+    {
+        return await _enderecoRepository.FindByIdAsync(id);
+    }
 
     public async Task<EnderecoResponse> SaveAsync(Endereco endereco)
     {

@@ -2,7 +2,7 @@ namespace Adecco.Core.Interfaces.Services;
 
 public interface IEnderecoService
 {
-    Task<IEnumerable<Endereco>> ListAsync();
+    Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId);
 
     Task<Endereco> FindByIdAsync(int id);
 

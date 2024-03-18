@@ -1,3 +1,5 @@
+using Adecco.Core.Entities;
+
 namespace Adecco.Persistence.Repositories;
 
 public class EnderecoRepository : BaseRepository, IEnderecoRepository
@@ -6,8 +8,14 @@ public class EnderecoRepository : BaseRepository, IEnderecoRepository
     {
     }
 
-    public async Task<IEnumerable<Endereco>> ListAsync()
-    { return await _context.Enderecos.ToListAsync(); }
+    public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
+    {
+
+        IQueryable<Endereco> query = _context.Enderecos;
+        if (clienteId is not null) query = query.Where(c => c.ClienteId == clienteId);
+        if (enderecoId is not null) query = query.Where(c => c.Id == enderecoId);
+        return await query.ToListAsync();
+    }
 
     public async Task AddAsync(Endereco endereco)
     {

@@ -2,7 +2,7 @@ namespace Adecco.Core.Interfaces.Repositories;
 
 public interface IEnderecoRepository
 {
-    Task<IEnumerable<Endereco>> ListAsync();
+    Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId);
 
     Task AddAsync(Endereco endereco);
 

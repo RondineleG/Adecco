@@ -1,4 +1,5 @@
 using Adecco.Core.Abstractions;
+using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers;
@@ -18,9 +19,9 @@ public class EnderecosController : Controller
     private readonly IValidacaoService _validacaoService;
 
     [HttpGet("endereco/listar")]
-    public async Task<IEnumerable<EnderecoResponseDto>> ListAsync()
+    public async Task<IEnumerable<EnderecoResponseDto>> ListAsync(int? clienteId, int? enderecoId)
     {
-        var enderecos = await _enderecoService.ListAsync();
+        var enderecos = await _enderecoService.ListAsync(clienteId, enderecoId);
         var response = _mapper.Map<IEnumerable<Endereco>, IEnumerable<EnderecoResponseDto>>(enderecos);
         return response;
     }

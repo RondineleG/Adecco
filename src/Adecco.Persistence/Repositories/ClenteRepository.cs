@@ -5,22 +5,9 @@ public class ClenteRepository(ApplicattionDataContext context) : BaseRepository(
     public async Task<IEnumerable<Cliente>> ListAsync(string? nome, string? email, string? cpf)
     {
         IQueryable<Cliente> query = _context.Clientes.Include(p => p.Contatos).Include(p => p.Enderecos);
-
-        if (!string.IsNullOrEmpty(nome))
-        {
-            query = query.Where(p => p.Nome.Contains(nome));
-        }
-
-        if (!string.IsNullOrEmpty(email))
-        {
-            query = query.Where(p => p.Email == email);
-        }
-
-        if (!string.IsNullOrEmpty(cpf))
-        {
-            query = query.Where(p => p.CPF == cpf);
-        }
-
+        if (!string.IsNullOrEmpty(nome)) query = query.Where(p => p.Nome.Contains(nome));
+        if (!string.IsNullOrEmpty(email)) query = query.Where(p => p.Email == email);
+        if (!string.IsNullOrEmpty(cpf)) query = query.Where(p => p.CPF == cpf);
         return await query.ToListAsync();
     }
 
@@ -30,7 +17,6 @@ public class ClenteRepository(ApplicattionDataContext context) : BaseRepository(
             .Include(p => p.Contatos)
             .Include(p => p.Enderecos)
             .FirstOrDefaultAsync(p => p.Id == id);
-
         if (cliente == null) return null;
         return cliente;
     }

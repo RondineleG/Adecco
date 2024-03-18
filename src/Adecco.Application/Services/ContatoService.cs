@@ -11,8 +11,10 @@ public class ContatoService : IContatoService
     private readonly IContatoRepository _contatoRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public async Task<IEnumerable<Contato>> ListAsync()
-    { return await _contatoRepository.ListAsync(); }
+    public async Task<IEnumerable<Contato>> ListAsync(int? clienteId, int? contatoId)
+    {
+        return await _contatoRepository.ListAsync(clienteId, contatoId);
+    }
 
     public async Task<Contato> FindByIdAsync(int id)
     { return await _contatoRepository.FindByIdAsync(id); }

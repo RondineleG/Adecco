@@ -18,9 +18,9 @@ public class ContatosController : Controller
     private readonly IValidacaoService _validacaoService;
 
     [HttpGet("/contato/listar")]
-    public async Task<IEnumerable<ContatoResponseDto>> ListAsync()
+    public async Task<IEnumerable<ContatoResponseDto>> ListAsync(int? clienteId, int? contatoId)
     {
-        var categories = await _contatoService.ListAsync();
+        var categories = await _contatoService.ListAsync(clienteId, contatoId);
         var resources = _mapper.Map<IEnumerable<Contato>, IEnumerable<ContatoResponseDto>>(categories);
 
         return resources;
