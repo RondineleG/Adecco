@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerAndConfigApiVersioning();
+builder.Services.AddAndConfigSwagger();
 var connection = builder.Configuration["DefaultConnection:ConnectionString"];
 builder.Services.AddDbContext<ApplicattionDataContext>(options => options.UseSqlite(connection));
 builder.Services.AddScoped<IContatoRepository, CotatoRepository>();
@@ -23,10 +24,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseCustomSwaggerUI();
 }
-else
+
+if (app.Environment.IsStaging())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseCustomSwaggerUI();
+}
+if (app.Environment.IsProduction())
+
 {
     app.UseHsts();
     app.UseCustomWelcomePage(

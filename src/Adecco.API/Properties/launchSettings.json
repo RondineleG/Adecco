@@ -19,10 +19,18 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Production": {
+    "Staging": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:8000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      }
+    },
+    "Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:9000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
