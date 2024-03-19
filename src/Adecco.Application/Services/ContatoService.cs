@@ -48,7 +48,8 @@ public sealed class ContatoService : IContatoService
             contato.Nome,
             contato.DDD,
             contato.Telefone,
-            (int)contato.TipoContato
+            contato.TipoContato.ToDescriptionString()
+
         );
         try
         {

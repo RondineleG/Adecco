@@ -1,4 +1,7 @@
-﻿using Adecco.Core.Abstractions;
+﻿using Adecco.Application.Dtos.Cliente;
+using Adecco.Application.Extensions;
+using Adecco.Core.Abstractions;
+using Adecco.Core.Enums;
 
 using System.Text;
 
@@ -14,10 +17,9 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     private readonly string _filePath;
 
-    public async Task<List<ClienteResponse>> ObterTodos()
+    public async Task<List<Cliente>> ObterTodos()
     {
-        if (!File.Exists(_filePath)) return new List<ClienteResponse>();
-
+        if (!File.Exists(_filePath)) return new List<Cliente>();
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -26,14 +28,13 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
         try
         {
+
             var jsonData = await File.ReadAllTextAsync(_filePath, Encoding.UTF8);
-            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponse>();
-
-            var clientes = JsonSerializer.Deserialize<List<Cliente>>(jsonData, options);
-            if (clientes == null) return new List<ClienteResponse>();
-
-            var clientesResponse = clientes.Select(cliente => new ClienteResponse(cliente)).ToList();
-            return clientesResponse;
+            var clientesResponseDtos = JsonSerializer.Deserialize<List<dynamic>>(jsonData, options);
+            if (string.IsNullOrWhiteSpace(jsonData)) return new List<Cliente>();
+            var clientes = JsonSerializer.Deserialize<List<ClienteResponseDto>>(jsonData, options);
+            var clientesResponseDto = ConverterParaClientes(clientesResponseDtos);
+            return clientesResponseDto ?? new List<Cliente>();
         }
         catch (FileNotFoundException e)
         {
@@ -43,20 +44,11 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         {
             Console.WriteLine($"Erro ao deserializar: {e.Message}");
         }
-
-        return new List<ClienteResponse>();
+        return new List<Cliente>();
     }
-
-    public List<Cliente> RestornarListaClientes(List<ClienteResponse> clientesResponse)
-    {
-        var clientes = clientesResponse.Select(cr => cr.Cliente).ToList();
-        return clientes;
-    }
-
     public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         if (!string.IsNullOrEmpty(nome))
         {
             clientes = clientes.Where(c => c.Nome.Contains(nome)).ToList();
@@ -75,8 +67,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<Cliente> BuscarClientePodId(int clienteId)
     {
-        var clienteResponse = await ObterTodos();
-        var cliente = clienteResponse.FirstOrDefault(c => c.Cliente.Id == clienteId).Cliente;
+        var cliente = await BuscarClientePodId(clienteId);
         if (cliente == null)
         {
             throw new KeyNotFoundException("Cliente não encontrado");
@@ -90,8 +81,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         {
             throw new ArgumentException("Dados do cliente inválidos.");
         }
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var novoId = clientes.Any() ? clientes.Max(c => c.Id) + 1 : 1;
         cliente.AdicionarId(novoId);
 
@@ -110,8 +100,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<ClienteResponse> AtualizarCliente(int clienteId, Cliente clienteAtualizado)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = await BuscarClientePodId(clienteId);
         if (clienteId == -1)
         {
@@ -126,8 +115,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async void RemoverCliente(int clienteId)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = await BuscarClientePodId(clienteId);
         if (cliente != null)
         {
@@ -139,8 +127,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<ContatoResponse> AtualizarContato(int clienteId, Contato contato)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
+
         var cliente = await BuscarClientePodId(clienteId);
         if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
 
@@ -155,8 +143,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<EnderecoResponse> AtualizarEndereco(int clienteId, Endereco endereco)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = await BuscarClientePodId(clienteId);
         if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
 
@@ -171,8 +158,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<ContatoResponse> IncluirContato(int clienteId, Contato contato)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
 
         if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
@@ -188,8 +174,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<EnderecoResponse> IncluirEndereco(int clienteId, Endereco endereco)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
 
         if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
@@ -205,8 +190,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async void RemoverContato(int clienteId, int contatoId)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
         if (cliente == null) return;
 
@@ -220,8 +204,7 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async void RemoverEndereco(int clienteId, int enderecoId)
     {
-        var clienteResponse = await ObterTodos();
-        var clientes = RestornarListaClientes(clienteResponse);
+        var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
         if (cliente == null) return;
 
@@ -252,4 +235,62 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
             File.Create(_filePath).Dispose();
         }
     }
+
+    private List<Cliente> ConverterParaClientes(List<dynamic> clientesResponseDto)
+    {
+        var clientes = new List<Cliente>();
+
+        foreach (JsonElement clienteDto in clientesResponseDto)
+        {
+            var cliente = new Cliente();
+            cliente.AdicionarId(clienteDto.GetProperty("Id").GetInt32());
+            cliente.AtualizarCliente(
+                clienteDto.GetProperty("Id").GetInt32(),
+                clienteDto.GetProperty("Nome").GetString(),
+                clienteDto.GetProperty("Email").GetString(),
+                clienteDto.GetProperty("CPF").GetString(),
+                clienteDto.GetProperty("RG").GetString());
+
+            foreach (var contatoDto in clienteDto.GetProperty("Contatos").EnumerateArray())
+            {
+                var tipoContatoString = contatoDto.GetProperty("TipoContato").GetString();
+                var tipoContato = EnumExtensions.ParseEnumFromDescription<ETipoContato>(tipoContatoString.Trim());
+
+                var contato = new Contato(
+                contatoDto.GetProperty("Id").GetInt32(),
+                contatoDto.GetProperty("Nome").GetString(),
+                contatoDto.GetProperty("DDD").GetInt32(),
+                contatoDto.GetProperty("Telefone").GetInt64(),
+                tipoContato);
+                cliente.AdicionarContato(contato);
+            }
+
+            foreach (var enderecoDto in clienteDto.GetProperty("Enderecos").EnumerateArray())
+            {
+
+                var tipoEnderecoString = enderecoDto.GetProperty("TipoEndereco").GetString();
+                var tipoEndereco = EnumExtensions. ParseEnumFromDescription<ETipoEndereco>(tipoEnderecoString.Trim());
+
+                var endereco = new Endereco(
+                enderecoDto.GetProperty("Id").GetInt32(),
+                enderecoDto.GetProperty("Nome").GetString(),
+                enderecoDto.GetProperty("CEP").GetString(),
+                enderecoDto.GetProperty("Logradouro").GetString(),
+                enderecoDto.GetProperty("Numero").GetString(),
+                enderecoDto.GetProperty("Bairro").GetString(),
+                enderecoDto.GetProperty("Complemento").GetString(),
+                enderecoDto.GetProperty("Cidade").GetString(),
+                enderecoDto.GetProperty("Estado").GetString(),
+                enderecoDto.GetProperty("Referencia").GetString(),
+                tipoEndereco);
+                cliente.AdicionarEndereco(endereco);
+            }
+
+            clientes.Add(cliente);
+        }
+
+        return clientes;
+    }
+
+
 }

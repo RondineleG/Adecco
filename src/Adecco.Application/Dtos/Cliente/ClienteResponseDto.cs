@@ -18,7 +18,8 @@ public sealed class ClienteResponseDto
 
     public string RG { get; set; }
 
-    public List<ContatoResponseDto> Contatos { get; private set; }
+    public List<ContatoResponseDto> Contatos { get;  set; }
 
-    public List<EnderecoResponseDto> Enderecos { get; private set; }
+    public List<EnderecoResponseDto> Enderecos { get;  set; }
+
 }

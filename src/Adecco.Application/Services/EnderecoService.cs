@@ -55,7 +55,7 @@ public sealed class EnderecoService : IEnderecoService
             endereco.Cidade,
             endereco.Estado,
             endereco.Referencia,
-            (int)endereco.TipoEndereco
+            endereco.TipoEndereco.ToDescriptionString()
         );
 
         try

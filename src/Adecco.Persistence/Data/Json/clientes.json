@@ -1,39 +1,78 @@
-﻿[
+[
   {
-    "nome": "Jo\u00E3o Silva",
-    "email": "maria@example.com",
-    "cpf": "09359020664",
-    "rg": "987654321",
-    "contatoId": 0,
-    "enderecoId": 0,
-    "contatos": [
+    "Id": 1,
+    "Nome": "Maria Oliveira",
+    "Email": "maria@example.com",
+    "CPF": "69894229042",
+    "RG": "123456789",
+    "Contatos": [
       {
-        "nome": "Jo\u00E3o Silva",
-        "ddd": 99,
-        "telefone": 98469772,
-        "clienteId": null,
-        "cliente": null,
-        "tipoContato": 3,
-        "id": 0
+        "Id": 1,
+        "Nome": "Maria Oliveira",
+        "TipoContato": "Celular",
+        "DDD": 11,
+        "Telefone": 987654321
+      },
+      {
+        "Id": 2,
+        "Nome": "Maria Oliveira",
+        "TipoContato": "Celular",
+        "DDD": 11,
+        "Telefone": 987654896
       }
     ],
-    "enderecos": [
+    "Enderecos": [
       {
-        "nome": "Casa",
-        "cep": "13466210",
-        "logradouro": "Rua das Flores",
-        "numero": "123",
-        "bairro": "Centro",
-        "complemento": "Casa 1",
-        "cidade": "Americana",
-        "estado": "SP",
-        "referencia": "Pr\u00F3ximo ao parque",
-        "clienteId": null,
-        "cliente": null,
-        "tipoEndereco": 3,
-        "id": 0
+        "Id": 1,
+        "Nome": "Trabalho",
+        "TipoEndereco": "Preferencial",
+        "CEP": "87654321",
+        "Logradouro": "Avenida Principal",
+        "Numero": "456",
+        "Bairro": "Vila Nova",
+        "Complemento": "Sala 202",
+        "Cidade": "Rio de Janeiro",
+        "Estado": "RJ",
+        "Referencia": "Perto do metr\u00F4"
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "Nome": "Marcos Oliveira",
+    "Email": "marcos@example.com",
+    "CPF": "98765432100",
+    "RG": "123456789",
+    "Contatos": [
+      {
+        "Id": 3,
+        "Nome": "Maria Oliveira",
+        "TipoContato": "Comercial",
+        "DDD": 11,
+        "Telefone": 987654321
+      },
+      {
+        "Id": 4,
+        "Nome": "Maria Oliveira",
+        "TipoContato": "Residencial",
+        "DDD": 47,
+        "Telefone": 984691772
       }
     ],
-    "id": 1
+    "Enderecos": [
+      {
+        "Id": 2,
+        "Nome": "Trabalho",
+        "TipoEndereco": "Entrega",
+        "CEP": "87654321",
+        "Logradouro": "Avenida Principal",
+        "Numero": "456",
+        "Bairro": "Vila Nova",
+        "Complemento": "Sala 202",
+        "Cidade": "Rio de Janeiro",
+        "Estado": "RJ",
+        "Referencia": "Perto do metr\u00F4"
+      }
+    ]
   }
 ]
