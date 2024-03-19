@@ -28,15 +28,7 @@ public sealed class MapperProfile : Profile
                 opt => opt.MapFrom(src => (ETipoEndereco)src.TipoEndereco)
             );
 
-        CreateMap<Cliente, ClienteResponseDto>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome))
-            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest => dest.CPF, opt => opt.MapFrom(src => src.CPF))
-            .ForMember(dest => dest.RG, opt => opt.MapFrom(src => src.RG))
-            .ForMember(dest => dest.Contatos, opt => opt.MapFrom(src => src.Contatos))
-            .ForMember(dest => dest.Enderecos, opt => opt.MapFrom(src => src.Enderecos));
-
+        CreateMap<Cliente, ClienteResponseDto>();
         CreateMap<ClienteRequestDto, Cliente>();
     }
 }

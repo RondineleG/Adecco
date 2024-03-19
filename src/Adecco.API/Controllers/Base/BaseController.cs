@@ -4,4 +4,5 @@
 [ApiVersion("1.0")]
 [ApiVersion("2.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
-public abstract class BaseController : ControllerBase { }
+public abstract class BaseController : ControllerBase
+{ }

@@ -205,7 +205,7 @@ public sealed class ClienteService(
     {
         if (!resultado.IsValid)
         {
-            var prefixo = string.IsNullOrEmpty(contexto) ? "" : $"{contexto}: ";
+            var prefixo = string.IsNullOrEmpty(contexto) ? string.Empty : $"{contexto}: ";
             _errosValidacao.AddRange(resultado.Errors.Select(erro => prefixo + erro));
         }
     }

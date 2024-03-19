@@ -42,7 +42,8 @@ public sealed class ContatoService(IContatoRepository contatoRepository, IUnitOf
             contato.Nome,
             contato.DDD,
             contato.Telefone,
-            (int)contato.TipoContato
+            contato.TipoContato.ToDescriptionString()
+
         );
         try
         {

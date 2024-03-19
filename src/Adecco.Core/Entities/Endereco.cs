@@ -1,13 +1,44 @@
-﻿using System.Text.Json.Serialization;
-using Adecco.Core.Entities.Base;
+﻿using Adecco.Core.Entities.Base;
+
+using System.Text.Json.Serialization;
 
 namespace Adecco.Core.Entities;
 
 public sealed class Endereco : BaseEntity
 {
+    private readonly string tipoEndereco;
+    private readonly int tipoEndereco1;
 
     [JsonConstructor]
-    public Endereco() { }
+    public Endereco()
+    { }
+
+    public Endereco(int id, string nome, string cEP, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco)
+    {
+        Id = id;
+        Nome = nome;
+        CEP = cEP;
+        Logradouro = logradouro;
+        Numero = numero;
+        Bairro = bairro;
+        Complemento = complemento;
+        Cidade = cidade;
+        Estado = estado;
+        Referencia = referencia;
+        TipoEndereco = tipoEndereco;
+    }
+
+    public Endereco(int id, string logradouro, string numero, string complemento, string bairro, string cidade, string estado, string cep, ETipoEndereco tipoEndereco)
+    {
+        Logradouro = logradouro;
+        Numero = numero;
+        Complemento = complemento;
+        Bairro = bairro;
+        Cidade = cidade;
+        Estado = estado;
+        CEP = cep;
+        TipoEndereco = tipoEndereco;
+    }
 
     public string Nome { get; private set; }
 
@@ -43,7 +74,7 @@ public sealed class Endereco : BaseEntity
         string cidade,
         string estado,
         string referencia,
-        int tipoEndereco
+        string tipoEndereco
     )
     {
         Id = id;
@@ -56,7 +87,7 @@ public sealed class Endereco : BaseEntity
         Cidade = (!string.IsNullOrEmpty(cidade)) ? cidade : Cidade;
         Estado = (!string.IsNullOrEmpty(estado)) ? estado : Estado;
         Referencia = (!string.IsNullOrEmpty(referencia)) ? referencia : Referencia;
-        TipoEndereco = (ETipoEndereco)tipoEndereco;
+        TipoEndereco = (ETipoEndereco)Enum.Parse(typeof(ETipoEndereco), tipoEndereco);
     }
 
     public void AdicionarClienteId(int clienteId)

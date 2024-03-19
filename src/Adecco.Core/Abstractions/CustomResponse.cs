@@ -10,6 +10,7 @@ public sealed class CustomResponse
 
     public bool Success { get; set; }
     public List<string> GeneralErrors { get; set; } = [];
+
     public Dictionary<string, List<string>> EntityErrors { get; set; } =
         new Dictionary<string, List<string>>();
 

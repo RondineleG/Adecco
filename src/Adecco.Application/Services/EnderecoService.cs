@@ -49,7 +49,7 @@ public sealed class EnderecoService(IEnderecoRepository enderecoRepository, IUni
             endereco.Cidade,
             endereco.Estado,
             endereco.Referencia,
-            (int)endereco.TipoEndereco
+            endereco.TipoEndereco.ToDescriptionString()
         );
 
         try

@@ -25,6 +25,9 @@ public sealed class ClientesController(
     )
     {
         var clientes = await _clienteService.ListarClientes(nome?.Trim(), email?.Trim(), cpf?.Trim());
+        var jsonString = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+        var tido = JsonSerializer.Deserialize<List<ClienteResponseDto>>(jsonString);
+
         var clientesDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
         return clientesDto;
     }

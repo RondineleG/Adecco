@@ -15,7 +15,6 @@ public sealed class EnderecosController(
     private readonly IMapper _mapper = mapper;
     private readonly IValidacaoService _validacaoService = validacaoService;
 
-
     [HttpPut("/atualizar/{clienteId}/endereco")]
     public async Task<IActionResult> AtualizarEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {

@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
-
 using Adecco.Core.Entities.Base;
+
+using System.Text.Json.Serialization;
 
 namespace Adecco.Core.Entities;
 
@@ -11,6 +11,16 @@ public sealed class Cliente : BaseEntity
     {
         Contatos = new List<Contato>();
         Enderecos = new List<Endereco>();
+    }
+
+    public Cliente(int id, string nome, string email, string cpf, string rg, List<Contato> contatos, List<Endereco> enderecos)
+    {
+        Nome = nome;
+        Email = email;
+        CPF = cpf;
+        RG = rg;
+        Contatos = contatos;
+        Enderecos = enderecos;
     }
 
     public string Nome { get; private set; }
