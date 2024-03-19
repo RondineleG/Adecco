@@ -7,7 +7,7 @@ namespace Adecco.API.Ioc;
 
 public static class NativeInjectorConfig
 {
-    public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
+    public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -28,7 +28,7 @@ public static class NativeInjectorConfig
         services.AddAutoMapper(typeof(MapperProfile));
     }
 
-    public static void UseServices(this WebApplication app)
+    public static void UseApplicationServices(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
