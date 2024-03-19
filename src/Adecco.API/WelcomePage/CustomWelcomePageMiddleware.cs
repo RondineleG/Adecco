@@ -1,21 +1,14 @@
 ﻿namespace Adecco.API.WelcomePage;
 
-public sealed class CustomWelcomePageMiddleware
-{
-    public CustomWelcomePageMiddleware(
-        RequestDelegate next,
-        CustomWelcomePageOptions options,
-        ILogger<CustomWelcomePageMiddleware> logger
+public sealed class CustomWelcomePageMiddleware(
+    RequestDelegate next,
+    CustomWelcomePageOptions options,
+    ILogger<CustomWelcomePageMiddleware> logger
     )
-    {
-        _next = next;
-        _options = options;
-        _logger = logger;
-    }
-
-    private readonly RequestDelegate _next;
-    private readonly CustomWelcomePageOptions _options;
-    private readonly ILogger<CustomWelcomePageMiddleware> _logger;
+{
+    private readonly RequestDelegate _next = next;
+    private readonly CustomWelcomePageOptions _options = options;
+    private readonly ILogger<CustomWelcomePageMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context)
     {

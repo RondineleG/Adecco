@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 
+using Adecco.Core.Entities.Base;
+
 namespace Adecco.Core.Entities;
 
 public sealed class Cliente : BaseEntity

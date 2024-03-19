@@ -1,30 +1,21 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
-public sealed class ClientesController : BaseController
+public sealed class ClientesController(
+    IClienteJsonService clienteService,
+    ILogger<ClientesController> logger,
+    IValidacaoService validacaoService,
+    IMapper mapper
+ ) : BaseController
 {
-    public ClientesController(
-        IClienteJsonService clienteService,
-        ILogger<ClientesController> logger,
-        IValidacaoService validacaoService,
-        IMapper mapper
-    )
-    {
-        _clienteService = clienteService;
-        _logger = logger;
-        _validacaoService = validacaoService;
-        _mapper = mapper;
-    }
-
-    private readonly IClienteJsonService _clienteService;
-    private readonly IValidacaoService _validacaoService;
-    private readonly IMapper _mapper;
-    private readonly ILogger<ClientesController> _logger;
+    private readonly IClienteJsonService _clienteService = clienteService;
+    private readonly IValidacaoService _validacaoService = validacaoService;
+    private readonly IMapper _mapper = mapper;
+    private readonly ILogger<ClientesController> _logger = logger;
 
     [HttpGet("/cliente/listar")]
     public async Task<IEnumerable<ClienteResponseDto>> ListAsync(
@@ -75,7 +66,7 @@ public sealed class ClientesController : BaseController
         await _clienteService.IncluirContato(cliente.Id, contato);
         return Ok();
     }
-        
+
     [HttpPut("/cliente/atualizar/{clienteId}")]
     public async Task<IActionResult> PutAsync(
         int clienteId,

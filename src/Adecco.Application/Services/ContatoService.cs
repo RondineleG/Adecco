@@ -1,15 +1,9 @@
 namespace Adecco.Application.Services;
 
-public sealed class ContatoService : IContatoService
+public sealed class ContatoService(IContatoRepository contatoRepository, IUnitOfWork unitOfWork) : IContatoService
 {
-    public ContatoService(IContatoRepository contatoRepository, IUnitOfWork unitOfWork)
-    {
-        _contatoRepository = contatoRepository;
-        _unitOfWork = unitOfWork;
-    }
-
-    private readonly IContatoRepository _contatoRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IContatoRepository _contatoRepository = contatoRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<IEnumerable<Contato>> ListAsync(int? clienteId, int? contatoId)
     {

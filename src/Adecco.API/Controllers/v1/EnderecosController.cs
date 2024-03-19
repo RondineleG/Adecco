@@ -1,29 +1,19 @@
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
-public sealed class EnderecosController : ControllerBase
+public sealed class EnderecosController(
+    IClienteJsonService clienteService,
+    ILogger<ClientesController> logger,
+    IMapper mapper,
+    IValidacaoService validacaoService) : ControllerBase
 {
-    public EnderecosController(
-        IClienteJsonService clienteService,
-        ILogger<ClientesController> logger
-,
-        IMapper mapper,
-        IValidacaoService validacaoService)
-    {
-        _clienteService = clienteService;
-        _logger = logger;
-        _mapper = mapper;
-        _validacaoService = validacaoService;
-    }
-
-    private readonly IClienteJsonService _clienteService;
-    private readonly ILogger<ClientesController> _logger;
-    private readonly IMapper _mapper;
-    private readonly IValidacaoService _validacaoService;
+    private readonly IClienteJsonService _clienteService = clienteService;
+    private readonly ILogger<ClientesController> _logger = logger;
+    private readonly IMapper _mapper = mapper;
+    private readonly IValidacaoService _validacaoService = validacaoService;
 
 
     [HttpPut("/atualizar/{clienteId}/endereco")]

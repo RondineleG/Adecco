@@ -1,13 +1,8 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class UnitOfWork : IUnitOfWork
+public sealed class UnitOfWork(ApplicattionDataContext context) : IUnitOfWork
 {
-    public UnitOfWork(ApplicattionDataContext context)
-    {
-        _context = context;
-    }
-
-    private readonly ApplicattionDataContext _context;
+    private readonly ApplicattionDataContext _context = context;
     private IDbContextTransaction _currentTransaction;
 
     public async Task CompleteAsync()

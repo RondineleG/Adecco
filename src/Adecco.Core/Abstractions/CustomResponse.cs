@@ -2,20 +2,14 @@
 
 public sealed class CustomResponse
 {
-    private CustomResponse _validacaoResponse;
+    private readonly CustomResponse _validacaoResponse;
 
-    public CustomResponse()
-    {
-        Success = true;
-    }
+    public CustomResponse() => Success = true;
 
-    public CustomResponse(CustomResponse validacaoResponse)
-    {
-        _validacaoResponse = validacaoResponse;
-    }
+    public CustomResponse(CustomResponse validacaoResponse) => _validacaoResponse = validacaoResponse;
 
     public bool Success { get; set; }
-    public List<string> GeneralErrors { get; set; } = new List<string>();
+    public List<string> GeneralErrors { get; set; } = [];
     public Dictionary<string, List<string>> EntityErrors { get; set; } =
         new Dictionary<string, List<string>>();
 
@@ -28,12 +22,13 @@ public sealed class CustomResponse
     public void AddEntityError(string entity, string message)
     {
         Success = false;
-        if (!EntityErrors.ContainsKey(entity))
+        if (!EntityErrors.TryGetValue(entity, out var value))
         {
-            EntityErrors[entity] = new List<string>();
+            value = [];
+            EntityErrors[entity] = value;
         }
 
-        EntityErrors[entity].Add(message);
+        value.Add(message);
     }
 
     public override string ToString()
@@ -52,7 +47,6 @@ public sealed class CustomResponse
                 messages.Add($"{entityError.Key}: {error}");
             }
         }
-
         return string.Join("; ", messages);
     }
 }

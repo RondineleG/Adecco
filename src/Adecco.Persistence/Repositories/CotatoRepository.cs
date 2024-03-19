@@ -1,10 +1,7 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class CotatoRepository : BaseRepository, IContatoRepository
+public sealed class CotatoRepository(ApplicattionDataContext context) : BaseRepository(context), IContatoRepository
 {
-    public CotatoRepository(ApplicattionDataContext context)
-        : base(context) { }
-
     public async Task<IEnumerable<Contato>> ListAsync(int? clienteId, int? contatoId)
     {
         IQueryable<Contato> query = _context.Contatos;

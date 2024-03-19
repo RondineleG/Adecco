@@ -5,11 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.API", "src\Adecco.API\Adecco.API.csproj", "{C25A5E51-7B6F-4117-82E6-521A1A54D326}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adecco.Core", "src\Adecco.Core\Adecco.Core.csproj", "{917FB644-3B28-4554-AF63-72E92B663A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Core", "src\Adecco.Core\Adecco.Core.csproj", "{917FB644-3B28-4554-AF63-72E92B663A24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adecco.Application", "src\Adecco.Application\Adecco.Application.csproj", "{631A9875-AA6B-498B-ADE1-CAFE7336122F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Application", "src\Adecco.Application\Adecco.Application.csproj", "{631A9875-AA6B-498B-ADE1-CAFE7336122F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adecco.Persistence", "src\Adecco.Persistence\Adecco.Persistence.csproj", "{964A7DFE-0046-4FBF-896D-B140F76E8ACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Persistence", "src\Adecco.Persistence\Adecco.Persistence.csproj", "{964A7DFE-0046-4FBF-896D-B140F76E8ACA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace Adecco.Core.Entities;
+namespace Adecco.Core.Entities.Base;
 
 public abstract class BaseEntity
 {

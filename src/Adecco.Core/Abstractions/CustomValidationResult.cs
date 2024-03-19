@@ -2,24 +2,18 @@
 
 public sealed class CustomValidationResult
 {
-    private List<string> _errors = new List<string>();
+    private readonly List<string> _errors = [];
 
     public IEnumerable<string> Errors => _errors;
     public bool IsValid => !_errors.Any();
 
     public CustomValidationResult AddError(string errorMessage, string fieldName = "")
     {
-        _errors.Add(
-            string.IsNullOrWhiteSpace(fieldName) ? errorMessage : $"{fieldName}: {errorMessage}"
-        );
+        _errors.Add(string.IsNullOrWhiteSpace(fieldName) ? errorMessage : $"{fieldName}: {errorMessage}");
         return this;
     }
 
-    public CustomValidationResult AddErrorIf(
-        bool condition,
-        string errorMessage,
-        string fieldName = ""
-    )
+    public CustomValidationResult AddErrorIf(bool condition, string errorMessage, string fieldName = "")
     {
         if (condition)
         {

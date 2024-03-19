@@ -5,29 +5,20 @@ using Adecco.Core.Interfaces.Validations;
 namespace Adecco.API.Controllers.v2;
 
 [ApiVersion("2.0")]
-public sealed class ClientesController : BaseController
+public sealed class ClientesController(
+    IClienteService productService,
+    IMapper mapper,
+    IEnderecoService enderecoService,
+    IContatoService contatoService,
+    IValidacaoService validacaoService
+    ) : BaseController
 {
-    public ClientesController(
-        IClienteService productService,
-        IMapper mapper,
-        IEnderecoService enderecoService,
-        IContatoService contatoService,
-        IValidacaoService validacaoService
-    )
-    {
-        _clienteService = productService;
-        _mapper = mapper;
-        _enderecoService = enderecoService;
-        _contatoService = contatoService;
-        _validacaoService = validacaoService;
-    }
+    private readonly IClienteService _clienteService = productService;
+    private readonly IContatoService _contatoService = contatoService;
+    private readonly IEnderecoService _enderecoService = enderecoService;
+    private readonly IValidacaoService _validacaoService = validacaoService;
 
-    private readonly IClienteService _clienteService;
-    private readonly IContatoService _contatoService;
-    private readonly IEnderecoService _enderecoService;
-    private readonly IValidacaoService _validacaoService;
-
-    private readonly IMapper _mapper;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet("/cliente/listar")]
     public async Task<IEnumerable<ClienteResponseDto>> ListAsync(

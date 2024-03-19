@@ -9,7 +9,7 @@ public sealed class ValidacaoService : IValidacaoService
 
     public CustomValidationResult ValidarCPF(string cpf)
     {
-        cpf = cpf.Trim().Replace(".", "").Replace("-", "");
+        cpf = cpf.Trim().Replace(".", string.Empty).Replace("-", string.Empty);
         var resultado = new CustomValidationResult();
         if (cpf.Length != 11 || cpf.All(c => c == cpf[0]) || !ValidarDigitosCPF(cpf))
         {

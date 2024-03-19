@@ -1,27 +1,19 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
-using Adecco.Core.Entities;
 using Adecco.Core.Interfaces.Validations;
 
 namespace Adecco.API.Controllers.v2;
 
 [ApiVersion("2.0")]
-public sealed class EnderecosController : BaseController
+public sealed class EnderecosController(
+    IEnderecoService enderecoService,
+    IMapper mapper,
+    IValidacaoService validacaoService
+    ) : BaseController
 {
-    public EnderecosController(
-        IEnderecoService enderecoService,
-        IMapper mapper,
-        IValidacaoService validacaoService
-    )
-    {
-        _enderecoService = enderecoService;
-        _mapper = mapper;
-        _validacaoService = validacaoService;
-    }
-
-    private readonly IEnderecoService _enderecoService;
-    private readonly IMapper _mapper;
-    private readonly IValidacaoService _validacaoService;
+    private readonly IEnderecoService _enderecoService = enderecoService;
+    private readonly IMapper _mapper = mapper;
+    private readonly IValidacaoService _validacaoService = validacaoService;
 
     [HttpGet("endereco/listar")]
     public async Task<IEnumerable<EnderecoResponseDto>> ListAsync(int? clienteId, int? enderecoId)

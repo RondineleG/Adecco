@@ -1,29 +1,19 @@
 namespace Adecco.Application.Services;
 
-public sealed class ClienteService : IClienteService
+public sealed class ClienteService(
+    IClienteRepository productRepository,
+    IContatoService contatoService,
+    IUnitOfWork unitOfWork,
+    IEnderecoService enderecoService,
+    IValidacaoService validacaoService
+    ) : IClienteService
 {
-    public ClienteService(
-        IClienteRepository productRepository,
-        IContatoService contatoService,
-        IUnitOfWork unitOfWork,
-        IEnderecoService enderecoService,
-        IValidacaoService validacaoService
-    )
-    {
-        _clienteRepository = productRepository;
-        _contatoService = contatoService;
-        _unitOfWork = unitOfWork;
-        _enderecoService = enderecoService;
-        _validacaoService = validacaoService;
-        _errosValidacao = new List<string>();
-    }
-
-    private readonly IClienteRepository _clienteRepository;
-    private readonly IContatoService _contatoService;
-    private readonly IEnderecoService _enderecoService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidacaoService _validacaoService;
-    private List<string> _errosValidacao;
+    private readonly IClienteRepository _clienteRepository = productRepository;
+    private readonly IContatoService _contatoService = contatoService;
+    private readonly IEnderecoService _enderecoService = enderecoService;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IValidacaoService _validacaoService = validacaoService;
+    private readonly List<string> _errosValidacao = new List<string>();
 
     public async Task<IEnumerable<Cliente>> ListAsync(string? nome, string? email, string? cpf)
     {

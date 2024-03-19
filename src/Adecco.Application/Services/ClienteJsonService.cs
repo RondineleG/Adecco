@@ -1,13 +1,8 @@
 ﻿namespace Adecco.Application.Services;
 
-public sealed class ClienteJsonService : IClienteJsonService
+public sealed class ClienteJsonService(IClienteJsonRepository clienteRepository) : IClienteJsonService
 {
-    public ClienteJsonService(IClienteJsonRepository clienteRepository)
-    {
-        _clienteRepository = clienteRepository;
-    }
-
-    private readonly IClienteJsonRepository _clienteRepository;
+    private readonly IClienteJsonRepository _clienteRepository = clienteRepository;
 
     public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
     {

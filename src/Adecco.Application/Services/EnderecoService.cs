@@ -1,15 +1,9 @@
 namespace Adecco.Application.Services;
 
-public sealed class EnderecoService : IEnderecoService
+public sealed class EnderecoService(IEnderecoRepository enderecoRepository, IUnitOfWork unitOfWork) : IEnderecoService
 {
-    public EnderecoService(IEnderecoRepository enderecoRepository, IUnitOfWork unitOfWork)
-    {
-        _enderecoRepository = enderecoRepository;
-        _unitOfWork = unitOfWork;
-    }
-
-    private readonly IEnderecoRepository _enderecoRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEnderecoRepository _enderecoRepository = enderecoRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
     {

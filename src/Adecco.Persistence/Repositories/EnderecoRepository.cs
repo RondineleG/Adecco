@@ -1,10 +1,7 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class EnderecoRepository : BaseRepository, IEnderecoRepository
+public sealed class EnderecoRepository(ApplicattionDataContext context) : BaseRepository(context), IEnderecoRepository
 {
-    public EnderecoRepository(ApplicattionDataContext context)
-        : base(context) { }
-
     public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
     {
         IQueryable<Endereco> query = _context.Enderecos;
