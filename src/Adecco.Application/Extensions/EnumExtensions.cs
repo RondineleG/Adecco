@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace Adecco.Application.Extensions;
 
 public static class EnumExtensions

@@ -1,6 +1,3 @@
-using Adecco.Core.Abstractions;
-using Adecco.Core.Interfaces.Validations;
-
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
@@ -20,7 +17,6 @@ public sealed class ContatosController(
     public async Task<IActionResult> AtualizarContato(int clienteId, [FromBody] ContatoRequestDto request)
     {
         if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
-
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
@@ -36,7 +32,7 @@ public sealed class ContatosController(
         catch (Exception ex)
         {
             _logger.LogError(ex, "Erro ao atualizar contato do cliente.");
-            return StatusCode(500, "Ocorreu um erro interno ao atualizar o contato do cliente.");
+            return StatusCode(500, $"Ocorreu um erro interno ao atualizar o contato do cliente: {ex.Message}");
         }
     }
 
@@ -51,7 +47,7 @@ public sealed class ContatosController(
         catch (Exception ex)
         {
             _logger.LogError(ex, "Erro ao remover contato do cliente.");
-            return StatusCode(500, "Ocorreu um erro interno ao remover o contato do cliente.");
+            return StatusCode(500, $"Ocorreu um erro interno ao remover o contato do cliente: {ex.Message}");
         }
     }
 
@@ -59,7 +55,6 @@ public sealed class ContatosController(
     public async Task<IActionResult> IncluirContato(int clienteId, [FromBody] ContatoRequestDto request)
     {
         if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
-
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
@@ -75,7 +70,7 @@ public sealed class ContatosController(
         catch (Exception ex)
         {
             _logger.LogError(ex, "Erro ao incluir contato no cliente com ID {ClienteId}", clienteId);
-            return StatusCode(500, "Ocorreu um erro interno ao incluir o contato.");
+            return StatusCode(500, $"Ocorreu um erro interno ao incluir o contato: {ex.Message}");
         }
     }
 }

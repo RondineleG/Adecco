@@ -1,8 +1,3 @@
-using Adecco.Application.AutoMapper;
-using Adecco.Core.Interfaces.Validations;
-
-using Microsoft.Extensions.Configuration;
-
 namespace Adecco.API.Ioc;
 
 public static class NativeInjectorConfig
@@ -43,9 +38,7 @@ public static class NativeInjectorConfig
         if (app.Environment.IsProduction())
         {
             app.UseHsts();
-            app.UseCustomWelcomePage(
-                new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
-            );
+            app.UseCustomWelcomePage(new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" });
         }
         app.UseHttpsRedirection();
         app.MapControllers();

@@ -1,9 +1,3 @@
-using Adecco.API.Controllers.Base;
-using Adecco.Core.Abstractions;
-using Adecco.Core.Exceptions;
-using Adecco.Core.Interfaces.Validations;
-using Adecco.Persistence.Extensions;
-
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
@@ -53,51 +47,39 @@ public sealed class ClientesController(
         string cpf
     )
     {
-        var clientesJscon = JsonFileHelper.LerArquivoJson();
         var clientes = await _clienteService.ListarClientes(nome?.Trim(), email?.Trim(), cpf?.Trim());
-        var jsonString = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
-        var tido = JsonSerializer.Deserialize<List<ClienteResponseDto>>(jsonString);
-
-        var clientesDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
-        return clientesDto;
+        var clienteResponseDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
+        return clienteResponseDto;
     }
 
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
         cliente.AdicionarContato(contato);
         cliente.AdicionarEndereco(endereco);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(
-            cliente,
-            _validacaoService.ValidarCliente,
-            "Cliente",
-            validacaoResponse
-        );
-        _validacaoService.Validar(
-            new List<Contato> { contato },
-            _validacaoService.ValidarContato,
-            "Contato",
-            validacaoResponse
-        );
-        _validacaoService.Validar(
-            new List<Endereco> { endereco },
-            _validacaoService.ValidarEndereco,
-            "Endereco",
-            validacaoResponse
-        );
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
-        await _clienteService.AdicionarCliente(cliente);
-        endereco.AdicionarClienteId(cliente.Id);
-        contato.AdicionarClienteId(cliente.Id);
-        await _clienteService.IncluirEndereco(cliente.Id, endereco);
-        await _clienteService.IncluirContato(cliente.Id, contato);
-        return Ok();
+        _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse); _validacaoService.Validar(
+            new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
+        _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
+        if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+        try
+        {
+            await _clienteService.AdicionarCliente(cliente);
+            endereco.AdicionarClienteId(cliente.Id);
+            contato.AdicionarClienteId(cliente.Id);
+            await _clienteService.IncluirEndereco(cliente.Id, endereco);
+            await _clienteService.IncluirContato(cliente.Id, contato);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.AdicionarCliente)} => Erro ao adicionar cliente.");
+            return StatusCode(500, $"Ocorreu um erro interno ao adicionar o cliente: {ex.Message}");
+        }
     }
 
     [HttpPut("/cliente/atualizar/{clienteId}")]
@@ -108,11 +90,7 @@ public sealed class ClientesController(
         [FromBody] ClienteRequestDto request
     )
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.GetErrorMessages());
-        }
-
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
         if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
 
@@ -139,8 +117,17 @@ public sealed class ClientesController(
             var novoEndereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
             clienteExistente.AdicionarEndereco(novoEndereco);
         }
-        await _clienteService.AtualizarCliente(clienteId, clienteExistente);
-        return Ok();
+
+        try
+        {
+            await _clienteService.AtualizarCliente(clienteId, clienteExistente);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.AtualizarCliente)} => Erro ao atualizar cliente.");
+            return StatusCode(500, $"Ocorreu um erro interno ao atualizar o cliente: {ex.Message}");
+        }
     }
 
     [HttpDelete("/cliente/remover/{id}")]
@@ -153,8 +140,8 @@ public sealed class ClientesController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erro ao remover cliente.");
-            return StatusCode(500, "Ocorreu um erro interno ao remover o cliente.");
+            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.RemoverCliente)} => Erro ao remover cliente.");
+            return StatusCode(500, $"Ocorreu um erro interno ao remover o cliente: {ex.Message}");
         }
     }
 }

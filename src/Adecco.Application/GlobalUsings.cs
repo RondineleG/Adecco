@@ -11,6 +11,7 @@ global using Adecco.Core.Interfaces.Services;
 global using Adecco.Core.Interfaces.Validations;
 
 global using AutoMapper;
+global using System.Reflection;
 
 global using System.ComponentModel;
 global using System.ComponentModel.DataAnnotations;

@@ -1,11 +1,4 @@
-﻿using Adecco.Application.Dtos.Cliente;
-using Adecco.Application.Extensions;
-using Adecco.Core.Abstractions;
-using Adecco.Core.Enums;
-
-using System.Text;
-
-namespace Adecco.Persistence.Repositories;
+﻿namespace Adecco.Persistence.Repositories;
 
 public sealed class ClienteJsonRepository : IClienteJsonRepository
 {

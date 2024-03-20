@@ -1,6 +1,3 @@
-using Adecco.Core.Abstractions;
-using Adecco.Core.Interfaces.Validations;
-
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
@@ -19,19 +16,18 @@ public sealed class EnderecosController(
     public async Task<IActionResult> AtualizarEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {
         if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
-
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
             var result = await _clienteService.AtualizarEndereco(clienteId, endereco);
-            if (!result.Success) return BadRequest(result.Message);
+            if (!result.Success) throw new BadRequestException(result.Message);
             var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(contatoResponse);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erro ao atualizar endere�o do cliente.");
-            return StatusCode(500, "Ocorreu um erro interno ao atualizar o endere�o do cliente.");
+            _logger.LogError(ex, "Erro ao atualizar endereço do cliente.");
+            return StatusCode(500, "Ocorreu um erro interno ao atualizar o endereço do cliente.");
         }
     }
 
@@ -59,16 +55,10 @@ public sealed class EnderecosController(
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
             endereco.AdicionarClienteId(clienteId);
             var validacaoResponse = new CustomResponse();
-            _validacaoService.Validar(
-                endereco,
-                _validacaoService.ValidarEndereco,
-                "Endereco",
-                validacaoResponse
-            );
-            if (!validacaoResponse.Success)
-                return BadRequest(validacaoResponse);
+            _validacaoService.Validar(endereco, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
+            if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
             var result = await _clienteService.IncluirEndereco(clienteId, endereco);
-            if (!result.Success) return BadRequest(result.Message);
+            if (!result.Success) throw new BadRequestException(result.Message);
             var response = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(response);
         }

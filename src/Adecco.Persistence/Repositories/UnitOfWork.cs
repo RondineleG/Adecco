@@ -1,5 +1,4 @@
 namespace Adecco.Persistence.Repositories;
-
 public sealed class UnitOfWork(ApplicattionDataContext context) : IUnitOfWork
 {
     private readonly ApplicattionDataContext _context = context;

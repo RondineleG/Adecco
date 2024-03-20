@@ -1,7 +1,3 @@
-using Adecco.Core.Entities.Base;
-
-using System.Text.Json.Serialization;
-
 namespace Adecco.Core.Entities;
 
 public sealed class Contato : BaseEntity

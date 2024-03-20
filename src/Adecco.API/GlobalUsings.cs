@@ -32,12 +32,15 @@ global using Microsoft.OpenApi.Models;
 
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using Swashbuckle.AspNetCore.SwaggerUI;
-
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text.Json;
 global using System.Threading.Tasks;
-
 global using Adecco.Core.Exceptions;
 global using Adecco.Persistence.Extensions;
+global using Adecco.Application.AutoMapper;
+global using Adecco.Core.Interfaces.Validations;
+global using Microsoft.Extensions.Configuration;
+global using Adecco.API.Controllers.Base;
+global using Adecco.Core.Abstractions;

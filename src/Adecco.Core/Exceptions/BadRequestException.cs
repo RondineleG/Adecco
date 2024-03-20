@@ -1,7 +1,4 @@
-﻿
-
-namespace Adecco.Core.Exceptions;
-
+﻿namespace Adecco.Core.Exceptions;
 
 public class BadRequestException : Exception
 {

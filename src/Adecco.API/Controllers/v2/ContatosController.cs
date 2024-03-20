@@ -1,7 +1,3 @@
-using Adecco.API.Controllers.Base;
-using Adecco.Core.Abstractions;
-using Adecco.Core.Interfaces.Validations;
-
 namespace Adecco.API.Controllers.v2;
 
 [ApiVersion("2.0")]
