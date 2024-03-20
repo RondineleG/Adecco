@@ -18,6 +18,20 @@ public static class JsonFileHelper
         PropertyNameCaseInsensitive = true
     };
 
+
+    public static List<T> ReadFromJson<T>()
+    {
+        using var file = File.OpenText(JsonFilePath);
+        var jsonString = file.ReadToEnd();
+        return JsonSerializer.Deserialize<List<T>>(jsonString);
+    }
+
+    public static void WriteToJson<T>(List<T> data)
+    {
+        var jsonString = JsonSerializer.Serialize(data);
+        File.WriteAllText(JsonFilePath, jsonString);
+    }
+
     public static string ArquivoJson()
     {
         return JsonFilePath;
@@ -72,6 +86,12 @@ public static class JsonFileHelper
         File.WriteAllText(JsonFilePath, jsonString);
     }
 
+    public static void WriteToJsonFile<T>(int clienteId, ClienteRequestDto data)
+    {
+        var jsonString = JsonSerializer.Serialize(data);
+        File.WriteAllText(JsonFilePath, jsonString);
+    }
+
     public static void WriteToJsonFile(List<ClienteResponseDto> data, string JsonFilePath)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
@@ -82,7 +102,6 @@ public static class JsonFileHelper
     private static List<ClienteResponseDto> ConverterParaClientes(List<dynamic> clientesResponseDto)
     {
         var clientes = new List<Cliente>();
-
         foreach (JsonElement clienteDto in clientesResponseDto)
         {
             var cliente = new Cliente();
@@ -145,13 +164,11 @@ public static class JsonFileHelper
             _ => throw new InvalidOperationException($"Tipo inesperado para a propriedade '{propertyName}'. Esperava-se String ou Number, obteve-se {propertyElement.ValueKind}.")
         };
     }
-
     private static TEnum GetEnumProperty<TEnum>(JsonElement element, string propertyName) where TEnum : struct, Enum
     {
         var propertyValue = GetStringProperty(element, propertyName).Trim();
         return EnumExtensions.ParseEnumFromDescription<TEnum>(propertyValue);
     }
-
     private static List<ClienteResponseDto> ConverterClienteParaResponseDto(List<Cliente> clientes)
     {
         var listaClientesResponseDto = new List<ClienteResponseDto>();

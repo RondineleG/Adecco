@@ -28,6 +28,9 @@ public sealed class MapperProfile : Profile
                 opt => opt.MapFrom(src => (ETipoEndereco)src.TipoEndereco)
             );
 
+        CreateMap<ContatoRequestDto, ContatoResponseDto>();        
+        CreateMap<EnderecoRequestDto, EnderecoResponseDto>();        
+
         CreateMap<Cliente, ClienteResponseDto>();
         CreateMap<ClienteRequestDto, Cliente>();
     }
