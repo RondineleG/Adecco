@@ -1,7 +1,5 @@
-﻿
-using Adecco.Persistence.Extensions;
+﻿namespace Adecco.API.Controllers.v1;
 
-namespace Adecco.API.Controllers.v1;
 [Route("api/[controller]")]
 [ApiController]
 public class NovoClienteController(IMapper mapper) : ControllerBase
@@ -19,13 +17,14 @@ public class NovoClienteController(IMapper mapper) : ControllerBase
     {
         var people = JsonFileHelper.ReadFromJson<ClienteResponseDto>();
         var person = people.FirstOrDefault(p => p.Id == id);
-        if (person == null) return NotFound();
+        if (person == null) throw new NotFoundException("Cliente", id);
         return person;
     }
 
     [HttpPost]
     public ActionResult<Cliente> CreatePerson([FromBody] ClienteRequestDto request)
     {
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
         var people = JsonFileHelper.ReadFromJson<Cliente>();
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
         people.Add(cliente);
@@ -36,13 +35,13 @@ public class NovoClienteController(IMapper mapper) : ControllerBase
     [HttpPut("{clienteId}")]
     public ActionResult UpdatePerson(int clienteId, int contatoId, int enderecoId, [FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
         var clienteResponseDto = JsonFileHelper.ReadFromJson<ClienteResponseDto>();
         var clienteIndex = clienteResponseDto.FindIndex(p => p.Id == clienteId);
         var person = clienteResponseDto.FirstOrDefault(p => p.Id == clienteId);
         var options = new JsonSerializerOptions { WriteIndented = true, PropertyNameCaseInsensitive = true };
         var jsonString = JsonSerializer.Serialize(clienteResponseDto, options);
-        if (clienteIndex == -1) return NotFound($"Cliente com ID {clienteId} não encontrado.");
+        if (clienteIndex == -1) throw new NotFoundException("Cliente", clienteId);
         var clienteExistente = clienteResponseDto[clienteIndex];
         var contatoExistente = clienteExistente.Contatos.FirstOrDefault(p => p.Id == contatoId);
         var enderecoExistente = clienteExistente.Enderecos.FirstOrDefault(p => p.Id == enderecoId);
@@ -57,8 +56,7 @@ public class NovoClienteController(IMapper mapper) : ControllerBase
         {
             var novoEndereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
             cliente.AdicionarEndereco(novoEndereco);
-        }
-     
+        }             
         cliente.AtualizarCliente(cliente.Id, cliente.Nome, cliente.Email, cliente.CPF, cliente.RG);
         var clienteAtualizadoDto = _mapper.Map<Cliente, ClienteResponseDto>(cliente);
         clienteResponseDto[clienteIndex] = clienteAtualizadoDto;
@@ -66,16 +64,14 @@ public class NovoClienteController(IMapper mapper) : ControllerBase
         return NoContent();
     }
 
-
-
     [HttpDelete("{id}")]
     public ActionResult DeletePerson(int id)
     {
-        var people = JsonFileHelper.ReadFromJson<Cliente>();
-        var person = people.FirstOrDefault(p => p.Id == id);
-        if (person == null) return NotFound();
-        people.Remove(person);
-        JsonFileHelper.WriteToJson(people);
+        var clienteResponseDto = JsonFileHelper.ReadFromJson<ClienteResponseDto>();
+        var cliente = clienteResponseDto.FirstOrDefault(p => p.Id == id);
+        if (cliente == null) throw new NotFoundException("Cliente", id);
+        clienteResponseDto.Remove(cliente);
+        JsonFileHelper.WriteToJson(clienteResponseDto);
         return NoContent();
     }
 }

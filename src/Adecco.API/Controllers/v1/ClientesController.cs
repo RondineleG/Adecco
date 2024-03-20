@@ -1,5 +1,6 @@
 using Adecco.API.Controllers.Base;
 using Adecco.Core.Abstractions;
+using Adecco.Core.Exceptions;
 using Adecco.Core.Interfaces.Validations;
 using Adecco.Persistence.Extensions;
 
@@ -19,14 +20,11 @@ public sealed class ClientesController(
     private readonly ILogger<ClientesController> _logger = logger;
 
     [HttpGet("{id}")]
-    public IActionResult Get(int id)
+    public IActionResult Get(int clienteId)
     {
         var people = JsonFileHelper.LerArquivoJson();
-        var person = people.FirstOrDefault(p => p.Id == id);
-        if (person == null)
-        {
-            return NotFound();
-        }
+        var person = people.FirstOrDefault(p => p.Id == clienteId);
+        if (person == null) throw new NotFoundException("Cliente", clienteId);
         return Ok(person);
     }
     [HttpGet]
@@ -116,10 +114,7 @@ public sealed class ClientesController(
         }
 
         var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
-        if (clienteExistente == null)
-        {
-            return NotFound($"Cliente com ID {clienteId} não encontrado.");
-        }
+        if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
 
         _mapper.Map(request, clienteExistente);
 

@@ -18,10 +18,8 @@ public sealed class EnderecosController(
     [HttpPut("/atualizar/{clienteId}/endereco")]
     public async Task<IActionResult> AtualizarEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.GetErrorMessages());
-        }
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
@@ -55,11 +53,7 @@ public sealed class EnderecosController(
     [HttpPost("{clienteId}/enderecos")]
     public async Task<IActionResult> IncluirEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState.GetErrorMessages());
-        }
-
+        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
