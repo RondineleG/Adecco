@@ -28,8 +28,10 @@ public sealed class ValidacaoService : IValidacaoService
         return ValidarCampos(cep, RegexPatterns.CEP, "CEP");
     }
 
-    public CustomValidationResult ValidarTelefone(string telefone, ETipoContato tipoContato)
+    public CustomValidationResult ValidarTelefone(string telefone, ETipoContato tipoContato, int ddd)
     {
+        var resultado = new CustomValidationResult();
+        resultado.AddErrorIf(ddd is < 11 or > 99, "DDD inválido.", "DDD");
         var pattern = tipoContato switch
         {
             ETipoContato.Celular => RegexPatterns.Celular,
@@ -38,41 +40,24 @@ public sealed class ValidacaoService : IValidacaoService
             _ => throw new ArgumentException("Tipo de contato inválido")
         };
 
-        return ValidarCampos(telefone, pattern, "Telefone");
+        var validacaoTelefone = ValidarCampos(telefone, pattern, "Telefone");
+        resultado.Merge(validacaoTelefone);
+        return resultado;
     }
 
     public CustomValidationResult ValidarContato(Contato contato)
     {
         var resultado = new CustomValidationResult();
-
-        if (contato == null)
-        {
-            return resultado.AddError("Contato é nulo.");
-        }
-
+        if (contato == null) return resultado.AddError("Contato é nulo.");
+        var telefoneStr = contato.Telefone.ToString().TrimStart('0');
         resultado
             .AddErrorIf(contato.DDD is < 11 or > 99, "DDD inválido.", "DDD")
-            .AddErrorIf(
-                string.IsNullOrEmpty(contato.Telefone.ToString()),
-                "Telefone é obrigatório.",
-                "Telefone"
-            );
-
-        if (!string.IsNullOrEmpty(contato.Telefone.ToString()))
-        {
-            var tipoContato =
-                (
-                    contato.Telefone.ToString().StartsWith("9")
-                    && contato.Telefone.ToString().Length == 9
-                )
-                    ? ETipoContato.Celular
-                    : ETipoContato.Residencial;
-            resultado = ValidarTelefone(contato.Telefone.ToString(), tipoContato);
-        }
-
+            .AddErrorIf(contato.Telefone == 0, "Telefone é obrigatório.", "Telefone")
+            .AddErrorIf(contato.TipoContato == ETipoContato.Celular && telefoneStr.Length != 9, "Telefone celular deve ter 9 dígitos.", "Telefone")
+          .AddErrorIf((contato.TipoContato == ETipoContato.Residencial || 
+                            contato.TipoContato == ETipoContato.Comercial) && telefoneStr.Length != 8, "Telefone residencial/comercial deve ter 8 dígitos.", "Telefone");
         return resultado;
     }
-
     public CustomValidationResult ValidarEndereco(Endereco endereco)
     {
         var resultado = new CustomValidationResult();
@@ -112,6 +97,11 @@ public sealed class ValidacaoService : IValidacaoService
     {
         var resultado = new CustomValidationResult();
 
+        if (cliente == null)
+        {
+            resultado.AddError("Cliente é nulo.");
+            return resultado;
+        }
         resultado = resultado.Merge(ValidarEmail(cliente.Email));
         resultado = resultado.Merge(ValidarCPF(cliente.CPF));
         resultado = resultado.Merge(ValidarRG(cliente.RG));
@@ -129,8 +119,12 @@ public sealed class ValidacaoService : IValidacaoService
     public CustomValidationResult ValidarCampos(string valor, string pattern, string nomeCampo)
     {
         var resultado = new CustomValidationResult();
-        if (!Regex.IsMatch(valor, pattern))
-            resultado.AddError($"{nomeCampo} inválido.", nomeCampo);
+        if (valor == null)
+        {
+            resultado.AddError($"{nomeCampo} é nulo.", nomeCampo);
+            return resultado;
+        }
+        if (!Regex.IsMatch(valor, pattern)) resultado.AddError($"{nomeCampo} inválido.", nomeCampo);
         return resultado;
     }
 

@@ -10,7 +10,7 @@ public interface IValidacaoService
 
     CustomValidationResult ValidarCEP(string cep);
 
-    CustomValidationResult ValidarTelefone(string telefone, ETipoContato tipoContato);
+    CustomValidationResult ValidarTelefone(string telefone, ETipoContato tipoContato, int ddd);
 
     CustomValidationResult ValidarContato(Contato contato);
 

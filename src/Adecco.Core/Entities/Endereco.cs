@@ -9,11 +9,11 @@ public sealed class Endereco : BaseEntity
     public Endereco()
     { }
 
-    public Endereco(int id, string nome, string cEP, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco)
+    public Endereco(int id, string nome, string cep, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco)
     {
         Id = id;
         Nome = nome;
-        CEP = cEP;
+        CEP = cep;
         Logradouro = logradouro;
         Numero = numero;
         Bairro = bairro;
