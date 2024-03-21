@@ -1,8 +1,6 @@
-namespace Adecco.Persistence.Repositories;
 public sealed class UnitOfWork(ApplicattionDataContext context) : IUnitOfWork
 {
     private readonly ApplicattionDataContext _context = context;
-    private IDbContextTransaction _currentTransaction;
 
     public async Task CompleteAsync()
     {
@@ -11,26 +9,29 @@ public sealed class UnitOfWork(ApplicattionDataContext context) : IUnitOfWork
 
     public async Task BeginTransactionAsync()
     {
-        _currentTransaction = await _context.Database.BeginTransactionAsync();
+        if (_context.Database.CurrentTransaction == null)
+        {
+            await _context.Database.BeginTransactionAsync();
+        }
     }
 
     public async Task CommitTransactionAsync()
     {
-        if (_currentTransaction != null)
+        var transaction = _context.Database.CurrentTransaction;
+        if (transaction != null)
         {
-            await _currentTransaction.CommitAsync();
-            await _currentTransaction.DisposeAsync();
-            _currentTransaction = null;
+            await transaction.CommitAsync();
+            transaction.Dispose();
         }
     }
 
     public async Task RollbackTransactionAsync()
     {
-        if (_currentTransaction != null)
+        var transaction = _context.Database.CurrentTransaction;
+        if (transaction != null)
         {
-            await _currentTransaction.RollbackAsync();
-            await _currentTransaction.DisposeAsync();
-            _currentTransaction = null;
+            await transaction.RollbackAsync();
+            transaction.Dispose();
         }
     }
 }

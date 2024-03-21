@@ -31,7 +31,7 @@ public sealed class ClientesController(
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
@@ -41,13 +41,13 @@ public sealed class ClientesController(
         _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse);
         _validacaoService.Validar(new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
         _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
-        if (!contatoResponse.Success) throw new BadRequestException(contatoResponse.Message);
-        if (!enderecoResponse.Success) throw new BadRequestException(enderecoResponse.Message);
+        if (!contatoResponse.Success) return BadRequest(contatoResponse.Message);
+        if (!enderecoResponse.Success) return BadRequest(enderecoResponse.Message);
         var result = await _clienteService.SaveAsync(cliente);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(response);
     }
@@ -60,7 +60,7 @@ public sealed class ClientesController(
         [FromBody] ClienteRequestDto request
     )
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.FindByIdAsync(clienteId);
         if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
         _mapper.Map(request, clienteExistente);
@@ -86,7 +86,7 @@ public sealed class ClientesController(
         }
 
         var result = await _clienteService.UpdateAsync(clienteId, clienteExistente);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var clienteResponse = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(clienteResponse);
     }
@@ -95,7 +95,7 @@ public sealed class ClientesController(
     public async Task<IActionResult> DeleteAsync(int clienteId)
     {
         var result = await _clienteService.DeleteAsync(clienteId);
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(response);
     }

@@ -16,16 +16,16 @@ public sealed class ContatosController(
     [HttpPut("/atualizar/{clienteId}/contato")]
     public async Task<IActionResult> AtualizarContato(int clienteId, [FromBody] ContatoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
             contato.AdicionarClienteId(clienteId);
             var validacaoResponse = new CustomResponse();
             _validacaoService.Validar(contato, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-            if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+            if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
             var result = await _clienteService.AtualizarContato(clienteId, contato);
-            if (!result.Success) throw new BadRequestException(result.Message);
+            if (!result.Success) return BadRequest(result.Message);
             var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
             return Ok(contatoResponse);
         }
@@ -54,16 +54,16 @@ public sealed class ContatosController(
     [HttpPost("/{clienteId}/contatos")]
     public async Task<IActionResult> IncluirContato(int clienteId, [FromBody] ContatoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
             contato.AdicionarClienteId(clienteId);
             var validacaoResponse = new CustomResponse();
             _validacaoService.Validar(contato, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-            if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+            if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
             var result = await _clienteService.IncluirContato(clienteId, contato);
-            if (!result.Success) throw new BadRequestException(result.Message);
+            if (!result.Success) return BadRequest(result.Message);
             var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
             return Ok(contatoResponse);
         }

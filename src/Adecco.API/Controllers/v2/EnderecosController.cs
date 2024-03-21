@@ -24,14 +24,14 @@ public sealed class EnderecosController(
     [HttpPost("endereco/criar")]
     public async Task<IActionResult> PostAsync(int clienteId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
         endereco.AdicionarClienteId(clienteId);
         var validacaoResponse = new CustomResponse();
         _validacaoService.Validar(endereco, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
         var result = await _enderecoService.SaveAsync(endereco);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var response = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return Ok(response);
     }
@@ -39,10 +39,10 @@ public sealed class EnderecosController(
     [HttpPut("endereco/atualizar{enderecoId}")]
     public async Task<IActionResult> PutAsync(int enderecoId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
         var result = await _enderecoService.UpdateAsync(enderecoId, endereco);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return Ok(contatoResponse);
     }
@@ -51,7 +51,7 @@ public sealed class EnderecosController(
     public async Task<IActionResult> DeleteAsync(int enderecoId)
     {
         var result = await _enderecoService.DeleteAsync(enderecoId);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return Ok(contatoResponse);
     }

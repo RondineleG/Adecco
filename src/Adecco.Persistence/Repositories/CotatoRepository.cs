@@ -18,8 +18,14 @@ public sealed class CotatoRepository(ApplicattionDataContext context) : BaseRepo
 
     public async Task<Contato> FindByIdAsync(int? id)
     {
-        return await _context.Contatos.FindAsync(id);
+        var contato = await _context.Contatos.FindAsync(id);
+        if (contato == null)
+        {
+            throw new KeyNotFoundException("Contato não encontrado.");
+        }
+        return contato;
     }
+
 
     public void Update(Contato contato)
     {

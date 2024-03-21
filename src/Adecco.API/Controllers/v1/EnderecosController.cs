@@ -15,12 +15,12 @@ public sealed class EnderecosController(
     [HttpPut("/atualizar/{clienteId}/endereco")]
     public async Task<IActionResult> AtualizarEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
             var result = await _clienteService.AtualizarEndereco(clienteId, endereco);
-            if (!result.Success) throw new BadRequestException(result.Message);
+            if (!result.Success) return BadRequest(result.Message);
             var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(contatoResponse);
         }
@@ -49,16 +49,16 @@ public sealed class EnderecosController(
     [HttpPost("{clienteId}/enderecos")]
     public async Task<IActionResult> IncluirEndereco(int clienteId, [FromBody] EnderecoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
             endereco.AdicionarClienteId(clienteId);
             var validacaoResponse = new CustomResponse();
             _validacaoService.Validar(endereco, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-            if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+            if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
             var result = await _clienteService.IncluirEndereco(clienteId, endereco);
-            if (!result.Success) throw new BadRequestException(result.Message);
+            if (!result.Success) return BadRequest(result.Message);
             var response = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(response);
         }

@@ -2,17 +2,15 @@
 
 public sealed class CustomResponse
 {
-    private readonly CustomResponse _validacaoResponse;
-
-    public CustomResponse() => Success = true;
-
-    public CustomResponse(CustomResponse validacaoResponse) => _validacaoResponse = validacaoResponse;
+    public CustomResponse()
+    {
+        Success = true;
+    }
 
     public bool Success { get; set; }
     public List<string> GeneralErrors { get; set; } = [];
 
-    public Dictionary<string, List<string>> EntityErrors { get; set; } =
-        new Dictionary<string, List<string>>();
+    public Dictionary<string, List<string>> EntityErrors { get; set; } = [];
 
     public void AddError(string message)
     {

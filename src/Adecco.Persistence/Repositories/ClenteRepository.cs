@@ -16,14 +16,16 @@ public sealed class ClenteRepository(ApplicattionDataContext context)
         return await query.ToListAsync();
     }
 
-    public async Task<Cliente?> FindByIdAsync(int id)
+    public async Task<Cliente> FindByIdAsync(int id)
     {
         var cliente = await _context
             .Clientes.Include(p => p.Contatos)
             .Include(p => p.Enderecos)
             .FirstOrDefaultAsync(p => p.Id == id);
         if (cliente == null)
-            return null;
+        {
+            throw new Exception($"Cliente com o ID {id} não encontrado.");
+        }
         return cliente;
     }
 

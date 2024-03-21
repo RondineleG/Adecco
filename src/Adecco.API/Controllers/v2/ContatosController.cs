@@ -22,14 +22,14 @@ public sealed class ContatosController(
     [HttpPost("/contato/criar")]
     public async Task<IActionResult> PostAsync(int clienteId, [FromBody] ContatoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
         contato.AdicionarClienteId(clienteId);
         var validacaoResponse = new CustomResponse();
         _validacaoService.Validar(contato, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-        if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
         var result = await _contatoService.SaveAsync(contato);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
         return Ok(contatoResponse);
     }
@@ -37,10 +37,10 @@ public sealed class ContatosController(
     [HttpPut("/contato/atualizar{contatoId}")]
     public async Task<IActionResult> PutAsync(int contatoId, [FromBody] ContatoRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
         var result = await _contatoService.UpdateAsync(contatoId, contato);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
         return Ok(contatoResponse);
     }
@@ -49,7 +49,7 @@ public sealed class ContatosController(
     public async Task<IActionResult> DeleteAsync(int contatoId)
     {
         var result = await _contatoService.DeleteAsync(contatoId);
-        if (!result.Success) throw new BadRequestException(result.Message);
+        if (!result.Success) return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
         return Ok(contatoResponse);
     }

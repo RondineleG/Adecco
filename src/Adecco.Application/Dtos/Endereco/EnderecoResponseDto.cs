@@ -2,6 +2,20 @@ namespace Adecco.Application.Dtos.Endereco;
 
 public sealed class EnderecoResponseDto
 {
+    public EnderecoResponseDto()
+    {
+        Id = int.MinValue;
+        Nome = string.Empty;
+        TipoEndereco = string.Empty;
+        CEP = string.Empty;
+        Logradouro = string.Empty;
+        Numero = string.Empty;
+        Bairro = string.Empty;
+        Complemento = string.Empty;
+        Cidade = string.Empty;
+        Estado = string.Empty;
+        Referencia = string.Empty;
+    }
     public int Id { get; set; }
 
     public string Nome { get; set; }

@@ -3,7 +3,9 @@ namespace Adecco.Core.Abstractions;
 public abstract class BaseResponse
 {
     protected BaseResponse()
-    { }
+    {
+        Message = string.Empty;         
+    }
 
     protected BaseResponse(bool success, string message)
     {

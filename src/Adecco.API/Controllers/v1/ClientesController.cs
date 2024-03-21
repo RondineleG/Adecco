@@ -22,7 +22,7 @@ public sealed class ClientesController(
         return Ok(person);
     }
     [HttpGet]
-    public IActionResult Get(string? nome, string? email, string? cpf)
+    public IActionResult Get(string nome = "", string email = "", string cpf = "")
     {
         var clientes = JsonFileHelper.LerArquivoJson();
         if (!string.IsNullOrWhiteSpace(nome))
@@ -55,7 +55,7 @@ public sealed class ClientesController(
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
@@ -65,7 +65,7 @@ public sealed class ClientesController(
         _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse); _validacaoService.Validar(
             new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
         _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) throw new BadRequestException(validacaoResponse);
+        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
         try
         {
             await _clienteService.AdicionarCliente(cliente);
@@ -90,7 +90,7 @@ public sealed class ClientesController(
         [FromBody] ClienteRequestDto request
     )
     {
-        if (!ModelState.IsValid) throw new BadRequestException(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
         if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
 

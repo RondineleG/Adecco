@@ -4,8 +4,12 @@ public sealed class ClienteResponseDto
 {
     public ClienteResponseDto()
     {
-        Contatos = new List<ContatoResponseDto>();
-        Enderecos = new List<EnderecoResponseDto>();
+        Nome = string.Empty;
+        Email = string.Empty;
+        CPF = string.Empty;
+        RG = string.Empty;
+        Contatos = [];
+        Enderecos = [];
     }
 
     public int Id { get; set; }

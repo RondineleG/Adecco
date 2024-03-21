@@ -1,10 +1,5 @@
-﻿using Adecco.Application.Dtos.Cliente;
-using Adecco.Application.Dtos.Contato;
+﻿using Adecco.Application.Dtos.Contato;
 using Adecco.Application.Dtos.Endereco;
-using Adecco.Application.Extensions;
-using Adecco.Core.Enums;
-
-using System.Text;
 
 namespace Adecco.Persistence.Extensions;
 
@@ -23,13 +18,12 @@ public static class JsonFileHelper
     {
         using var file = File.OpenText(JsonFilePath);
         var jsonString = file.ReadToEnd();
-        return JsonSerializer.Deserialize<List<T>>(jsonString);
-    }
-
-    public static void WriteToJson<T>(List<T> data)
-    {
-        var jsonString = JsonSerializer.Serialize(data);
-        File.WriteAllText(JsonFilePath, jsonString);
+        if (string.IsNullOrWhiteSpace(jsonString))
+        {
+            return [];
+        }
+        var result = JsonSerializer.Deserialize<List<T>>(jsonString)!;
+        return result!;
     }
 
     public static string ArquivoJson()
@@ -41,6 +35,7 @@ public static class JsonFileHelper
     {
         VerificarDiretorioEArquivo();
         if (!File.Exists(JsonFilePath)) return new List<ClienteResponseDto>();
+
         var options = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -50,10 +45,13 @@ public static class JsonFileHelper
         try
         {
             var jsonData = File.ReadAllText(JsonFilePath, Encoding.UTF8);
+            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponseDto>();
+
             var clientesResponseDtos = JsonSerializer.Deserialize<List<dynamic>>(jsonData, options);
-            if (string.IsNullOrWhiteSpace(jsonData)) return [];
+            if (clientesResponseDtos == null) return new List<ClienteResponseDto>();
+
             var clientes = ConverterParaClientes(clientesResponseDtos);
-            return clientes ?? [];
+            return clientes ?? new List<ClienteResponseDto>();
         }
         catch (FileNotFoundException e)
         {
@@ -63,20 +61,22 @@ public static class JsonFileHelper
         {
             Console.WriteLine($"Erro ao deserializar: {e.Message}");
         }
-        return [];
+
+        return new List<ClienteResponseDto>();
     }
 
     private static void VerificarDiretorioEArquivo()
     {
         var directory = Path.GetDirectoryName(JsonFilePath);
-        if (!Directory.Exists(directory))
+
+        if (directory != null && !Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
         }
 
         if (!File.Exists(JsonFilePath))
         {
-            File.Create(JsonFilePath).Dispose();
+            using var fileStream = File.Create(JsonFilePath);
         }
     }
 
@@ -154,16 +154,25 @@ public static class JsonFileHelper
         return element.GetProperty(propertyName).GetInt32();
     }
 
-    private static string? GetStringProperty(JsonElement element, string propertyName)
+    private static string GetStringProperty(JsonElement element, string propertyName)
     {
-        var propertyElement = element.GetProperty(propertyName);
-        return propertyElement.ValueKind switch
+        if (element.TryGetProperty(propertyName, out var propertyElement))
         {
-            JsonValueKind.String => propertyElement.GetString(),
-            JsonValueKind.Number => propertyElement.GetRawText(),
-            _ => throw new InvalidOperationException($"Tipo inesperado para a propriedade '{propertyName}'. Esperava-se String ou Number, obteve-se {propertyElement.ValueKind}.")
-        };
+            if (propertyElement.ValueKind == JsonValueKind.Null)
+            {
+                return string.Empty;
+            }
+            return propertyElement.ValueKind switch
+            {
+                JsonValueKind.String => propertyElement.GetString() ?? string.Empty,        
+                JsonValueKind.Number => propertyElement.GetRawText(),       
+                _ => throw new InvalidOperationException($"Tipo inesperado para a propriedade '{propertyName}'. Esperava-se String ou Number, obteve-se {propertyElement.ValueKind}.")
+            };
+        }
+        return string.Empty;
     }
+
+
     private static TEnum GetEnumProperty<TEnum>(JsonElement element, string propertyName) where TEnum : struct, Enum
     {
         var propertyValue = GetStringProperty(element, propertyName).Trim();

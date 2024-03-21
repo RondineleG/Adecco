@@ -2,12 +2,16 @@ namespace Adecco.Core.Entities;
 
 public sealed class Contato : BaseEntity
 {
-    private readonly string tipoContato;
-    private readonly int tipoContato1;
-
     [JsonConstructor]
     public Contato()
-    { }
+    {
+        Nome = string.Empty; 
+        ClienteId = int.MinValue;
+        DDD = int.MinValue;
+        Telefone = decimal.MinValue;
+        TipoContato = ETipoContato.Residencial;
+        Cliente = new Cliente();
+    }
 
     public Contato(int id, string nome, int dDD, decimal telefone, ETipoContato tipoContato)
     {
@@ -16,6 +20,7 @@ public sealed class Contato : BaseEntity
         DDD = dDD;
         Telefone = telefone;
         TipoContato = tipoContato;
+        Cliente = new Cliente();
     }
 
     public Contato(string nome, int dDD, decimal telefone, ETipoContato tipoContato)
@@ -24,6 +29,7 @@ public sealed class Contato : BaseEntity
         DDD = dDD;
         Telefone = telefone;
         TipoContato = tipoContato;
+        Cliente = new Cliente();
     }
 
     public string Nome { get; private set; }
@@ -32,7 +38,7 @@ public sealed class Contato : BaseEntity
 
     public decimal Telefone { get; private set; }
 
-    public int? ClienteId { get; private set; }
+    public int ClienteId { get; private set; }
 
     public Cliente Cliente { get; private set; }
 

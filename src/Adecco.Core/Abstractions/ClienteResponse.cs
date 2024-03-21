@@ -11,8 +11,7 @@ public sealed class ClienteResponse : BaseResponse
     public ClienteResponse(Cliente cliente)
         : this(true, string.Empty, cliente) { }
 
-    public ClienteResponse(string message)
-        : this(false, message, null) { }
+    public ClienteResponse(string message) : this(false, message, new Cliente()) { }
 
     public Cliente Cliente { get; private set; }
 }

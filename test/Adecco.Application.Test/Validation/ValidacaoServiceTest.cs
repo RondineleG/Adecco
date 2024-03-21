@@ -67,7 +67,8 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarContato_DeveRetornarErroSeContatoForNulo()
     {
-        var resultado = _validacaoService.ValidarContato(null);
+        var contato = new Contato();
+        var resultado = _validacaoService.ValidarContato(contato);
         resultado.IsValid.Should().BeFalse();
         resultado.Errors.Should().Contain("Contato é nulo.");
     }
@@ -75,14 +76,15 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarEndereco_DeveRetornarErroSeEnderecoForNulo()
     {
-        var resultado = _validacaoService.ValidarEndereco(null);
+        var endereco = new Endereco();
+        var resultado = _validacaoService.ValidarEndereco(endereco);
         resultado.IsValid.Should().BeFalse();
         resultado.Errors.Should().Contain("Endereço é nulo.");
     }
 
 
     [Theory]
-    [InlineData(null, "", "12345678", "Rua Teste", "123", "Bairro", "Teste Complemento", "Cidade", "SP", "Perto da praça", ETipoEndereco.Cobranca, true)]
+    [InlineData(0, "", "12345678", "Rua Teste", "123", "Bairro", "Teste Complemento", "Cidade", "SP", "Perto da praça", ETipoEndereco.Cobranca, true)]
     [InlineData(0, "Endereco Sem ID", "", "", "", "", "", "", "", "", ETipoEndereco.Preferencial, false)]
     public void ValidarEndereco_DeveValidarEnderecoCorretamente(int id, string nome, string cep, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco, bool esperado)
     {
@@ -95,7 +97,7 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarCliente_DeveRetornarErroSeClienteForNulo()
     {
-        Cliente cliente = null;        
+        var cliente = new Cliente();        
         var resultado = _validacaoService.ValidarCliente(cliente);
         resultado.IsValid.Should().BeFalse();
         resultado.Errors.Should().Contain("Cliente é nulo.");

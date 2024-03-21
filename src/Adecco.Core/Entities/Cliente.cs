@@ -5,8 +5,12 @@ public sealed class Cliente : BaseEntity
     [JsonConstructor]
     public Cliente()
     {
-        Contatos = new List<Contato>();
-        Enderecos = new List<Endereco>();
+        Nome = string.Empty;       
+        Email = string.Empty;       
+        CPF = string.Empty;       
+        RG = string.Empty;       
+        Contatos = [];
+        Enderecos = [];
     }
 
     public Cliente(int id, string nome, string email, string cpf, string rg, List<Contato> contatos, List<Endereco> enderecos)
@@ -48,10 +52,10 @@ public sealed class Cliente : BaseEntity
     public void AtualizarCliente(int id, string nome, string email, string cpf, string rg)
     {
         Id = id;
-        Nome = nome ?? Nome;
-        Email = email ?? Email;
-        CPF = cpf ?? CPF;
-        RG = rg ?? RG;
+        Nome = nome ;
+        Email = email;
+        CPF = cpf ;
+        RG = rg;
     }
 
     public void AdicionarId(int id)

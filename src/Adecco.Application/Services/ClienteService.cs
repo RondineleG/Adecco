@@ -201,7 +201,7 @@ public sealed class ClienteService(
         AdicionarErroSeInvalido(resultado, nomeEntidade);
     }
 
-    private void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto = null)
+    private void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto = "")
     {
         if (!resultado.IsValid)
         {

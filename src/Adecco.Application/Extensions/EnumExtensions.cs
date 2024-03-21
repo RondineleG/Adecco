@@ -4,11 +4,13 @@ public static class EnumExtensions
 {
     public static string ToDescriptionString<TEnum>(this TEnum @enum)
     {
-        var info = @enum.GetType().GetField(@enum.ToString());
-        var attributes = (DescriptionAttribute[])
-            info.GetCustomAttributes(typeof(DescriptionAttribute), false);
-        return (attributes?[0].Description) ?? @enum.ToString();
+        if (@enum == null) throw new ArgumentNullException(nameof(@enum));
+        var info = @enum.GetType().GetField(@enum.ToString()!)!;
+        var attributes = (DescriptionAttribute[])info.GetCustomAttributes(typeof(DescriptionAttribute), false)!;
+        if (attributes.Length > 0) return attributes[0].Description;
+        return @enum.ToString()!;
     }
+
 
     public static TEnum ParseEnumFromDescription<TEnum>(string description) where TEnum : struct
     {

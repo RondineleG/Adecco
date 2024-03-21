@@ -54,7 +54,7 @@ public sealed class ValidacaoService : IValidacaoService
             .AddErrorIf(contato.DDD is < 11 or > 99, "DDD inválido.", "DDD")
             .AddErrorIf(contato.Telefone == 0, "Telefone é obrigatório.", "Telefone")
             .AddErrorIf(contato.TipoContato == ETipoContato.Celular && telefoneStr.Length != 9 && !Regex.IsMatch(contato.Telefone.ToString(), RegexPatterns.Celular), "Telefone celular deve ter 9 dígitos.", "Telefone")
-          .AddErrorIf((contato.TipoContato == ETipoContato.Residencial || 
+          .AddErrorIf((contato.TipoContato == ETipoContato.Residencial ||
                             contato.TipoContato == ETipoContato.Comercial) && telefoneStr.Length != 8 && !Regex.IsMatch(contato.Telefone.ToString(), RegexPatterns.ResidencialComercial), "Telefone residencial/comercial deve ter 8 dígitos.", "Telefone");
         return resultado;
     }
@@ -151,14 +151,15 @@ public sealed class ValidacaoService : IValidacaoService
         foreach (var entidade in entidades)
         {
             var resultado = funcValidacao(entidade);
-            var propriedadeId = entidade.GetType().GetProperty("Id");
-            var idValor =
-                propriedadeId != null
-                    ? propriedadeId.GetValue(entidade)?.ToString()
-                    : "Desconhecido";
-            AdicionarErroSeInvalido(resultado, $"{nomeEntidade} {idValor}", response);
+            if (entidade != null)
+            {
+                var propriedadeId = entidade.GetType().GetProperty("Id");
+                var idValor = propriedadeId != null ? propriedadeId.GetValue(entidade)?.ToString() ?? "Desconhecido" : "Desconhecido";
+                AdicionarErroSeInvalido(resultado, $"{nomeEntidade} {idValor}", response);
+            }
         }
     }
+
 
     public void Validar<T>(
         T entidade,

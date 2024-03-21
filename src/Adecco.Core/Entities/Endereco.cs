@@ -2,12 +2,21 @@
 
 public sealed class Endereco : BaseEntity
 {
-    private readonly string tipoEndereco;
-    private readonly int tipoEndereco1;
-
     [JsonConstructor]
     public Endereco()
-    { }
+    {
+        Nome = string.Empty;
+        CEP = string.Empty;
+        Logradouro = string.Empty;
+        Numero = string.Empty;
+        Bairro = string.Empty;
+        Complemento = string.Empty;
+        Cidade = string.Empty;
+        Estado = string.Empty;
+        Referencia = string.Empty;
+        TipoEndereco = ETipoEndereco.Preferencial;
+        Cliente = new Cliente();
+    }
 
     public Endereco(int id, string nome, string cep, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco)
     {
@@ -22,18 +31,7 @@ public sealed class Endereco : BaseEntity
         Estado = estado;
         Referencia = referencia;
         TipoEndereco = tipoEndereco;
-    }
-
-    public Endereco(int id, string logradouro, string numero, string complemento, string bairro, string cidade, string estado, string cep, ETipoEndereco tipoEndereco)
-    {
-        Logradouro = logradouro;
-        Numero = numero;
-        Complemento = complemento;
-        Bairro = bairro;
-        Cidade = cidade;
-        Estado = estado;
-        CEP = cep;
-        TipoEndereco = tipoEndereco;
+        Cliente = new Cliente();
     }
 
     public string Nome { get; private set; }
@@ -53,7 +51,7 @@ public sealed class Endereco : BaseEntity
     public string Estado { get; private set; }
     public string Referencia { get; private set; }
 
-    public int? ClienteId { get; private set; }
+    public int ClienteId { get; private set; }
 
     public Cliente Cliente { get; private set; }
 

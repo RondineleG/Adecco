@@ -19,7 +19,7 @@ public sealed class ApplicattionDataContext(DbContextOptions<ApplicattionDataCon
         modelBuilder.Entity<Contato>().Property(p => p.DDD).IsRequired().IsFixedLength().HasMaxLength(2);
         modelBuilder.Entity<Contato>().Property(p => p.Telefone).IsRequired().HasMaxLength(9);
         modelBuilder.Entity<Contato>().Property(p => p.TipoContato).IsRequired();
-        modelBuilder.Entity<Contato>().Property(p => p.ClienteId).IsRequired(false);
+        modelBuilder.Entity<Contato>().Property(p => p.ClienteId).IsRequired();
         modelBuilder.Entity<Contato>().HasOne(c => c.Cliente).WithMany(cl => cl.Contatos)
             .HasForeignKey(c => c.ClienteId).OnDelete(DeleteBehavior.Cascade);
 
@@ -36,7 +36,7 @@ public sealed class ApplicattionDataContext(DbContextOptions<ApplicattionDataCon
         modelBuilder.Entity<Endereco>().Property(p => p.Estado).IsRequired().HasMaxLength(2);
         modelBuilder.Entity<Endereco>().Property(p => p.Referencia).IsRequired(false).HasMaxLength(50);
         modelBuilder.Entity<Endereco>().Property(p => p.TipoEndereco).IsRequired();
-        modelBuilder.Entity<Endereco>().Property(p => p.ClienteId).IsRequired(false);
+        modelBuilder.Entity<Endereco>().Property(p => p.ClienteId).IsRequired();
         modelBuilder.Entity<Endereco>().HasOne(e => e.Cliente).WithMany(cl => cl.Enderecos)
             .HasForeignKey(e => e.ClienteId).IsRequired(false).OnDelete(DeleteBehavior.Cascade);
 

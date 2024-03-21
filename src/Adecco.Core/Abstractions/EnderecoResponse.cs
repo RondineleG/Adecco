@@ -12,7 +12,7 @@ public sealed class EnderecoResponse : BaseResponse
         : this(true, string.Empty, endereco) { }
 
     public EnderecoResponse(string message)
-        : this(false, message, null) { }
+        : this(false, message, new Endereco()) { }
 
     public Endereco Endereco { get; private set; }
 }

@@ -2,6 +2,17 @@ namespace Adecco.Application.Dtos.Cliente;
 
 public sealed class ClienteRequestDto
 {
+    public ClienteRequestDto()
+    {
+        Nome = string.Empty;
+        Email = string.Empty;
+        CPF = string.Empty;
+        RG = string.Empty;
+        Contato = new ContatoRequestDto();        
+        Endereco = new EnderecoRequestDto();        
+    }
+
+
     [Required(ErrorMessage = "Campo {0} obrigat�rio")]
     [MaxLength(50)]
     public string Nome { get; set; }

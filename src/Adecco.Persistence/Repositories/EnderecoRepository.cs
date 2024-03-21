@@ -18,8 +18,13 @@ public sealed class EnderecoRepository(ApplicattionDataContext context) : BaseRe
 
     public async Task<Endereco> FindByIdAsync(int? id)
     {
-        return await _context.Enderecos.FindAsync(id);
-    }
+        var endereco = await _context.Enderecos.FindAsync(id);
+        if (endereco == null)
+        {
+            throw new KeyNotFoundException("Endereco não encontrado.");
+        }
+        return endereco;
+    }                   
 
     public void Update(Endereco endereco)
     {
