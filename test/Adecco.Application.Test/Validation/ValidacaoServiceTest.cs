@@ -54,13 +54,13 @@ public class ValidacaoServiceTest
     }
 
     [Theory]
-    [InlineData("999999999", ETipoContato.Celular, true)]
-    [InlineData("99999999", ETipoContato.Residencial, true)]
-    [InlineData("99999999", ETipoContato.Comercial, true)]
-    [InlineData("9999", ETipoContato.Celular, false)]
-    public void ValidarTelefone_DeveValidarTelefoneCorretamente(string telefone, ETipoContato tipoContato, bool esperado)
+    [InlineData(11,"999999999", ETipoContato.Celular, true)]
+    [InlineData(12,"99999999", ETipoContato.Residencial, true)]
+    [InlineData(25,"99999999", ETipoContato.Comercial, true)]
+    [InlineData(31,"9999", ETipoContato.Celular, false)]
+    public void ValidarTelefone_DeveValidarTelefoneCorretamente(int ddd, string telefone, ETipoContato tipoContato, bool esperado)
     {
-        var resultado = _validacaoService.ValidarTelefone(telefone, tipoContato);
+        var resultado = _validacaoService.ValidarTelefone(telefone, tipoContato, ddd);
         resultado.IsValid.Should().Be(esperado);
     }
 
