@@ -11,7 +11,8 @@ public sealed class ContatoResponse : BaseResponse
     public ContatoResponse(Contato contato)
         : this(true, string.Empty, contato) { }
 
-    public ContatoResponse(string message) : this(false, message, new Contato()) { }
+    public ContatoResponse(string message)
+        : this(false, message, new Contato()) { }
 
     public Contato Contato { get; private set; }
 }

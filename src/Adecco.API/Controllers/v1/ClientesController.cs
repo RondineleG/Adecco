@@ -6,7 +6,7 @@ public sealed class ClientesController(
     ILogger<ClientesController> logger,
     IValidacaoService validacaoService,
     IMapper mapper
- ) : BaseController
+) : BaseController
 {
     private readonly IClienteJsonService _clienteService = clienteService;
     private readonly IValidacaoService _validacaoService = validacaoService;
@@ -18,24 +18,32 @@ public sealed class ClientesController(
     {
         var people = JsonFileHelper.LerArquivoJson();
         var person = people.FirstOrDefault(p => p.Id == clienteId);
-        if (person == null) throw new NotFoundException("Cliente", clienteId);
+        if (person == null)
+            throw new NotFoundException("Cliente", clienteId);
         return Ok(person);
     }
+
     [HttpGet]
     public IActionResult Get(string nome = "", string email = "", string cpf = "")
     {
         var clientes = JsonFileHelper.LerArquivoJson();
         if (!string.IsNullOrWhiteSpace(nome))
         {
-            clientes = clientes.Where(c => c.Nome.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            clientes = clientes
+                .Where(c => c.Nome.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
         if (!string.IsNullOrWhiteSpace(email))
         {
-            clientes = clientes.Where(c => c.Email.Contains(email.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            clientes = clientes
+                .Where(c => c.Email.Contains(email.Trim(), StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
         if (!string.IsNullOrWhiteSpace(cpf))
         {
-            clientes = clientes.Where(c => c.CPF.Contains(cpf.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            clientes = clientes
+                .Where(c => c.CPF.Contains(cpf.Trim(), StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
         return Ok(clientes);
     }
@@ -47,7 +55,11 @@ public sealed class ClientesController(
         string cpf
     )
     {
-        var clientes = await _clienteService.ListarClientes(nome?.Trim(), email?.Trim(), cpf?.Trim());
+        var clientes = await _clienteService.ListarClientes(
+            nome?.Trim(),
+            email?.Trim(),
+            cpf?.Trim()
+        );
         var clienteResponseDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
         return clienteResponseDto;
     }
@@ -55,17 +67,34 @@ public sealed class ClientesController(
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
         cliente.AdicionarContato(contato);
         cliente.AdicionarEndereco(endereco);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse); _validacaoService.Validar(
-            new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-        _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        _validacaoService.Validar(
+            cliente,
+            _validacaoService.ValidarCliente,
+            "Cliente",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Contato> { contato },
+            _validacaoService.ValidarContato,
+            "Contato",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Endereco> { endereco },
+            _validacaoService.ValidarEndereco,
+            "Endereco",
+            validacaoResponse
+        );
+        if (!validacaoResponse.Success)
+            return BadRequest(validacaoResponse);
         try
         {
             await _clienteService.AdicionarCliente(cliente);
@@ -77,7 +106,10 @@ public sealed class ClientesController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.AdicionarCliente)} => Erro ao adicionar cliente.");
+            _logger.LogError(
+                ex,
+                $"{nameof(ClientesController)} => {nameof(_clienteService.AdicionarCliente)} => Erro ao adicionar cliente."
+            );
             return StatusCode(500, $"Ocorreu um erro interno ao adicionar o cliente: {ex.Message}");
         }
     }
@@ -90,9 +122,11 @@ public sealed class ClientesController(
         [FromBody] ClienteRequestDto request
     )
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
-        if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
+        if (clienteExistente == null)
+            throw new NotFoundException("Cliente", clienteId);
 
         _mapper.Map(request, clienteExistente);
 
@@ -125,7 +159,10 @@ public sealed class ClientesController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.AtualizarCliente)} => Erro ao atualizar cliente.");
+            _logger.LogError(
+                ex,
+                $"{nameof(ClientesController)} => {nameof(_clienteService.AtualizarCliente)} => Erro ao atualizar cliente."
+            );
             return StatusCode(500, $"Ocorreu um erro interno ao atualizar o cliente: {ex.Message}");
         }
     }
@@ -140,7 +177,10 @@ public sealed class ClientesController(
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"{nameof(ClientesController)} => {nameof(_clienteService.RemoverCliente)} => Erro ao remover cliente.");
+            _logger.LogError(
+                ex,
+                $"{nameof(ClientesController)} => {nameof(_clienteService.RemoverCliente)} => Erro ao remover cliente."
+            );
             return StatusCode(500, $"Ocorreu um erro interno ao remover o cliente: {ex.Message}");
         }
     }

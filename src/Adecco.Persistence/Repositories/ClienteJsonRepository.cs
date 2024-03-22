@@ -4,7 +4,11 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 {
     public ClienteJsonRepository()
     {
-        _filePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\\Adecco.Persistence\\Data\\Json", "clientes.json");
+        _filePath = Path.Combine(
+            Directory.GetCurrentDirectory(),
+            @"..\\Adecco.Persistence\\Data\\Json",
+            "clientes.json"
+        );
         VerificarDiretorioEArquivo(_filePath);
     }
 
@@ -12,7 +16,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<List<Cliente>> ObterTodos()
     {
-        if (!File.Exists(_filePath)) return new List<Cliente>();
+        if (!File.Exists(_filePath))
+            return new List<Cliente>();
 
         var options = new JsonSerializerOptions
         {
@@ -23,9 +28,12 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         try
         {
             var jsonData = await File.ReadAllTextAsync(_filePath, Encoding.UTF8);
-            if (string.IsNullOrWhiteSpace(jsonData)) return new List<Cliente>();
+            if (string.IsNullOrWhiteSpace(jsonData))
+                return new List<Cliente>();
 
-            var clientesResponseDtos = JsonSerializer.Deserialize<List<ClienteResponseDto>>(jsonData, options) ?? new List<ClienteResponseDto>();
+            var clientesResponseDtos =
+                JsonSerializer.Deserialize<List<ClienteResponseDto>>(jsonData, options)
+                ?? new List<ClienteResponseDto>();
 
             var clientesResponseDto = ConverterParaClientes(clientesResponseDtos);
             return clientesResponseDto ?? new List<Cliente>();
@@ -41,7 +49,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
         return new List<Cliente>();
     }
-
 
     public async Task<IEnumerable<Cliente>> ListarClientes(string? nome, string? email, string? cpf)
     {
@@ -74,7 +81,11 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     public async Task<ClienteResponse> AdicionarCliente(Cliente cliente)
     {
-        if (cliente == null || string.IsNullOrEmpty(cliente.Nome) || string.IsNullOrEmpty(cliente.CPF))
+        if (
+            cliente == null
+            || string.IsNullOrEmpty(cliente.Nome)
+            || string.IsNullOrEmpty(cliente.CPF)
+        )
         {
             throw new ArgumentException("Dados do cliente inválidos.");
         }
@@ -105,7 +116,10 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         }
 
         clientes[clienteId] = clienteAtualizado;
-        var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+        var jsonData = JsonSerializer.Serialize(
+            clientes,
+            new JsonSerializerOptions { WriteIndented = true }
+        );
         await File.WriteAllTextAsync(_filePath, jsonData);
         return new ClienteResponse(clienteAtualizado);
     }
@@ -117,7 +131,10 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         if (cliente != null)
         {
             clientes.Remove(cliente);
-            var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+            var jsonData = JsonSerializer.Serialize(
+                clientes,
+                new JsonSerializerOptions { WriteIndented = true }
+            );
             await File.WriteAllTextAsync(_filePath, jsonData);
         }
     }
@@ -127,10 +144,12 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         var clientes = await ObterTodos();
 
         var cliente = await BuscarClientePodId(clienteId);
-        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+        if (cliente == null)
+            throw new KeyNotFoundException("Cliente não encontrado");
 
         var contatoIndex = cliente.Contatos.FindIndex(c => c.Id == contato.Id);
-        if (contatoIndex == -1) throw new KeyNotFoundException("Contato não encontrado");
+        if (contatoIndex == -1)
+            throw new KeyNotFoundException("Contato não encontrado");
 
         cliente.Contatos[contatoIndex] = contato;
         await SalvarDados(clientes);
@@ -142,10 +161,12 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
     {
         var clientes = await ObterTodos();
         var cliente = await BuscarClientePodId(clienteId);
-        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+        if (cliente == null)
+            throw new KeyNotFoundException("Cliente não encontrado");
 
         var enderecoIndex = cliente.Enderecos.FindIndex(e => e.Id == endereco.Id);
-        if (enderecoIndex == -1) throw new KeyNotFoundException("Endereço não encontrado");
+        if (enderecoIndex == -1)
+            throw new KeyNotFoundException("Endereço não encontrado");
 
         cliente.Enderecos[enderecoIndex] = endereco;
         await SalvarDados(clientes);
@@ -158,7 +179,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
 
-        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+        if (cliente == null)
+            throw new KeyNotFoundException("Cliente não encontrado");
 
         var novoContatoId = cliente.Contatos.Any() ? cliente.Contatos.Max(c => c.Id) + 1 : 1;
         contato.AdicionarId(novoContatoId);
@@ -174,7 +196,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
 
-        if (cliente == null) throw new KeyNotFoundException("Cliente não encontrado");
+        if (cliente == null)
+            throw new KeyNotFoundException("Cliente não encontrado");
 
         var novoEnderecoId = cliente.Enderecos.Any() ? cliente.Enderecos.Max(e => e.Id) + 1 : 1;
         endereco.AdicionarId(novoEnderecoId);
@@ -189,7 +212,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
     {
         var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente == null) return;
+        if (cliente == null)
+            return;
 
         var contato = cliente.Contatos.FirstOrDefault(c => c.Id == contatoId);
         if (contato != null)
@@ -203,7 +227,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
     {
         var clientes = await ObterTodos();
         var cliente = clientes.FirstOrDefault(c => c.Id == clienteId);
-        if (cliente == null) return;
+        if (cliente == null)
+            return;
 
         var endereco = cliente.Enderecos.FirstOrDefault(e => e.Id == enderecoId);
         if (endereco != null)
@@ -215,7 +240,10 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
     private async Task SalvarDados(List<Cliente> clientes)
     {
-        var jsonData = JsonSerializer.Serialize(clientes, new JsonSerializerOptions { WriteIndented = true });
+        var jsonData = JsonSerializer.Serialize(
+            clientes,
+            new JsonSerializerOptions { WriteIndented = true }
+        );
         await File.WriteAllTextAsync(_filePath, jsonData);
     }
 
@@ -234,7 +262,6 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
         }
     }
 
-
     private List<Cliente> ConverterParaClientes(List<ClienteResponseDto> clientesResponseDto)
     {
         var clientes = new List<Cliente>();
@@ -252,21 +279,26 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
             cliente.AdicionarId(id);
             cliente.AtualizarCliente(id, nome, email, cpf, rg);
 
-            foreach (var contatoDto in clienteDto.Contatos)         
+            foreach (var contatoDto in clienteDto.Contatos)
             {
-                var tipoContato = EnumExtensions.ParseEnumFromDescription<ETipoContato>(contatoDto.TipoContato ?? string.Empty);
+                var tipoContato = EnumExtensions.ParseEnumFromDescription<ETipoContato>(
+                    contatoDto.TipoContato ?? string.Empty
+                );
                 var contato = new Contato(
                     contatoDto.Id,
                     contatoDto.Nome ?? string.Empty,
                     contatoDto.DDD,
                     contatoDto.Telefone,
-                    tipoContato);
+                    tipoContato
+                );
                 cliente.AdicionarContato(contato);
             }
 
-            foreach (var enderecoDto in clienteDto.Enderecos)         
+            foreach (var enderecoDto in clienteDto.Enderecos)
             {
-                var tipoEndereco = EnumExtensions.ParseEnumFromDescription<ETipoEndereco>(enderecoDto.TipoEndereco ?? string.Empty);
+                var tipoEndereco = EnumExtensions.ParseEnumFromDescription<ETipoEndereco>(
+                    enderecoDto.TipoEndereco ?? string.Empty
+                );
                 var endereco = new Endereco(
                     enderecoDto.Id,
                     enderecoDto.Nome ?? string.Empty,
@@ -278,7 +310,8 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
                     enderecoDto.Cidade ?? string.Empty,
                     enderecoDto.Estado ?? string.Empty,
                     enderecoDto.Referencia ?? string.Empty,
-                    tipoEndereco);
+                    tipoEndereco
+                );
                 cliente.AdicionarEndereco(endereco);
             }
 
@@ -287,6 +320,4 @@ public sealed class ClienteJsonRepository : IClienteJsonRepository
 
         return clientes;
     }
-
-
 }

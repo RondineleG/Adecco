@@ -19,7 +19,11 @@ public class CustomValidationResultTest
     [Theory]
     [InlineData("Erro de validação", "", "Erro de validação")]
     [InlineData("Erro de validação", "CampoTeste", "CampoTeste: Erro de validação")]
-    public void AdicionarErro_Deve_Funcionar_Corretamente(string errorMessage, string fieldName, string expectedError)
+    public void AdicionarErro_Deve_Funcionar_Corretamente(
+        string errorMessage,
+        string fieldName,
+        string expectedError
+    )
     {
         _validationResult.AddError(errorMessage, fieldName);
         _validationResult.Errors.Should().ContainSingle().And.Contain(expectedError);
@@ -29,10 +33,16 @@ public class CustomValidationResultTest
     [Theory]
     [InlineData(true, "Erro condicional", "")]
     [InlineData(true, "Erro condicional", "CampoCondicional")]
-    public void AdicionarErroSe_Deve_Funcionar_Corretamente(bool condition, string errorMessage, string fieldName)
+    public void AdicionarErroSe_Deve_Funcionar_Corretamente(
+        bool condition,
+        string errorMessage,
+        string fieldName
+    )
     {
         _validationResult.AddErrorIf(condition, errorMessage, fieldName);
-        var expectedError = string.IsNullOrWhiteSpace(fieldName) ? errorMessage : $"{fieldName}: {errorMessage}";
+        var expectedError = string.IsNullOrWhiteSpace(fieldName)
+            ? errorMessage
+            : $"{fieldName}: {errorMessage}";
         _validationResult.Errors.Should().ContainSingle().And.Contain(expectedError);
         _validationResult.IsValid.Should().BeFalse();
     }
@@ -40,7 +50,7 @@ public class CustomValidationResultTest
     [Fact]
     public void AdicionarErro_ComMensagemVazia_Deve_IgnorarErro()
     {
-        _validationResult.AddError("");
+        _validationResult.AddError(string.Empty);
         _validationResult.Errors.Should().BeEmpty();
         _validationResult.IsValid.Should().BeTrue();
     }
@@ -59,10 +69,12 @@ public class CustomValidationResultTest
     public void Erros_Deve_Ser_Imutavel()
     {
         _validationResult.AddError("Erro inicial");
-        var errorsBeforeModification = _validationResult.Errors.ToList();       
-        _validationResult.AddError("Erro adicional");     
+        var errorsBeforeModification = _validationResult.Errors.ToList();
+        _validationResult.AddError("Erro adicional");
         errorsBeforeModification.Should().HaveCount(1).And.Contain("Erro inicial");
-        _validationResult.Errors.Should().HaveCount(2).And.Contain(new[] { "Erro inicial", "Erro adicional" });
+        _validationResult
+            .Errors.Should()
+            .HaveCount(2)
+            .And.Contain(new[] { "Erro inicial", "Erro adicional" });
     }
-
 }

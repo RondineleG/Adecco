@@ -1,6 +1,8 @@
 namespace Adecco.Persistence.Repositories;
+
 public sealed class ClenteRepository(ApplicattionDataContext context)
-    : BaseRepository(context), IClienteRepository
+    : BaseRepository(context),
+        IClienteRepository
 {
     public async Task<IEnumerable<Cliente>> ListAsync(string? nome, string? email, string? cpf)
     {

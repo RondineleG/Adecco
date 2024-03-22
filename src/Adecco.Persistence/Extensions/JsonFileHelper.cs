@@ -5,14 +5,17 @@ namespace Adecco.Persistence.Extensions;
 
 public static class JsonFileHelper
 {
-    private static readonly string JsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\\Adecco.Persistence\\Data\\Json", "clientes.json");
+    private static readonly string JsonFilePath = Path.Combine(
+        Directory.GetCurrentDirectory(),
+        @"..\\Adecco.Persistence\\Data\\Json",
+        "clientes.json"
+    );
 
     private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         PropertyNameCaseInsensitive = true
     };
-
 
     public static List<T> ReadFromJson<T>()
     {
@@ -34,7 +37,8 @@ public static class JsonFileHelper
     public static List<ClienteResponseDto> LerArquivoJson()
     {
         VerificarDiretorioEArquivo();
-        if (!File.Exists(JsonFilePath)) return new List<ClienteResponseDto>();
+        if (!File.Exists(JsonFilePath))
+            return new List<ClienteResponseDto>();
 
         var options = new JsonSerializerOptions
         {
@@ -45,10 +49,12 @@ public static class JsonFileHelper
         try
         {
             var jsonData = File.ReadAllText(JsonFilePath, Encoding.UTF8);
-            if (string.IsNullOrWhiteSpace(jsonData)) return new List<ClienteResponseDto>();
+            if (string.IsNullOrWhiteSpace(jsonData))
+                return new List<ClienteResponseDto>();
 
             var clientesResponseDtos = JsonSerializer.Deserialize<List<dynamic>>(jsonData, options);
-            if (clientesResponseDtos == null) return new List<ClienteResponseDto>();
+            if (clientesResponseDtos == null)
+                return new List<ClienteResponseDto>();
 
             var clientes = ConverterParaClientes(clientesResponseDtos);
             return clientes ?? new List<ClienteResponseDto>();
@@ -111,7 +117,8 @@ public static class JsonFileHelper
                 GetStringProperty(clienteDto, "Nome"),
                 GetStringProperty(clienteDto, "Email"),
                 GetStringProperty(clienteDto, "CPF"),
-                GetStringProperty(clienteDto, "RG"));
+                GetStringProperty(clienteDto, "RG")
+            );
 
             foreach (var contatoDto in clienteDto.GetProperty("Contatos").EnumerateArray())
             {
@@ -120,7 +127,8 @@ public static class JsonFileHelper
                     GetStringProperty(contatoDto, "Nome"),
                     GetIntProperty(contatoDto, "DDD"),
                     GetIntProperty(contatoDto, "Telefone"),
-                    GetEnumProperty<ETipoContato>(contatoDto, "TipoContato"));
+                    GetEnumProperty<ETipoContato>(contatoDto, "TipoContato")
+                );
 
                 cliente.AdicionarContato(contato);
             }
@@ -138,7 +146,8 @@ public static class JsonFileHelper
                     GetStringProperty(enderecoDto, "Cidade"),
                     GetStringProperty(enderecoDto, "Estado"),
                     GetStringProperty(enderecoDto, "Referencia"),
-                    GetEnumProperty<ETipoEndereco>(enderecoDto, "TipoEndereco"));
+                    GetEnumProperty<ETipoEndereco>(enderecoDto, "TipoEndereco")
+                );
 
                 cliente.AdicionarEndereco(endereco);
             }
@@ -164,20 +173,24 @@ public static class JsonFileHelper
             }
             return propertyElement.ValueKind switch
             {
-                JsonValueKind.String => propertyElement.GetString() ?? string.Empty,        
-                JsonValueKind.Number => propertyElement.GetRawText(),       
-                _ => throw new InvalidOperationException($"Tipo inesperado para a propriedade '{propertyName}'. Esperava-se String ou Number, obteve-se {propertyElement.ValueKind}.")
+                JsonValueKind.String => propertyElement.GetString() ?? string.Empty,
+                JsonValueKind.Number => propertyElement.GetRawText(),
+                _
+                    => throw new InvalidOperationException(
+                        $"Tipo inesperado para a propriedade '{propertyName}'. Esperava-se String ou Number, obteve-se {propertyElement.ValueKind}."
+                    )
             };
         }
         return string.Empty;
     }
 
-
-    private static TEnum GetEnumProperty<TEnum>(JsonElement element, string propertyName) where TEnum : struct, Enum
+    private static TEnum GetEnumProperty<TEnum>(JsonElement element, string propertyName)
+        where TEnum : struct, Enum
     {
         var propertyValue = GetStringProperty(element, propertyName).Trim();
         return EnumExtensions.ParseEnumFromDescription<TEnum>(propertyValue);
     }
+
     private static List<ClienteResponseDto> ConverterClienteParaResponseDto(List<Cliente> clientes)
     {
         var listaClientesResponseDto = new List<ClienteResponseDto>();
@@ -191,27 +204,31 @@ public static class JsonFileHelper
                 Email = cliente.Email,
                 CPF = cliente.CPF,
                 RG = cliente.RG,
-                Contatos = cliente.Contatos.Select(contato => new ContatoResponseDto
-                {
-                    Id = contato.Id,
-                    Nome = contato.Nome,
-                    DDD = contato.DDD,
-                    Telefone = contato.Telefone,
-                    TipoContato = contato.TipoContato.ToDescriptionString()
-                }).ToList(),
-                Enderecos = cliente.Enderecos.Select(endereco => new EnderecoResponseDto
-                {
-                    Id = endereco.Id,
-                    CEP = endereco.CEP,
-                    Logradouro = endereco.Logradouro,
-                    Numero = endereco.Numero,
-                    Bairro = endereco.Bairro,
-                    Complemento = endereco.Complemento,
-                    Cidade = endereco.Cidade,
-                    Estado = endereco.Estado,
-                    Referencia = endereco.Referencia,
-                    TipoEndereco = endereco.TipoEndereco.ToDescriptionString()
-                }).ToList()
+                Contatos = cliente
+                    .Contatos.Select(contato => new ContatoResponseDto
+                    {
+                        Id = contato.Id,
+                        Nome = contato.Nome,
+                        DDD = contato.DDD,
+                        Telefone = contato.Telefone,
+                        TipoContato = contato.TipoContato.ToDescriptionString()
+                    })
+                    .ToList(),
+                Enderecos = cliente
+                    .Enderecos.Select(endereco => new EnderecoResponseDto
+                    {
+                        Id = endereco.Id,
+                        CEP = endereco.CEP,
+                        Logradouro = endereco.Logradouro,
+                        Numero = endereco.Numero,
+                        Bairro = endereco.Bairro,
+                        Complemento = endereco.Complemento,
+                        Cidade = endereco.Cidade,
+                        Estado = endereco.Estado,
+                        Referencia = endereco.Referencia,
+                        TipoEndereco = endereco.TipoEndereco.ToDescriptionString()
+                    })
+                    .ToList()
             };
             listaClientesResponseDto.Add(clienteResponseDto);
         }

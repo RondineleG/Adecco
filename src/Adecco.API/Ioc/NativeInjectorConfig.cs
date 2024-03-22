@@ -2,7 +2,10 @@ namespace Adecco.API.Ioc;
 
 public static class NativeInjectorConfig
 {
-    public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
+    public static void RegisterApplicationServices(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -38,7 +41,9 @@ public static class NativeInjectorConfig
         if (app.Environment.IsProduction())
         {
             app.UseHsts();
-            app.UseCustomWelcomePage(new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" });
+            app.UseCustomWelcomePage(
+                new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
+            );
         }
         app.UseHttpsRedirection();
         app.MapControllers();

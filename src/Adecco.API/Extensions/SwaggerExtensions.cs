@@ -2,7 +2,9 @@
 
 public static class SwaggerExtensions
 {
-    public static IServiceCollection AddSwaggerAndConfigApiVersioning(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerAndConfigApiVersioning(
+        this IServiceCollection services
+    )
     {
         services.Configure<RouteOptions>(options =>
         {

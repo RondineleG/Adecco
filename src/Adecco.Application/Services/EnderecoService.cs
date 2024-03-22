@@ -1,6 +1,7 @@
 namespace Adecco.Application.Services;
 
-public sealed class EnderecoService(IEnderecoRepository enderecoRepository, IUnitOfWork unitOfWork) : IEnderecoService
+public sealed class EnderecoService(IEnderecoRepository enderecoRepository, IUnitOfWork unitOfWork)
+    : IEnderecoService
 {
     private readonly IEnderecoRepository _enderecoRepository = enderecoRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;

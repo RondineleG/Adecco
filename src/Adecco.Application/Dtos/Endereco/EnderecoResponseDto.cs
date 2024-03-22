@@ -16,6 +16,7 @@ public sealed class EnderecoResponseDto
         Estado = string.Empty;
         Referencia = string.Empty;
     }
+
     public int Id { get; set; }
 
     public string Nome { get; set; }

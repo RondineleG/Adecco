@@ -4,7 +4,7 @@ public abstract class BaseResponse
 {
     protected BaseResponse()
     {
-        Message = string.Empty;         
+        Message = string.Empty;
     }
 
     protected BaseResponse(bool success, string message)

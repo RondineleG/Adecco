@@ -1,6 +1,7 @@
 namespace Adecco.Application.Services;
 
-public sealed class ContatoService(IContatoRepository contatoRepository, IUnitOfWork unitOfWork) : IContatoService
+public sealed class ContatoService(IContatoRepository contatoRepository, IUnitOfWork unitOfWork)
+    : IContatoService
 {
     private readonly IContatoRepository _contatoRepository = contatoRepository;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
@@ -43,7 +44,6 @@ public sealed class ContatoService(IContatoRepository contatoRepository, IUnitOf
             contato.DDD,
             contato.Telefone,
             contato.TipoContato.ToDescriptionString()
-
         );
         try
         {

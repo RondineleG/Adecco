@@ -9,6 +9,7 @@ public sealed class ContatoRequestDto
         DDD = 11;
         Telefone = decimal.MinValue;
     }
+
     [Required(ErrorMessage = "Campo {0} obrigat�rio")]
     [MaxLength(50)]
     public string Nome { get; set; }

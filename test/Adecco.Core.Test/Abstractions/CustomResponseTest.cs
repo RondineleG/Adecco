@@ -1,4 +1,5 @@
 ﻿namespace Adecco.Core.Test.Abstractions;
+
 public class CustomResponseTest
 {
     [Fact]
@@ -39,7 +40,8 @@ public class CustomResponseTest
         response.AddEntityError("Entidade1", "Erro de entidade 1");
         response.AddEntityError("Entidade2", "Erro de entidade 2");
 
-        var expectedOutput = "Erro geral 1; Entidade1: Erro de entidade 1; Entidade2: Erro de entidade 2";
+        var expectedOutput =
+            "Erro geral 1; Entidade1: Erro de entidade 1; Entidade2: Erro de entidade 2";
         response.ToString().Should().Be(expectedOutput);
     }
 

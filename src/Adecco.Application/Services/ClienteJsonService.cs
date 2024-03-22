@@ -1,6 +1,7 @@
 ﻿namespace Adecco.Application.Services;
 
-public sealed class ClienteJsonService(IClienteJsonRepository clienteRepository) : IClienteJsonService
+public sealed class ClienteJsonService(IClienteJsonRepository clienteRepository)
+    : IClienteJsonService
 {
     private readonly IClienteJsonRepository _clienteRepository = clienteRepository;
 

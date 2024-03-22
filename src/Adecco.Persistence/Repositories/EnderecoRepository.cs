@@ -1,5 +1,8 @@
 namespace Adecco.Persistence.Repositories;
-public sealed class EnderecoRepository(ApplicattionDataContext context) : BaseRepository(context), IEnderecoRepository
+
+public sealed class EnderecoRepository(ApplicattionDataContext context)
+    : BaseRepository(context),
+        IEnderecoRepository
 {
     public async Task<IEnumerable<Endereco>> ListAsync(int? clienteId, int? enderecoId)
     {
@@ -24,7 +27,7 @@ public sealed class EnderecoRepository(ApplicattionDataContext context) : BaseRe
             throw new KeyNotFoundException("Endereco não encontrado.");
         }
         return endereco;
-    }                   
+    }
 
     public void Update(Endereco endereco)
     {

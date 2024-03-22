@@ -1,15 +1,13 @@
-﻿using Adecco.Application.Extensions;
-
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using Adecco.Application.Extensions;
 
 namespace Adecco.Application.Test.Extensions;
-
-
 
 public enum MeuEnum
 {
     [Description("Primeira descrição")]
     PrimeiroValor,
+
     [Description("Segunda descrição")]
     SegundoValor,
     TerceiroValor

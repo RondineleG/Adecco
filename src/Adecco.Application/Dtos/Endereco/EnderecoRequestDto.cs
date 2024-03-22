@@ -2,7 +2,6 @@ namespace Adecco.Application.Dtos.Endereco;
 
 public sealed class EnderecoRequestDto
 {
-
     public EnderecoRequestDto()
     {
         Nome = string.Empty;

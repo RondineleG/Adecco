@@ -5,7 +5,8 @@ public class BadRequestException : Exception
     private readonly List<string> _list = new List<string>();
     private readonly CustomResponse _validacaoResponse = new CustomResponse();
 
-    public BadRequestException(string message) : base(message) { }
+    public BadRequestException(string message)
+        : base(message) { }
 
     public BadRequestException(List<string> list)
     {
@@ -14,8 +15,11 @@ public class BadRequestException : Exception
 
     public BadRequestException(CustomResponse validacaoResponse)
     {
-        _validacaoResponse = validacaoResponse ?? throw new ArgumentNullException(nameof(validacaoResponse), "A resposta de validação não pode ser nula.");
+        _validacaoResponse =
+            validacaoResponse
+            ?? throw new ArgumentNullException(
+                nameof(validacaoResponse),
+                "A resposta de validação não pode ser nula."
+            );
     }
 }
-
-

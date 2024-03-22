@@ -4,7 +4,7 @@ public sealed class CustomWelcomePageMiddleware(
     RequestDelegate next,
     CustomWelcomePageOptions options,
     ILogger<CustomWelcomePageMiddleware> logger
-    )
+)
 {
     private readonly RequestDelegate _next = next;
     private readonly CustomWelcomePageOptions _options = options;

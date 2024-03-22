@@ -10,6 +10,7 @@ public sealed class ContatoResponseDto
         DDD = 11;
         Telefone = decimal.MinValue;
     }
+
     public int Id { get; set; }
 
     public string Nome { get; set; }

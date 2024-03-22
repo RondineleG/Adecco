@@ -7,7 +7,7 @@ public sealed class ClientesController(
     IEnderecoService enderecoService,
     IContatoService contatoService,
     IValidacaoService validacaoService
-    ) : BaseController
+) : BaseController
 {
     private readonly IClienteService _clienteService = productService;
     private readonly IContatoService _contatoService = contatoService;
@@ -31,23 +31,43 @@ public sealed class ClientesController(
     [HttpPost("/cliente/criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
         cliente.AdicionarContato(contato);
         cliente.AdicionarEndereco(endereco);
         var validacaoResponse = new CustomResponse();
-        _validacaoService.Validar(cliente, _validacaoService.ValidarCliente, "Cliente", validacaoResponse);
-        _validacaoService.Validar(new List<Contato> { contato }, _validacaoService.ValidarContato, "Contato", validacaoResponse);
-        _validacaoService.Validar(new List<Endereco> { endereco }, _validacaoService.ValidarEndereco, "Endereco", validacaoResponse);
-        if (!validacaoResponse.Success) return BadRequest(validacaoResponse);
+        _validacaoService.Validar(
+            cliente,
+            _validacaoService.ValidarCliente,
+            "Cliente",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Contato> { contato },
+            _validacaoService.ValidarContato,
+            "Contato",
+            validacaoResponse
+        );
+        _validacaoService.Validar(
+            new List<Endereco> { endereco },
+            _validacaoService.ValidarEndereco,
+            "Endereco",
+            validacaoResponse
+        );
+        if (!validacaoResponse.Success)
+            return BadRequest(validacaoResponse);
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
-        if (!contatoResponse.Success) return BadRequest(contatoResponse.Message);
-        if (!enderecoResponse.Success) return BadRequest(enderecoResponse.Message);
+        if (!contatoResponse.Success)
+            return BadRequest(contatoResponse.Message);
+        if (!enderecoResponse.Success)
+            return BadRequest(enderecoResponse.Message);
         var result = await _clienteService.SaveAsync(cliente);
-        if (!result.Success) return BadRequest(result.Message);
+        if (!result.Success)
+            return BadRequest(result.Message);
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(response);
     }
@@ -60,9 +80,11 @@ public sealed class ClientesController(
         [FromBody] ClienteRequestDto request
     )
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.FindByIdAsync(clienteId);
-        if (clienteExistente == null) throw new NotFoundException("Cliente", clienteId);
+        if (clienteExistente == null)
+            throw new NotFoundException("Cliente", clienteId);
         _mapper.Map(request, clienteExistente);
         var contatoExistente = clienteExistente.Contatos.FirstOrDefault(c => c.Id == contatoId);
         if (contatoExistente != null)
@@ -86,7 +108,8 @@ public sealed class ClientesController(
         }
 
         var result = await _clienteService.UpdateAsync(clienteId, clienteExistente);
-        if (!result.Success) return BadRequest(result.Message);
+        if (!result.Success)
+            return BadRequest(result.Message);
         var clienteResponse = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(clienteResponse);
     }
@@ -95,7 +118,8 @@ public sealed class ClientesController(
     public async Task<IActionResult> DeleteAsync(int clienteId)
     {
         var result = await _clienteService.DeleteAsync(clienteId);
-        if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState.GetErrorMessages());
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return Ok(response);
     }

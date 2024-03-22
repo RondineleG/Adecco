@@ -8,10 +8,9 @@ public sealed class ClienteRequestDto
         Email = string.Empty;
         CPF = string.Empty;
         RG = string.Empty;
-        Contato = new ContatoRequestDto();        
-        Endereco = new EnderecoRequestDto();        
+        Contato = new ContatoRequestDto();
+        Endereco = new EnderecoRequestDto();
     }
-
 
     [Required(ErrorMessage = "Campo {0} obrigat�rio")]
     [MaxLength(50)]
