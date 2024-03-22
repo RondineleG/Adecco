@@ -14,7 +14,7 @@ env:
   SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
   API_IMPORT_SPECIFICATION_PATH: src/Adecco.API/publish/swagger.json
   API_IMPORT_DLL: src/Adecco.API/bin/Release/net8.0/Adecco.API.dll
-  API_IMPORT_VERSION: v1
+  API_IMPORT_VERSION: v3
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: src/Adecco.API
@@ -39,6 +39,12 @@ jobs:
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Install .NET Core 3.0.0
+      run: |
+        wget https://download.visualstudio.microsoft.com/download/pr/33545494-6d0f-4372-bf3a-543a3fe2f1e4/5cc522d95b4a320ad069831bcd40a638/dotnet-sdk-3.0.100-linux-x64.tar.gz
+        mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-3.0.100-linux-x64.tar.gz -C $HOME/dotnet
+        export PATH="$HOME/dotnet:$PATH"
+        dotnet --version
     - name: Install Swashbuckle CLI .NET Global Tool
       run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
