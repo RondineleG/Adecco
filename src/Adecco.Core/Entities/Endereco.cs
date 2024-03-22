@@ -18,7 +18,19 @@ public sealed class Endereco : BaseEntity
         Cliente = new Cliente();
     }
 
-    public Endereco(int id, string nome, string cep, string logradouro, string numero, string bairro, string complemento, string cidade, string estado, string referencia, ETipoEndereco tipoEndereco)
+    public Endereco(
+        int id,
+        string nome,
+        string cep,
+        string logradouro,
+        string numero,
+        string bairro,
+        string complemento,
+        string cidade,
+        string estado,
+        string referencia,
+        ETipoEndereco tipoEndereco
+    )
     {
         Id = id;
         Nome = nome;
@@ -92,5 +104,32 @@ public sealed class Endereco : BaseEntity
     public void AdicionarId(int id)
     {
         Id = id;
+    }
+
+    public bool EhEnderecoDefault()
+    {
+        var ehNomeDefault = Nome == string.Empty;
+        var ehCepDefault = CEP == string.Empty;
+        var ehLogradouroDefault = Logradouro == string.Empty;
+        var ehNumeroDefault = Numero == string.Empty;
+        var ehBairroDefault = Bairro == string.Empty;
+        var ehComplementoDefault = Complemento == string.Empty;
+        var ehCidadeDefault = Cidade == string.Empty;
+        var ehEstadoDefault = Estado == string.Empty;
+        var ehReferenciaDefault = Referencia == string.Empty;
+        var ehTipoEnderecoDefault = TipoEndereco == ETipoEndereco.Preferencial;
+        var ehClienteDefault = Cliente?.EhClienteDefault() ?? false;
+
+        return ehNomeDefault
+            && ehCepDefault
+            && ehLogradouroDefault
+            && ehNumeroDefault
+            && ehBairroDefault
+            && ehComplementoDefault
+            && ehCidadeDefault
+            && ehEstadoDefault
+            && ehReferenciaDefault
+            && ehTipoEnderecoDefault
+            && ehClienteDefault;
     }
 }

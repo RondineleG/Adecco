@@ -5,15 +5,23 @@ public sealed class Cliente : BaseEntity
     [JsonConstructor]
     public Cliente()
     {
-        Nome = string.Empty;       
-        Email = string.Empty;       
-        CPF = string.Empty;       
-        RG = string.Empty;       
+        Nome = string.Empty;
+        Email = string.Empty;
+        CPF = string.Empty;
+        RG = string.Empty;
         Contatos = [];
         Enderecos = [];
     }
 
-    public Cliente(int id, string nome, string email, string cpf, string rg, List<Contato> contatos, List<Endereco> enderecos)
+    public Cliente(
+        int id,
+        string nome,
+        string email,
+        string cpf,
+        string rg,
+        List<Contato> contatos,
+        List<Endereco> enderecos
+    )
     {
         Nome = nome;
         Email = email;
@@ -52,14 +60,30 @@ public sealed class Cliente : BaseEntity
     public void AtualizarCliente(int id, string nome, string email, string cpf, string rg)
     {
         Id = id;
-        Nome = nome ;
+        Nome = nome;
         Email = email;
-        CPF = cpf ;
+        CPF = cpf;
         RG = rg;
     }
 
     public void AdicionarId(int id)
     {
         Id = id;
+    }
+
+    public bool EhClienteDefault()
+    {
+        var ehNomeDefault = Nome == string.Empty;
+        var ehEmailDefault = Email == string.Empty;
+        var ehCpfDefault = CPF == string.Empty;
+        var ehRgDefault = RG == string.Empty;
+        var ehContatosDefault = Contatos != null && Contatos.Count == 0;
+        var ehEnderecosDefault = Enderecos != null && Enderecos.Count == 0;
+        return ehNomeDefault
+            && ehEmailDefault
+            && ehCpfDefault
+            && ehRgDefault
+            && ehContatosDefault
+            && ehEnderecosDefault;
     }
 }

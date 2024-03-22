@@ -5,7 +5,7 @@ public sealed class Contato : BaseEntity
     [JsonConstructor]
     public Contato()
     {
-        Nome = string.Empty; 
+        Nome = string.Empty;
         ClienteId = int.MinValue;
         DDD = int.MinValue;
         Telefone = decimal.MinValue;
@@ -66,5 +66,22 @@ public sealed class Contato : BaseEntity
     public void AdicionarId(int id)
     {
         Id = id;
+    }
+
+    public bool EhContatoDefault()
+    {
+        var ehNomeDefault = Nome == string.Empty;
+        var ehClienteIdDefault = ClienteId == int.MinValue;
+        var ehDddDefault = DDD == int.MinValue;
+        var ehTelefoneDefault = Telefone == decimal.MinValue;
+        var ehTipoContatoDefault = TipoContato == ETipoContato.Residencial;
+        var ehClienteDefault = Cliente?.EhClienteDefault() ?? false;
+
+        return ehNomeDefault
+            && ehClienteIdDefault
+            && ehDddDefault
+            && ehTelefoneDefault
+            && ehTipoContatoDefault
+            && ehClienteDefault;
     }
 }
