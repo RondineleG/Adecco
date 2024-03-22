@@ -11,7 +11,6 @@ env:
   AZURE_APIM_SERVICENAME: AdeccoAPI
   AZURE_APIM_API_ID: AdeccoAPI
   AZURE_APIM_APPSERVICEURL: ''
-  SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
   API_IMPORT_SPECIFICATION_PATH: src/Adecco.API/publish/swagger.json
   API_IMPORT_DLL: src/Adecco.API/bin/Release/net8.0/Adecco.API.dll
   API_IMPORT_VERSION: v3
@@ -27,10 +26,6 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Setup SwashBuckle .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.SWASHBUCKLE_DOTNET_CORE_VERSION }}
     - name: Restore
       run: dotnet restore ${{ env.WORKING_DIRECTORY }}
     - name: Build
@@ -39,16 +34,6 @@ jobs:
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Install .NET Core 3.0.100
-      run: |
-        wget -q https://dot.net/v1/dotnet-install.sh
-        chmod +x dotnet-install.sh
-        ./dotnet-install.sh --install-dir $HOME/dotnet --version 3.0.100 --no-path
-        export PATH="$HOME/dotnet:$PATH"
-        dotnet --version
-    - name: Install Swashbuckle CLI .NET Global Tool
-      run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
-      working-directory: ${{ env.WORKING_DIRECTORY }}
     - name: Generate Open API Specification Document
       run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
     - name: Publish Artifacts
