@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core application to Web App AdeccoAPI20240322184600 with API Management Service AdeccoAPI-AdeccoAPI
+name: Build and deploy .NET Core application
 on:
   push:
     branches:
@@ -12,10 +12,9 @@ env:
   AZURE_APIM_API_ID: AdeccoAPI
   AZURE_APIM_APPSERVICEURL: ''
   SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
-  SWASHBUCKLE_DOTNET_CORE_VERSION: 8.0.x
   API_IMPORT_SPECIFICATION_PATH: src/Adecco.API/publish/swagger.json
   API_IMPORT_DLL: src/Adecco.API/bin/Release/net8.0/Adecco.API.dll
-  API_IMPORT_VERSION: v3
+  API_IMPORT_VERSION: v1
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: src/Adecco.API
