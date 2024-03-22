@@ -6,7 +6,7 @@ public sealed class ClienteService(
     IUnitOfWork unitOfWork,
     IEnderecoService enderecoService,
     IValidacaoService validacaoService
-    ) : IClienteService
+) : IClienteService
 {
     private readonly IClienteRepository _clienteRepository = productRepository;
     private readonly IContatoService _contatoService = contatoService;
