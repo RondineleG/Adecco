@@ -67,7 +67,7 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarContato_DeveRetornarErroSeContatoForNulo()
     {
-        var contato = new Contato();
+        Contato contato = null;
         var resultado = _validacaoService.ValidarContato(contato);
         resultado.IsValid.Should().BeFalse();
         resultado.Errors.Should().Contain("Contato é nulo.");
@@ -76,7 +76,7 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarEndereco_DeveRetornarErroSeEnderecoForNulo()
     {
-        var endereco = new Endereco();
+        Endereco endereco = null;
         var resultado = _validacaoService.ValidarEndereco(endereco);
         resultado.IsValid.Should().BeFalse();
         resultado.Errors.Should().Contain("Endereço é nulo.");
@@ -97,10 +97,10 @@ public class ValidacaoServiceTest
     [Fact]
     public void ValidarCliente_DeveRetornarErroSeClienteForNulo()
     {
-        var cliente = new Cliente();        
+        Cliente cliente = null;     
         var resultado = _validacaoService.ValidarCliente(cliente);
-        resultado.IsValid.Should().BeFalse();
-        resultado.Errors.Should().Contain("Cliente é nulo.");
+        resultado.IsValid.Should().BeFalse();      
+        resultado.Errors.Should().Contain("Cliente é nulo.");          
     }
 
 
