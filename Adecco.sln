@@ -37,7 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{7F20
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{843CE0FC-9BF8-430C-AE7B-10F7E203BDDC}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\main.yml = .github\workflows\main.yml
+		.github\workflows\adecco-teste-api.yml = .github\workflows\adecco-teste-api.yml
+		.github\workflows\adecco-teste-web.yml = .github\workflows\adecco-teste-web.yml
 	EndProjectSection
 EndProject
 Global
