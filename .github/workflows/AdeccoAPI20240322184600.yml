@@ -42,7 +42,8 @@ jobs:
       - name: Generate Open API Specification Document
         run: |
           dotnet build ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }}
-          swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "Adecco.API.Program"
+          export DOTNET_ROOT=/usr/share/dotnet
+          /home/runner/.dotnet/tools/swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "Adecco.API.Program"
       - name: Publish Artifacts
         uses: actions/upload-artifact@v3
         with:
