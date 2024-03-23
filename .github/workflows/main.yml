@@ -47,9 +47,9 @@ jobs:
       - name: Restore dependencies for Blazor Web
         run: dotnet restore ./Adecco.sln
       - name: Build Blazor Web
-        run: dotnet build ./src/Adecco.Web --configuration Release --no-restore
+        run: dotnet build ./src/Adecco.Web/Adecco.Web --configuration Release --no-restore
       - name: Publish Blazor Web
-        run: dotnet publish ./src/Adecco.Web --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH_WEB }}'
+        run: dotnet publish ./src/Adecco.Web/Adecco.Web --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH_WEB }}'
       - name: Deploy Blazor Web
         uses: azure/webapps-deploy@v2
         with:
