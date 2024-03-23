@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core application
+name: Crie e implante o aplicativo .NET Core
 on:
   push:
     branches:
@@ -12,8 +12,8 @@ env:
   AZURE_APIM_SERVICENAME: AdeccoAPI
   AZURE_APIM_API_ID: AdeccoAPI
   AZURE_APIM_APPSERVICEURL: https://adeccoapi20240322184600.azurewebsites.net
-  SWASHBUCKLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
-  SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
+  SWASHBUCKLE_ASPNET_CORE_CLI_PACKAGE_VERSION:  6.5.0
+  SWASHBUCKLE_DOTNET_CORE_VERSION: 8.0.x
   API_IMPORT_SPECIFICATION_PATH: src/Adecco.API/publish/swagger.json
   API_IMPORT_DLL: src/Adecco.API/bin/Release/net8.0/Adecco.API.dll
   API_IMPORT_VERSION: v1
@@ -25,26 +25,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET SDK
+    - name: Configurar SDK do .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-    - name: Setup SwashBuckle .NET Core
+    - name: Configurar Swash Buckle .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.SWASHBUCKLE_DOTNET_CORE_VERSION }}
-    - name: Restore
+    - name: Restaurar
       run: dotnet restore ${{ env.WORKING_DIRECTORY }}
     - name: Build
       run: dotnet build ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-restore
-    - name: Test
+    - name: Teste
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
-    - name: Publish
+    - name: Publicar
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Install Swashbuckle CLI .NET Global Tool
-      run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
+    - name: Instalar a ferramenta global Swashbuckle CLI .NET
+      run: dotnet tool install --global Swashbuckle.AspNetCore.Cli  --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
-    - name: Generate Open API Specification Document
+    - name: Gerar documento de especificação de API aberta
       run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "Adecco.API.Program"
 
     - name: Publish Artifacts
@@ -71,7 +71,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AdeccoAPI_SPN }}
-      - name: Import API into Azure API Management
+      - name: Importar API para o Azure API Management
         run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
       - name: Logout
         run: az logout
