@@ -37,7 +37,19 @@ public static class NativeInjectorConfig
         {
             app.UseHsts();
             app.UseCustomWelcomePage(
-                new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
+                new CustomWelcomePageOptions
+                {
+                    Title =
+                        @"<p>
+                         <h3>Adecco Teste Api </h3>  
+                        </p>",
+                    Body =
+                        @"
+                                <p class=""card-text"">Essa e uma pagina de produção</p>
+                                <p class=""card-text"">Se esta vendo isso, prod esta funcionando!</p>
+                                ",
+                    Message = $"API em execução",
+                }
             );
         }
         app.UseHttpsRedirection();

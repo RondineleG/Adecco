@@ -26,12 +26,11 @@ public sealed class CustomWelcomePageMiddleware(
     <div class=""container mt-5"">
         <div class=""card"">
             <div class=""card-header"">
-                <h1 class=""card-title"">Bem-vindo à API</h1>
+                <h1 class=""card-title"">{_options.Title}</h1>
+               <p class=""card-text"">{_options.Message}</p>
             </div>
             <div class=""card-body"">
-                <p class=""card-text"">{_options.Message}</p>
-                <p class=""card-text"">Essa e uma pagina de produção</p>
-                <p class=""card-text"">Se esta vendo isso, prod esta funcionando!</p>
+             <div class=""card"">  {_options.Body}</p>
             </div>
         </div>
     </div>
