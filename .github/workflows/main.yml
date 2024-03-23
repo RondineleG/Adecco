@@ -11,9 +11,6 @@ env:
   AZURE_APIM_SERVICENAME: AdeccoAPI
   AZURE_APIM_API_ID: AdeccoAPI
   AZURE_APIM_APPSERVICEURL: ''
-  API_IMPORT_SPECIFICATION_PATH: src/Adecco.API/publish/swagger.json
-  API_IMPORT_DLL: src/Adecco.API/bin/Release/net8.0/Adecco.API.dll
-  API_IMPORT_VERSION: v3
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
   WORKING_DIRECTORY: src/Adecco.API
@@ -34,8 +31,6 @@ jobs:
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-    - name: Generate Open API Specification Document
-      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -61,7 +56,8 @@ jobs:
       with:
         creds: ${{ secrets.AdeccoAPI_SPN }}
     - name: Import API into Azure API Management
-      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
+      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.AZURE_APIM_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
     - name: logout
       run: >
         az logout
+
