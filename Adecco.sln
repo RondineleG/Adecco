@@ -31,7 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Web", "src\Adecco.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Web.Client", "src\Adecco.Web\Adecco.Web.Client\Adecco.Web.Client.csproj", "{CBC85019-1ECC-4B9C-823E-F08B63B0B6F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adecco.Core.Test", "test\Adecco.Core.Test\Adecco.Core.Test.csproj", "{23E5BDC4-5099-4425-A267-16827DE025FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adecco.Core.Test", "test\Adecco.Core.Test\Adecco.Core.Test.csproj", "{23E5BDC4-5099-4425-A267-16827DE025FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{7F20460C-53F1-4C67-A415-7A977B79537A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{843CE0FC-9BF8-430C-AE7B-10F7E203BDDC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +96,7 @@ Global
 		{D70F65AA-1717-4513-843B-632AF8589B7A} = {BEF8E976-5CF2-499D-8083-AC0999821D28}
 		{CBC85019-1ECC-4B9C-823E-F08B63B0B6F5} = {BEF8E976-5CF2-499D-8083-AC0999821D28}
 		{23E5BDC4-5099-4425-A267-16827DE025FA} = {D5C9974D-D8FC-4A84-BEDA-4C415BCBF4DF}
+		{843CE0FC-9BF8-430C-AE7B-10F7E203BDDC} = {7F20460C-53F1-4C67-A415-7A977B79537A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C57EDF0D-DA3A-47F8-823C-B8E61A6D0D34}
