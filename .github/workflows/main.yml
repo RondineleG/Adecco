@@ -1,4 +1,4 @@
-name: Publicando API
+name: Publish 🚀
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ on:
     - main
 
 env:
-  AZURE_WEBAPP_NAME: adeccotesteapi
+  AZURE_WEBAPP_NAME: adecco-teste-api
   AZURE_WEBAPP_PACKAGE_PATH: "./publish"
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
           
       - name: Restore
         run: dotnet restore ./Adecco.sln
@@ -29,11 +29,11 @@ jobs:
         run: dotnet build ./Adecco.sln --configuration Release --no-restore
         
       - name: Publish
-        run: dotnet publish ./CurrentTimeService.sln --configuration Release --no-build 
+        run: dotnet publish ./Adecco.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
         
       - name: Deployment
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ''
-          publish-profile: ''
-          package: ''
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
