@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core application to Web App AdeccoAPI20240322184600 with API Management Service AdeccoAPI-AdeccoAPI
+name: Build and deploy .NET Core application
 on:
   push:
     branches:
@@ -44,7 +44,8 @@ jobs:
       run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
       working-directory: ${{ env.WORKING_DIRECTORY }}
     - name: Generate Open API Specification Document
-      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
+      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "Adecco.API.Program"
+
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:

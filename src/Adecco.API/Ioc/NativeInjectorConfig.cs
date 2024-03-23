@@ -33,18 +33,18 @@ public static class NativeInjectorConfig
             app.UseDeveloperExceptionPage();
             app.UseCustomSwaggerUI();
         }
-        if (app.Environment.IsStaging())
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseCustomSwaggerUI();
-        }
-        if (app.Environment.IsProduction())
-        {
-            app.UseHsts();
-            app.UseCustomWelcomePage(
-                new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
-            );
-        }
+        //if (app.Environment.IsStaging())
+        //{
+        //    app.UseDeveloperExceptionPage();
+        //    app.UseCustomSwaggerUI();
+        //}
+        //if (app.Environment.IsProduction())
+        //{
+        //    app.UseHsts();
+        //    app.UseCustomWelcomePage(
+        //        new CustomWelcomePageOptions { Message = $"API {app.Environment} em execução" }
+        //    );
+        //}
         app.UseHttpsRedirection();
         app.MapControllers();
     }

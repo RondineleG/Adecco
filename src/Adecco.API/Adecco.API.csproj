@@ -7,13 +7,21 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 	</PropertyGroup>
 
+	<Target Name="SwaggerPostBuildTarget" AfterTargets="PostBuildEvent">
+		<Exec Command="dotnet tool install --global Swashbuckle.AspNetCore.Cli --version 6.5.0" IgnoreExitCode="true"></Exec>
+		<Exec Command="dotnet tool restore"></Exec>
+		<Exec Command="dotnet swagger tofile --output swagger/v1/swagger.json $(TargetDir)$(AssemblyName).dll v1" IgnoreExitCode="true"></Exec>
+		<Exec Command="dotnet swagger tofile --output swagger/v2/swagger.json $(TargetDir)$(AssemblyName).dll v2" IgnoreExitCode="true"></Exec>
+		<Exec Command="dotnet swagger tofile --output swagger/v3/swagger.json $(TargetDir)$(AssemblyName).dll v3" IgnoreExitCode="true"></Exec>
+	</Target>
+
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
