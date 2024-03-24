@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+
 using Adecco.Application.Extensions;
 
 namespace Adecco.Application.Test.Extensions;
@@ -10,6 +11,7 @@ public enum MeuEnum
 
     [Description("Segunda descrição")]
     SegundoValor,
+
     TerceiroValor
 }
 

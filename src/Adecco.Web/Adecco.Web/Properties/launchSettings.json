@@ -1,13 +1,13 @@
 {
   "$schema": "http://json.schemastore.org/launchsettings.json",
-    "iisSettings": {
-      "windowsAuthentication": false,
-      "anonymousAuthentication": true,
-      "iisExpress": {
-        "applicationUrl": "http://localhost:1207",
-        "sslPort": 44320
-      }
-    },
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:1207",
+      "sslPort": 44320
+    }
+  },
   "profiles": {
     "Development": {
       "commandName": "Project",
@@ -30,4 +30,4 @@
       }
     }
   }
-  }
+}
