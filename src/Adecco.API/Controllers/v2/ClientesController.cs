@@ -13,22 +13,36 @@ public sealed class ClientesController(
     private readonly IContatoService _contatoService = contatoService;
     private readonly IEnderecoService _enderecoService = enderecoService;
     private readonly IValidacaoService _validacaoService = validacaoService;
-
     private readonly IMapper _mapper = mapper;
 
-    [HttpGet("/cliente/listar")]
-    public async Task<IEnumerable<ClienteResponseDto>> ListAsync(
-        string nome,
-        string email,
-        string cpf
-    )
+    /// <summary>
+    /// Retorna todos clientes cadastrados na base.
+    /// </summary>
+    /// <returns>Retorna os clientes encontrados</returns>
+    /// <response code="200">Retorna os clientes encontrados</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status404NotFound)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpGet("cliente/listar")]
+    public async Task<IActionResult> ListAsync(string nome, string email, string cpf)
     {
         var clientes = await _clienteService.ListAsync(nome?.Trim(), email?.Trim(), cpf?.Trim());
         var response = _mapper.Map<IEnumerable<Cliente>, IEnumerable<ClienteResponseDto>>(clientes);
-        return response;
+        return ResponseOk(response);
     }
 
-    [HttpPost("/cliente/criar")]
+    /// <summary>
+    /// Cria um cliente.
+    /// </summary>
+    /// <param name="livro">Dados do cliente</param>
+    /// <returns>Um novo cliente criado</returns>
+    /// <response code="201">Retorna com o Id criado</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao criar um cliente</response>
+    [CustomResponse(StatusCodes.Status201Created)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpPost("criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
         if (!ModelState.IsValid)
@@ -69,10 +83,22 @@ public sealed class ClientesController(
         if (!result.Success)
             return BadRequest(result.Message);
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
-        return Ok(response);
+        return ResponseOk(response);
     }
 
-    [HttpPut("/cliente/atualizar/{clienteId}")]
+    /// <summary>
+    /// Atualiza um cliente.
+    /// </summary>
+    /// <param name="clienteId">Id do cliente</param>
+    /// <param name="enderecoId">Id do endereco</param>
+    /// <param name="contatoId">Id do contato</param>
+    /// <response code="200">Retorna com o status da atualização</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao atualizar um cliente</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpPut("atualizar/{clienteId}")]
     public async Task<IActionResult> PutAsync(
         int clienteId,
         int enderecoId,
@@ -111,16 +137,26 @@ public sealed class ClientesController(
         if (!result.Success)
             return BadRequest(result.Message);
         var clienteResponse = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
-        return Ok(clienteResponse);
+        return ResponseOk(clienteResponse);
     }
 
-    [HttpDelete("/cliente/remover/{clienteId}")]
+    /// <summary>
+    /// Exclui um cliente.
+    /// </summary>
+    /// <param name="id">id do cliente</param>
+    /// <response code="200">Retorna com o status da exclusão</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao cliente um livro</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpDelete("remover/{clienteId}")]
     public async Task<IActionResult> DeleteAsync(int clienteId)
     {
         var result = await _clienteService.DeleteAsync(clienteId);
         if (!ModelState.IsValid)
             return BadRequest(ModelState.GetErrorMessages());
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
-        return Ok(response);
+        return ResponseOk(response);
     }
 }

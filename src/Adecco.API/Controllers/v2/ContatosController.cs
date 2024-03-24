@@ -11,16 +11,35 @@ public sealed class ContatosController(
     private readonly IMapper _mapper = mapper;
     private readonly IValidacaoService _validacaoService = validacaoService;
 
+    /// <summary>
+    /// Retorna todos contatos cadastrados na base.
+    /// </summary>
+    /// <returns>Retorna os contatos encontrados</returns>
+    /// <response code="200">Retorna os contatos encontrados</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status404NotFound)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
     [HttpGet("/contato/listar")]
-    public async Task<IEnumerable<ContatoResponseDto>> ListAsync(int? clienteId, int? contatoId)
+    public async Task<IActionResult> ListAsync(int? clienteId, int? contatoId)
     {
         var categories = await _contatoService.ListAsync(clienteId, contatoId);
         var resources = _mapper.Map<IEnumerable<Contato>, IEnumerable<ContatoResponseDto>>(
             categories
         );
-        return resources;
+        return ResponseOk(resources);
     }
 
+    /// <summary>
+    /// Cria um contato.
+    /// </summary>
+    /// <param name="livro">Dados do contato</param>
+    /// <returns>Um novo contato criado</returns>
+    /// <response code="201">Retorna com o Id criado</response>
+    /// <response code="400">Se o contato passado for nulo</response>
+    /// <response code="500">Se houver um erro ao criar um contato</response>
+    [CustomResponse(StatusCodes.Status201Created)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
     [HttpPost("/contato/criar")]
     public async Task<IActionResult> PostAsync(int clienteId, [FromBody] ContatoRequestDto request)
     {
@@ -41,9 +60,19 @@ public sealed class ContatosController(
         if (!result.Success)
             return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
-        return Ok(contatoResponse);
+        return ResponseOk(contatoResponse);
     }
 
+    /// <summary>
+    /// Atualiza um contato.
+    /// </summary>
+    /// <param name="contatoId">Id do contato</param>
+    /// <response code="200">Retorna com o status da atualização</response>
+    /// <response code="400">Se o contato passado for nulo</response>
+    /// <response code="500">Se houver um erro ao atualizar um contato</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
     [HttpPut("/contato/atualizar{contatoId}")]
     public async Task<IActionResult> PutAsync(int contatoId, [FromBody] ContatoRequestDto request)
     {
@@ -54,9 +83,19 @@ public sealed class ContatosController(
         if (!result.Success)
             return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
-        return Ok(contatoResponse);
+        return ResponseOk(contatoResponse);
     }
 
+    /// <summary>
+    /// Exclui um contato.
+    /// </summary>
+    /// <param name="contatoId">id do contato</param>
+    /// <response code="200">Retorna com o status da exclusão</response>
+    /// <response code="400">Se o contato passado for nulo</response>
+    /// <response code="500">Se houver um erro ao buscar um contato</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
     [HttpDelete("/contato/remover{contatoId}")]
     public async Task<IActionResult> DeleteAsync(int contatoId)
     {
@@ -64,6 +103,6 @@ public sealed class ContatosController(
         if (!result.Success)
             return BadRequest(result.Message);
         var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
-        return Ok(contatoResponse);
+        return ResponseOk(contatoResponse);
     }
 }
