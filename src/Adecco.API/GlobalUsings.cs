@@ -5,6 +5,7 @@ global using System.Text.Json;
 global using System.Threading.Tasks;
 global using Adecco.API.Controllers.Base;
 global using Adecco.API.Extensions;
+global using Adecco.API.Ioc;
 global using Adecco.API.WelcomePage;
 global using Adecco.Application.AutoMapper;
 global using Adecco.Application.Dtos.Cliente;
