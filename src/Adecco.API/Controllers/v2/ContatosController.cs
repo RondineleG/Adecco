@@ -32,7 +32,8 @@ public sealed class ContatosController(
     /// <summary>
     /// Cria um contato.
     /// </summary>
-    /// <param name="livro">Dados do contato</param>
+    /// <param name="clienteId">Id do cliente</param>
+    /// <param name="request">Dados do contato</param>
     /// <returns>Um novo contato criado</returns>
     /// <response code="201">Retorna com o Id criado</response>
     /// <response code="400">Se o contato passado for nulo</response>
@@ -67,6 +68,7 @@ public sealed class ContatosController(
     /// Atualiza um contato.
     /// </summary>
     /// <param name="contatoId">Id do contato</param>
+    ///<param name="request">Dados do contato</param>
     /// <response code="200">Retorna com o status da atualiza��o</response>
     /// <response code="400">Se o contato passado for nulo</response>
     /// <response code="500">Se houver um erro ao atualizar um contato</response>

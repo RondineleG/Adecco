@@ -35,6 +35,7 @@ public sealed class EnderecosController(
     /// Cria um endereco.
     /// </summary>
     /// <param name="clienteId">Id do endereco</param>
+    /// <param name="request">Dados do endereco</param>
     /// <returns>Um novo endereco criado</returns>
     /// <response code="201">Retorna com o Id criado</response>
     /// <response code="400">Se o endereco passado for nulo</response>
@@ -69,7 +70,8 @@ public sealed class EnderecosController(
     /// Atualiza um endereco.
     /// </summary>
     /// <param name="enderecoId">Id do endereco</param>
-    /// <response code="200">Retorna com o status da atualiza��o</response>
+    /// <param name="request">Dados do endereco</param>
+    /// <response code="200">Retorna com o status da atualizacao</response>
     /// <response code="400">Se o endereco passado for nulo</response>
     /// <response code="500">Se houver um erro ao atualizar um endereco</response>
     [CustomResponse(StatusCodes.Status200OK)]

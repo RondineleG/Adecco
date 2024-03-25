@@ -34,7 +34,7 @@ public sealed class ClientesController(
     /// <summary>
     /// Cria um cliente.
     /// </summary>
-    /// <param name="livro">Dados do cliente</param>
+    /// <param name="request">Dados do cliente</param>
     /// <returns>Um novo cliente criado</returns>
     /// <response code="201">Retorna com o Id criado</response>
     /// <response code="400">Se o cliente passado for nulo</response>
@@ -92,7 +92,8 @@ public sealed class ClientesController(
     /// <param name="clienteId">Id do cliente</param>
     /// <param name="enderecoId">Id do endereco</param>
     /// <param name="contatoId">Id do contato</param>
-    /// <response code="200">Retorna com o status da atualiza��o</response>
+    /// <param name="request">Dados do contato</param>
+    /// <response code="200">Retorna com o status da atualizacao</response>
     /// <response code="400">Se o cliente passado for nulo</response>
     /// <response code="500">Se houver um erro ao atualizar um cliente</response>
     [CustomResponse(StatusCodes.Status200OK)]
@@ -143,7 +144,7 @@ public sealed class ClientesController(
     /// <summary>
     /// Exclui um cliente.
     /// </summary>
-    /// <param name="id">id do cliente</param>
+    /// <param name="clienteId">id do cliente</param>
     /// <response code="200">Retorna com o status da exclus�o</response>
     /// <response code="400">Se o cliente passado for nulo</response>
     /// <response code="500">Se houver um erro ao cliente um livro</response>
