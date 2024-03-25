@@ -57,6 +57,7 @@ public static class NativeInjectorConfig
         }
         app.UseHttpsRedirection();
         app.UseRouting();
+        app.UseSerilogRequestLogging();
         app.MapControllers();
     }
 }

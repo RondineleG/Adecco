@@ -13,7 +13,7 @@ public sealed class ClientesController(
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<ClientesController> _logger = logger;
 
-    [HttpGet("{id}")]
+    [HttpGet("{clienteId}")]
     public IActionResult Get(int clienteId)
     {
         var people = JsonFileHelper.LerArquivoJson();
@@ -26,26 +26,28 @@ public sealed class ClientesController(
     [HttpGet]
     public IActionResult Get(string nome = "", string email = "", string cpf = "")
     {
-        var clientes = JsonFileHelper.LerArquivoJson();
-        if (!string.IsNullOrWhiteSpace(nome))
-        {
-            clientes = clientes
-                .Where(c => c.Nome.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-        if (!string.IsNullOrWhiteSpace(email))
-        {
-            clientes = clientes
-                .Where(c => c.Email.Contains(email.Trim(), StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-        if (!string.IsNullOrWhiteSpace(cpf))
-        {
-            clientes = clientes
-                .Where(c => c.CPF.Contains(cpf.Trim(), StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
-        return Ok(clientes);
+        throw new Exception();
+
+        //var clientes = JsonFileHelper.LerArquivoJson();
+        //if (!string.IsNullOrWhiteSpace(nome))
+        //{
+        //    clientes = clientes
+        //        .Where(c => c.Nome.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase))
+        //        .ToList();
+        //}
+        //if (!string.IsNullOrWhiteSpace(email))
+        //{
+        //    clientes = clientes
+        //        .Where(c => c.Email.Contains(email.Trim(), StringComparison.OrdinalIgnoreCase))
+        //        .ToList();
+        //}
+        //if (!string.IsNullOrWhiteSpace(cpf))
+        //{
+        //    clientes = clientes
+        //        .Where(c => c.CPF.Contains(cpf.Trim(), StringComparison.OrdinalIgnoreCase))
+        //        .ToList();
+        //}
+        //return Ok(clientes);
     }
 
     [HttpGet("/cliente/listar")]

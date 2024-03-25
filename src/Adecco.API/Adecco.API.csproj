@@ -5,20 +5,17 @@
 		<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<InvariantGlobalization>true</InvariantGlobalization>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
-
-	<Target Name="SwaggerPostBuildTarget" AfterTargets="PostBuildEvent">
-		<Exec Command="dotnet tool install Swashbuckle.AspNetCore.Cli" IgnoreExitCode="true"></Exec>
-		<Exec Command="dotnet tool restore"></Exec>
-		<Exec Command="dotnet swagger tofile --output swagger/v1/swagger.json $(TargetDir)$(AssemblyName).dll v1" IgnoreExitCode="true"></Exec>
-		<Exec Command="dotnet swagger tofile --output swagger/v2/swagger.json $(TargetDir)$(AssemblyName).dll v2" IgnoreExitCode="true"></Exec>
-		<Exec Command="dotnet swagger tofile --output swagger/v3/swagger.json $(TargetDir)$(AssemblyName).dll v3" IgnoreExitCode="true"></Exec>
-	</Target>
-
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.3" />
+		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+		<PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="7.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Asp.Versioning.Mvc" Version="8.0.0" />
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.0.0" />
@@ -33,11 +30,16 @@
 		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="SerilogTimings" Version="3.1.0" />
+		<PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Adecco.Application\Adecco.Application.csproj" />
 		<ProjectReference Include="..\Adecco.Persistence\Adecco.Persistence.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\Logs\" />
 	</ItemGroup>
 
 </Project>

@@ -16,14 +16,11 @@ if (hostEnvironment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>(optional: true);
 }
 builder.Services.RegisterApplicationServices(builder.Configuration);
-builder.Host.UseSerilog(
-    (hostingContext, loggerConfiguration) =>
-        loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration).CreateLogger()
-);
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 app.UseApplicationServices();
-
 try
 {
     Log.Information("Iniciando o WebApi");
