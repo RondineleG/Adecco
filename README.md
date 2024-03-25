@@ -71,5 +71,5 @@ A aplicação deve estar configurada para publicação via localhost no Visual S
 A aplicação deverá ser disponibilizada
 
 ## Publicação
-- **Versão da API**: [https://adecco-teste-api.azurewebsites.net/](https://adecco-teste-api.azurewebsites.net/)
-- **Versão do Aplicativo**: [https://adecco-teste-web.azurewebsites.net/](https://adecco-teste-web.azurewebsites.net/)
+- ** API**: [https://adecco-teste-api.azurewebsites.net/](https://adecco-teste-api.azurewebsites.net/)
+- ** Web**: [https://adecco-teste-web.azurewebsites.net/](https://adecco-teste-web.azurewebsites.net/)
