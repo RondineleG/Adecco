@@ -7,7 +7,7 @@ public sealed class ClientesController(
     IEnderecoService enderecoService,
     IContatoService contatoService,
     IValidacaoService validacaoService
-) : BaseController
+) : ApiBaseController
 {
     private readonly IClienteService _clienteService = productService;
     private readonly IContatoService _contatoService = contatoService;
@@ -46,7 +46,7 @@ public sealed class ClientesController(
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
@@ -72,16 +72,16 @@ public sealed class ClientesController(
             validacaoResponse
         );
         if (!validacaoResponse.Success)
-            return BadRequest(validacaoResponse);
+            return ResponseBadRequest(validacaoResponse);
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
         if (!contatoResponse.Success)
-            return BadRequest(contatoResponse.Message);
+            return ResponseBadRequest(contatoResponse.Message);
         if (!enderecoResponse.Success)
-            return BadRequest(enderecoResponse.Message);
+            return ResponseBadRequest(enderecoResponse.Message);
         var result = await _clienteService.SaveAsync(cliente);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return ResponseBadRequest(result.Message);
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return ResponseOk(response);
     }
@@ -92,7 +92,7 @@ public sealed class ClientesController(
     /// <param name="clienteId">Id do cliente</param>
     /// <param name="enderecoId">Id do endereco</param>
     /// <param name="contatoId">Id do contato</param>
-    /// <response code="200">Retorna com o status da atualização</response>
+    /// <response code="200">Retorna com o status da atualizaï¿½ï¿½o</response>
     /// <response code="400">Se o cliente passado for nulo</response>
     /// <response code="500">Se houver um erro ao atualizar um cliente</response>
     [CustomResponse(StatusCodes.Status200OK)]
@@ -107,10 +107,10 @@ public sealed class ClientesController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.FindByIdAsync(clienteId);
         if (clienteExistente == null)
-            throw new NotFoundException("Cliente", clienteId);
+            return ResponseNotFound("Cliente", clienteId);
         _mapper.Map(request, clienteExistente);
         var contatoExistente = clienteExistente.Contatos.FirstOrDefault(c => c.Id == contatoId);
         if (contatoExistente != null)
@@ -135,7 +135,7 @@ public sealed class ClientesController(
 
         var result = await _clienteService.UpdateAsync(clienteId, clienteExistente);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return ResponseBadRequest(result.Message);
         var clienteResponse = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return ResponseOk(clienteResponse);
     }
@@ -144,7 +144,7 @@ public sealed class ClientesController(
     /// Exclui um cliente.
     /// </summary>
     /// <param name="id">id do cliente</param>
-    /// <response code="200">Retorna com o status da exclusão</response>
+    /// <response code="200">Retorna com o status da exclusï¿½o</response>
     /// <response code="400">Se o cliente passado for nulo</response>
     /// <response code="500">Se houver um erro ao cliente um livro</response>
     [CustomResponse(StatusCodes.Status200OK)]
@@ -155,7 +155,7 @@ public sealed class ClientesController(
     {
         var result = await _clienteService.DeleteAsync(clienteId);
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return ResponseOk(response);
     }

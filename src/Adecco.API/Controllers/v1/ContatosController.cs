@@ -6,7 +6,7 @@ public sealed class ContatosController(
     ILogger<ClientesController> logger,
     IMapper mapper,
     IValidacaoService validacaoService
-) : ControllerBase
+) : ApiBaseController
 {
     private readonly IClienteJsonService _clienteService = clienteService;
     private readonly ILogger<ClientesController> _logger = logger;
@@ -20,7 +20,7 @@ public sealed class ContatosController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
@@ -33,10 +33,10 @@ public sealed class ContatosController(
                 validacaoResponse
             );
             if (!validacaoResponse.Success)
-                return BadRequest(validacaoResponse);
+                return ResponseBadRequest(validacaoResponse);
             var result = await _clienteService.AtualizarContato(clienteId, contato);
             if (!result.Success)
-                return BadRequest(result.Message);
+                return ResponseBadRequest(result.Message);
             var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
             return Ok(contatoResponse);
         }
@@ -75,7 +75,7 @@ public sealed class ContatosController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         try
         {
             var contato = _mapper.Map<ContatoRequestDto, Contato>(request);
@@ -88,10 +88,10 @@ public sealed class ContatosController(
                 validacaoResponse
             );
             if (!validacaoResponse.Success)
-                return BadRequest(validacaoResponse);
+                return ResponseBadRequest(validacaoResponse);
             var result = await _clienteService.IncluirContato(clienteId, contato);
             if (!result.Success)
-                return BadRequest(result.Message);
+                return ResponseBadRequest(result.Message);
             var contatoResponse = _mapper.Map<Contato, ContatoResponseDto>(result.Contato);
             return Ok(contatoResponse);
         }

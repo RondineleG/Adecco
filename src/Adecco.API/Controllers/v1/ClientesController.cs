@@ -6,7 +6,7 @@ public sealed class ClientesController(
     ILogger<ClientesController> logger,
     IValidacaoService validacaoService,
     IMapper mapper
-) : BaseController
+) : ApiBaseController
 {
     private readonly IClienteJsonService _clienteService = clienteService;
     private readonly IValidacaoService _validacaoService = validacaoService;
@@ -19,7 +19,7 @@ public sealed class ClientesController(
         var people = JsonFileHelper.LerArquivoJson();
         var person = people.FirstOrDefault(p => p.Id == clienteId);
         if (person == null)
-            throw new NotFoundException("Cliente", clienteId);
+            return ResponseNotFound("Cliente", clienteId);
         return Ok(person);
     }
 
@@ -68,7 +68,7 @@ public sealed class ClientesController(
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var contato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request.Endereco);
         var cliente = _mapper.Map<ClienteRequestDto, Cliente>(request);
@@ -94,7 +94,7 @@ public sealed class ClientesController(
             validacaoResponse
         );
         if (!validacaoResponse.Success)
-            return BadRequest(validacaoResponse);
+            return ResponseBadRequest(validacaoResponse);
         try
         {
             await _clienteService.AdicionarCliente(cliente);
@@ -123,10 +123,10 @@ public sealed class ClientesController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
         if (clienteExistente == null)
-            throw new NotFoundException("Cliente", clienteId);
+            return ResponseNotFound("Cliente", clienteId);
 
         _mapper.Map(request, clienteExistente);
 

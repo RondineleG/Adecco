@@ -6,7 +6,7 @@ public sealed class EnderecosController(
     ILogger<ClientesController> logger,
     IMapper mapper,
     IValidacaoService validacaoService
-) : ControllerBase
+) : ApiBaseController
 {
     private readonly IClienteJsonService _clienteService = clienteService;
     private readonly ILogger<ClientesController> _logger = logger;
@@ -20,13 +20,13 @@ public sealed class EnderecosController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
             var result = await _clienteService.AtualizarEndereco(clienteId, endereco);
             if (!result.Success)
-                return BadRequest(result.Message);
+                return ResponseBadRequest(result.Message);
             var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(contatoResponse);
         }
@@ -59,7 +59,7 @@ public sealed class EnderecosController(
     )
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         try
         {
             var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
@@ -72,10 +72,10 @@ public sealed class EnderecosController(
                 validacaoResponse
             );
             if (!validacaoResponse.Success)
-                return BadRequest(validacaoResponse);
+                return ResponseBadRequest(validacaoResponse);
             var result = await _clienteService.IncluirEndereco(clienteId, endereco);
             if (!result.Success)
-                return BadRequest(result.Message);
+                return ResponseBadRequest(result.Message);
             var response = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
             return Ok(response);
         }

@@ -11,6 +11,7 @@ public static class NativeInjectorConfig
         services.AddEndpointsApiExplorer();
         services.AddSwaggerAndConfigApiVersioning();
         services.AddAndConfigSwagger();
+
         var connection = configuration["DefaultConnection:ConnectionString"];
         services.AddDbContext<ApplicattionDataContext>(options => options.UseSqlite(connection));
         services.AddScoped<IContatoRepository, CotatoRepository>();
@@ -28,6 +29,8 @@ public static class NativeInjectorConfig
 
     public static void UseApplicationServices(this WebApplication app)
     {
+        app.UseExceptionHandler("/error");
+
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -53,6 +56,7 @@ public static class NativeInjectorConfig
             );
         }
         app.UseHttpsRedirection();
+        app.UseRouting();
         app.MapControllers();
     }
 }

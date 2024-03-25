@@ -5,7 +5,7 @@ public sealed class EnderecosController(
     IEnderecoService enderecoService,
     IMapper mapper,
     IValidacaoService validacaoService
-) : BaseController
+) : ApiBaseController
 {
     private readonly IEnderecoService _enderecoService = enderecoService;
     private readonly IMapper _mapper = mapper;
@@ -46,7 +46,7 @@ public sealed class EnderecosController(
     public async Task<IActionResult> PostAsync(int clienteId, [FromBody] EnderecoRequestDto request)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
         endereco.AdicionarClienteId(clienteId);
         var validacaoResponse = new CustomResponse();
@@ -57,10 +57,10 @@ public sealed class EnderecosController(
             validacaoResponse
         );
         if (!validacaoResponse.Success)
-            return BadRequest(validacaoResponse);
+            return ResponseBadRequest(validacaoResponse);
         var result = await _enderecoService.SaveAsync(endereco);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return ResponseBadRequest(result.Message);
         var response = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return ResponseOk(response);
     }
@@ -69,7 +69,7 @@ public sealed class EnderecosController(
     /// Atualiza um endereco.
     /// </summary>
     /// <param name="enderecoId">Id do endereco</param>
-    /// <response code="200">Retorna com o status da atualização</response>
+    /// <response code="200">Retorna com o status da atualizaï¿½ï¿½o</response>
     /// <response code="400">Se o endereco passado for nulo</response>
     /// <response code="500">Se houver um erro ao atualizar um endereco</response>
     [CustomResponse(StatusCodes.Status200OK)]
@@ -79,11 +79,11 @@ public sealed class EnderecosController(
     public async Task<IActionResult> PutAsync(int enderecoId, [FromBody] EnderecoRequestDto request)
     {
         if (!ModelState.IsValid)
-            return BadRequest(ModelState.GetErrorMessages());
+            return ResponseBadRequest(ModelState.GetErrorMessages());
         var endereco = _mapper.Map<EnderecoRequestDto, Endereco>(request);
         var result = await _enderecoService.UpdateAsync(enderecoId, endereco);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return ResponseBadRequest(result.Message);
         var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return ResponseOk(contatoResponse);
     }
@@ -92,7 +92,7 @@ public sealed class EnderecosController(
     /// Exclui um endereco.
     /// </summary>
     /// <param name="enderecoId">id do endereco</param>
-    /// <response code="200">Retorna com o status da exclusão</response>
+    /// <response code="200">Retorna com o status da exclusï¿½o</response>
     /// <response code="400">Se o endereco passado for nulo</response>
     /// <response code="500">Se houver um erro ao buscar um endereco</response>
     [CustomResponse(StatusCodes.Status200OK)]
@@ -103,7 +103,7 @@ public sealed class EnderecosController(
     {
         var result = await _enderecoService.DeleteAsync(enderecoId);
         if (!result.Success)
-            return BadRequest(result.Message);
+            return ResponseBadRequest(result.Message);
         var contatoResponse = _mapper.Map<Endereco, EnderecoResponseDto>(result.Endereco);
         return ResponseOk(contatoResponse);
     }
