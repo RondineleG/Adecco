@@ -1,6 +1,6 @@
-public sealed class UnitOfWork(ApplicattionDataContext context) : IUnitOfWork
+public sealed class UnitOfWork(EntityFrameworkDataContext context) : IUnitOfWork
 {
-    private readonly ApplicattionDataContext _context = context;
+    private readonly EntityFrameworkDataContext _context = context;
 
     public async Task CompleteAsync()
     {

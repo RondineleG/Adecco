@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Repositories.Base;
 
-public abstract class BaseRepository(ApplicattionDataContext context)
+public abstract class BaseRepository(EntityFrameworkDataContext context)
 {
-    protected readonly ApplicattionDataContext _context = context;
+    protected readonly EntityFrameworkDataContext _context = context;
 }

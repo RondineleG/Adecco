@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Adecco.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicattionDataContext))]
+    [DbContext(typeof(EntityFrameworkDataContext))]
     [Migration("20240321190944_Start")]
     partial class Start
     {

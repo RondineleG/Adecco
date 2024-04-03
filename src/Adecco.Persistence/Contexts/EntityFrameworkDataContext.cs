@@ -1,7 +1,9 @@
+using Adecco.Persistence.Contexts.Interfaces;
+
 namespace Adecco.Persistence.Contexts;
 
-public sealed class ApplicattionDataContext(DbContextOptions<ApplicattionDataContext> options)
-    : DbContext(options)
+public sealed class EntityFrameworkDataContext(DbContextOptions<EntityFrameworkDataContext> options)
+    : DbContext(options), IApplicattionDataContext
 {
     public DbSet<Cliente> Clientes { get; set; }
 

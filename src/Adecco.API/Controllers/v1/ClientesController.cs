@@ -1,72 +1,93 @@
+using System.Threading;
+
 namespace Adecco.API.Controllers.v1;
 
 [ApiVersion("1.0")]
 public sealed class ClientesController(
-    IClienteJsonService clienteService,
-    ILogger<ClientesController> logger,
+    IClienteService productService,
+    IMapper mapper,
+    IEnderecoService enderecoService,
+    IContatoService contatoService,
     IValidacaoService validacaoService,
-    IMapper mapper
+    ILogger<ClientesController> logger
 ) : ApiBaseController
 {
-    private readonly IClienteJsonService _clienteService = clienteService;
+    private readonly IClienteService _clienteService = productService;
+    private readonly IContatoService _contatoService = contatoService;
+    private readonly IEnderecoService _enderecoService = enderecoService;
     private readonly IValidacaoService _validacaoService = validacaoService;
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper _mapper = mapper;     
     private readonly ILogger<ClientesController> _logger = logger;
 
-    [HttpGet("{clienteId}")]
-    public IActionResult Get(int clienteId)
+
+    /// <summary>
+    /// Retorna todos clientes cadastrados na base.
+    /// </summary>
+    /// <returns>Retorna os clientes encontrados</returns>
+    /// <response code="200">Retorna os clientes encontrados</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status404NotFound)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpGet("cliente/listar")]
+    public async Task<IActionResult> ListAsync(string nome, string email, string cpf)
     {
-        var people = JsonFileHelper.LerArquivoJson();
-        var person = people.FirstOrDefault(p => p.Id == clienteId);
-        if (person == null)
-            return ResponseNotFound("Cliente", clienteId);
-        return Ok(person);
+        try
+        {
+            Log.Information($"{nameof(ClientesController)} => {nameof(ListAsync)} recebeu os parâmetros: nome='{nome}', email='{email}', cpf='{cpf}'");
+            var stopwatch = Stopwatch.StartNew();
+            var clientes = await _clienteService.ListAsync(nome?.Trim(), email?.Trim(), cpf?.Trim());
+            stopwatch.Stop();
+            var response = _mapper.Map<IEnumerable<Cliente>, IEnumerable<ClienteResponseDto>>(clientes);
+            Log.Information($"{nameof(ClientesController)} => {nameof(ListAsync)} retornou {response.Count()} clientes. Tempo de execução: {stopwatch.ElapsedMilliseconds} ms");
+            return ResponseOk(response);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(ClientesController)} => {nameof(ListAsync)} encontrou uma exceção: {ex.Message}");
+            throw; 
+        }
     }
 
-    [HttpGet]
-    public IActionResult Get(string nome = "", string email = "", string cpf = "")
+    /// <summary>
+    /// Retorna um cliente com base no ID do cliente.
+    /// </summary>
+    /// <param name="clienteId">O ID do cliente a ser retornado.</param>
+    /// <param name="cancellationToken">Usado para cancelar a requisição.</param>
+    /// <returns>Retorna o cliente encontrado.</returns>
+    /// <response code="200">Retorna o cliente encontrado.</response>
+    /// <response code="404">Se o cliente não for encontrado.</response>
+    /// <response code="500">Se ocorrer um erro interno no servidor.</response>
+    [HttpGet("/cliente/listar/{clienteId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> GetAsync(int clienteId, CancellationToken cancellationToken)
     {
-        throw new Exception();
+        _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Retorna o cliente cadastrado na base por ID.");
+        var cliente = await _clienteService.GetAsync(clienteId, cancellationToken);
 
-        //var clientes = JsonFileHelper.LerArquivoJson();
-        //if (!string.IsNullOrWhiteSpace(nome))
-        //{
-        //    clientes = clientes
-        //        .Where(c => c.Nome.Contains(nome.Trim(), StringComparison.OrdinalIgnoreCase))
-        //        .ToList();
-        //}
-        //if (!string.IsNullOrWhiteSpace(email))
-        //{
-        //    clientes = clientes
-        //        .Where(c => c.Email.Contains(email.Trim(), StringComparison.OrdinalIgnoreCase))
-        //        .ToList();
-        //}
-        //if (!string.IsNullOrWhiteSpace(cpf))
-        //{
-        //    clientes = clientes
-        //        .Where(c => c.CPF.Contains(cpf.Trim(), StringComparison.OrdinalIgnoreCase))
-        //        .ToList();
-        //}
-        //return Ok(clientes);
+        if (cliente == null)
+        {
+            _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Cliente não encontrado na base.");
+            return ResponseNotFound();
+        }
+        _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Cliente encontrado na base: {cliente}.");
+        return ResponseOk(cliente);
     }
 
-    [HttpGet("/cliente/listar")]
-    public async Task<IEnumerable<ClienteResponseDto>> ListAsync(
-        string nome,
-        string email,
-        string cpf
-    )
-    {
-        var clientes = await _clienteService.ListarClientes(
-            nome?.Trim(),
-            email?.Trim(),
-            cpf?.Trim()
-        );
-        var clienteResponseDto = _mapper.Map<List<ClienteResponseDto>>(clientes);
-        return clienteResponseDto;
-    }
 
-    [HttpPost("/cliente/criar")]
+    /// <summary>
+    /// Cria um cliente.
+    /// </summary>
+    /// <param name="request">Dados do cliente</param>
+    /// <returns>Um novo cliente criado</returns>
+    /// <response code="201">Retorna com o Id criado</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao criar um cliente</response>
+    [CustomResponse(StatusCodes.Status201Created)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpPost("criar")]
     public async Task<IActionResult> PostAsync([FromBody] ClienteRequestDto request)
     {
         if (!ModelState.IsValid)
@@ -97,26 +118,33 @@ public sealed class ClientesController(
         );
         if (!validacaoResponse.Success)
             return ResponseBadRequest(validacaoResponse);
-        try
-        {
-            await _clienteService.AdicionarCliente(cliente);
-            endereco.AdicionarClienteId(cliente.Id);
-            contato.AdicionarClienteId(cliente.Id);
-            await _clienteService.IncluirEndereco(cliente.Id, endereco);
-            await _clienteService.IncluirContato(cliente.Id, contato);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex,
-                $"{nameof(ClientesController)} => {nameof(_clienteService.AdicionarCliente)} => Erro ao adicionar cliente."
-            );
-            return StatusCode(500, $"Ocorreu um erro interno ao adicionar o cliente: {ex.Message}");
-        }
+        var enderecoResponse = await _enderecoService.SaveAsync(endereco);
+        var contatoResponse = await _contatoService.SaveAsync(contato);
+        if (!contatoResponse.Success)
+            return ResponseBadRequest(contatoResponse.Message);
+        if (!enderecoResponse.Success)
+            return ResponseBadRequest(enderecoResponse.Message);
+        var result = await _clienteService.SaveAsync(cliente);
+        if (!result.Success)
+            return ResponseBadRequest(result.Message);
+        var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
+        return ResponseOk(response);
     }
 
-    [HttpPut("/cliente/atualizar/{clienteId}")]
+    /// <summary>
+    /// Atualiza um cliente.
+    /// </summary>
+    /// <param name="clienteId">Id do cliente</param>
+    /// <param name="enderecoId">Id do endereco</param>
+    /// <param name="contatoId">Id do contato</param>
+    /// <param name="request">Dados do contato</param>
+    /// <response code="200">Retorna com o status da atualizacao</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao atualizar um cliente</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpPut("atualizar/{clienteId}")]
     public async Task<IActionResult> PutAsync(
         int clienteId,
         int enderecoId,
@@ -126,12 +154,10 @@ public sealed class ClientesController(
     {
         if (!ModelState.IsValid)
             return ResponseBadRequest(ModelState.GetErrorMessages());
-        var clienteExistente = await _clienteService.BuscarClientePodId(clienteId);
+        var clienteExistente = await _clienteService.FindByIdAsync(clienteId);
         if (clienteExistente == null)
             return ResponseNotFound("Cliente", clienteId);
-
         _mapper.Map(request, clienteExistente);
-
         var contatoExistente = clienteExistente.Contatos.FirstOrDefault(c => c.Id == contatoId);
         if (contatoExistente != null)
         {
@@ -142,7 +168,6 @@ public sealed class ClientesController(
             var novoContato = _mapper.Map<ContatoRequestDto, Contato>(request.Contato);
             clienteExistente.AdicionarContato(novoContato);
         }
-
         var enderecoExistente = clienteExistente.Enderecos.FirstOrDefault(e => e.Id == enderecoId);
         if (enderecoExistente != null)
         {
@@ -154,36 +179,30 @@ public sealed class ClientesController(
             clienteExistente.AdicionarEndereco(novoEndereco);
         }
 
-        try
-        {
-            await _clienteService.AtualizarCliente(clienteId, clienteExistente);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex,
-                $"{nameof(ClientesController)} => {nameof(_clienteService.AtualizarCliente)} => Erro ao atualizar cliente."
-            );
-            return StatusCode(500, $"Ocorreu um erro interno ao atualizar o cliente: {ex.Message}");
-        }
+        var result = await _clienteService.UpdateAsync(clienteId, clienteExistente);
+        if (!result.Success)
+            return ResponseBadRequest(result.Message);
+        var clienteResponse = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
+        return ResponseOk(clienteResponse);
     }
 
-    [HttpDelete("/cliente/remover/{id}")]
-    public IActionResult Remover(int id)
+    /// <summary>
+    /// Exclui um cliente.
+    /// </summary>
+    /// <param name="clienteId">id do cliente</param>
+    /// <response code="200">Retorna com o status da exclus�o</response>
+    /// <response code="400">Se o cliente passado for nulo</response>
+    /// <response code="500">Se houver um erro ao cliente um livro</response>
+    [CustomResponse(StatusCodes.Status200OK)]
+    [CustomResponse(StatusCodes.Status400BadRequest)]
+    [CustomResponse(StatusCodes.Status500InternalServerError)]
+    [HttpDelete("remover/{clienteId}")]
+    public async Task<IActionResult> DeleteAsync(int clienteId)
     {
-        try
-        {
-            _clienteService.RemoverCliente(id);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(
-                ex,
-                $"{nameof(ClientesController)} => {nameof(_clienteService.RemoverCliente)} => Erro ao remover cliente."
-            );
-            return StatusCode(500, $"Ocorreu um erro interno ao remover o cliente: {ex.Message}");
-        }
+        var result = await _clienteService.DeleteAsync(clienteId);
+        if (!ModelState.IsValid)
+            return ResponseBadRequest(ModelState.GetErrorMessages());
+        var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
+        return ResponseOk(response);
     }
 }

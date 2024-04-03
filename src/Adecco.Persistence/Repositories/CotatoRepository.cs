@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class CotatoRepository(ApplicattionDataContext context)
+public sealed class CotatoRepository(EntityFrameworkDataContext context)
     : BaseRepository(context),
         IContatoRepository
 {

@@ -1,3 +1,4 @@
+
 namespace Adecco.Application.Services;
 
 public sealed class ClienteService(
@@ -191,22 +192,8 @@ public sealed class ClienteService(
         }
     }
 
-    private void Validar<T>(
-        T entidade,
-        Func<T, CustomValidationResult> funcValidacao,
-        string nomeEntidade
-    )
+    public async Task<CustomResult<Cliente>> GetAsync(int id, CancellationToken cancellationToken)
     {
-        var resultado = funcValidacao(entidade);
-        AdicionarErroSeInvalido(resultado, nomeEntidade);
-    }
-
-    private void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto = "")
-    {
-        if (!resultado.IsValid)
-        {
-            var prefixo = string.IsNullOrEmpty(contexto) ? string.Empty : $"{contexto}: ";
-            _errosValidacao.AddRange(resultado.Errors.Select(erro => prefixo + erro));
-        }
+        return await _clienteRepository.GetAsync(id, cancellationToken);
     }
 }

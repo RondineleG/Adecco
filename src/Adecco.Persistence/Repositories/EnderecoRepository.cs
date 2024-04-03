@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class EnderecoRepository(ApplicattionDataContext context)
+public sealed class EnderecoRepository(EntityFrameworkDataContext context)
     : BaseRepository(context),
         IEnderecoRepository
 {

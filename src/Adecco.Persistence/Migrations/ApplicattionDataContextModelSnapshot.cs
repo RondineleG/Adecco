@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Adecco.Persistence.Migrations
 {
-    [DbContext(typeof(ApplicattionDataContext))]
+    [DbContext(typeof(EntityFrameworkDataContext))]
     partial class ApplicattionDataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

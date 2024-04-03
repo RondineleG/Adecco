@@ -13,13 +13,11 @@ public static class NativeInjectorConfig
         services.AddAndConfigSwagger();
 
         var connection = configuration["DefaultConnection:ConnectionString"];
-        services.AddDbContext<ApplicattionDataContext>(options => options.UseSqlite(connection));
+        services.AddDbContext<EntityFrameworkDataContext>(options => options.UseSqlite(connection));
         services.AddScoped<IContatoRepository, CotatoRepository>();
         services.AddScoped<IClienteRepository, ClenteRepository>();
         services.AddScoped<IEnderecoRepository, EnderecoRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IClienteJsonRepository, ClienteJsonRepository>();
-        services.AddScoped<IClienteJsonService, ClienteJsonService>();
         services.AddScoped<IContatoService, ContatoService>();
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IEnderecoService, EnderecoService>();

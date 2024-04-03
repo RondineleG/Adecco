@@ -6,6 +6,8 @@ public interface IClienteService
 
     Task<Cliente> FindByIdAsync(int id);
 
+    Task<CustomResult<Cliente>> GetAsync(int id, CancellationToken cancellationToken);
+
     Task<ClienteResponse> SaveAsync(Cliente cliente);
 
     Task<ClienteResponse> UpdateAsync(int id, Cliente cliente);

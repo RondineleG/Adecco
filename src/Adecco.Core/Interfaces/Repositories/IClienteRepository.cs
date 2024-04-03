@@ -11,4 +11,7 @@ public interface IClienteRepository
     void Update(Cliente cliente);
 
     void Remove(Cliente cliente);
+
+    public Task<CustomResult<Cliente>> GetAsync(int id, CancellationToken cancellationToken);
+
 }

@@ -8,4 +8,8 @@
 		<InvariantGlobalization>true</InvariantGlobalization>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Folder Include="Abstractions\Interfaces\" />
+	</ItemGroup>
+
 </Project>

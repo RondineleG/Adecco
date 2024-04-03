@@ -1,6 +1,6 @@
 namespace Adecco.Persistence.Repositories;
 
-public sealed class ClenteRepository(ApplicattionDataContext context)
+public sealed class ClenteRepository(EntityFrameworkDataContext context)
     : BaseRepository(context),
         IClienteRepository
 {
@@ -45,4 +45,19 @@ public sealed class ClenteRepository(ApplicattionDataContext context)
     {
         _context.Clientes.Remove(cliente);
     }
+
+    public async Task<CustomResult<Cliente>> GetAsync(int id, CancellationToken cancellationToken)
+    {
+        var cliente = await _context.Clientes.FindAsync( id , cancellationToken);
+        if (cliente != null)
+        {
+            return CustomResult<Cliente>.Success(cliente);
+        }
+        else
+        {
+            return CustomResult<Cliente>.EntityNotFound("Cliente", id, "Cliente não encontrado.");
+        }
+    }
+
+
 }
