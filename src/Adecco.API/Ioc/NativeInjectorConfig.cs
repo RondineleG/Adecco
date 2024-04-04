@@ -1,3 +1,5 @@
+using Adecco.API.Filters;
+
 namespace Adecco.API.Ioc;
 
 public static class NativeInjectorConfig
@@ -11,18 +13,13 @@ public static class NativeInjectorConfig
         services.AddEndpointsApiExplorer();
         services.AddSwaggerAndConfigApiVersioning();
         services.AddAndConfigSwagger();
-
+        services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
         var connection = configuration["DefaultConnection:ConnectionString"];
         services.AddDbContext<EntityFrameworkDataContext>(options => options.UseSqlite(connection));
-        services.AddScoped<IContatoRepository, CotatoRepository>();
-        services.AddScoped<IClienteRepository, ClenteRepository>();
-        services.AddScoped<IEnderecoRepository, EnderecoRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IContatoService, ContatoService>();
-        services.AddScoped<IClienteService, ClienteService>();
-        services.AddScoped<IEnderecoService, EnderecoService>();
-        services.AddScoped<IValidacaoService, ValidacaoService>();
-        services.AddAutoMapper(typeof(MapperProfile));
+        services.RegisterUseCasesServices();
+        services.RegisterServicesAndRepositoriesServices();
+        services.RegisterLibrariesServices();
+
     }
 
     public static void UseApplicationServices(this WebApplication app)

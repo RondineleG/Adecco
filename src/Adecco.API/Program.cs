@@ -1,3 +1,5 @@
+using Adecco.API.LogConfigurations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var hostEnvironment = builder.Environment;

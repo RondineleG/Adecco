@@ -1,3 +1,5 @@
+using Adecco.Application.UseCases.Clientes.Base;
+
 using System.Threading;
 
 namespace Adecco.API.Controllers.v1;
@@ -9,16 +11,14 @@ public sealed class ClientesController(
     IEnderecoService enderecoService,
     IContatoService contatoService,
     IValidacaoService validacaoService,
-    ILogger<ClientesController> logger
-) : ApiBaseController
+   IGetByIdClienteUseCase getByIdClienteUseCase) : ApiBaseController
 {
     private readonly IClienteService _clienteService = productService;
     private readonly IContatoService _contatoService = contatoService;
     private readonly IEnderecoService _enderecoService = enderecoService;
     private readonly IValidacaoService _validacaoService = validacaoService;
-    private readonly IMapper _mapper = mapper;     
-    private readonly ILogger<ClientesController> _logger = logger;
-
+    private readonly IMapper _mapper = mapper;
+    private readonly IGetByIdClienteUseCase _getByIdClienteUseCase = getByIdClienteUseCase;
 
     /// <summary>
     /// Retorna todos clientes cadastrados na base.
@@ -31,6 +31,7 @@ public sealed class ClientesController(
     [HttpGet("cliente/listar")]
     public async Task<IActionResult> ListAsync(string nome, string email, string cpf)
     {
+
         try
         {
             Log.Information($"{nameof(ClientesController)} => {nameof(ListAsync)} recebeu os parâmetros: nome='{nome}', email='{email}', cpf='{cpf}'");
@@ -44,7 +45,7 @@ public sealed class ClientesController(
         catch (Exception ex)
         {
             Log.Error(ex, $"{nameof(ClientesController)} => {nameof(ListAsync)} encontrou uma exceção: {ex.Message}");
-            throw; 
+            throw;
         }
     }
 
@@ -63,16 +64,8 @@ public sealed class ClientesController(
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAsync(int clienteId, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Retorna o cliente cadastrado na base por ID.");
-        var cliente = await _clienteService.GetAsync(clienteId, cancellationToken);
-
-        if (cliente == null)
-        {
-            _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Cliente não encontrado na base.");
-            return ResponseNotFound();
-        }
-        _logger.LogInformation($"Iniciando {nameof(ClientesController)} => {nameof(GetAsync)} => Cliente encontrado na base: {cliente}.");
-        return ResponseOk(cliente);
+        var response = await _getByIdClienteUseCase.Execute(clienteId, cancellationToken);
+        return ResponseOk(response);
     }
 
 
@@ -116,17 +109,30 @@ public sealed class ClientesController(
             "Endereco",
             validacaoResponse
         );
-        if (!validacaoResponse.Success)
+        if (validacaoResponse.Status != CustomResultStatus.Success)
+        {
             return ResponseBadRequest(validacaoResponse);
+        }
+
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
-        if (!contatoResponse.Success)
+        if (contatoResponse.Status != CustomResultStatus.Success)
+        {
             return ResponseBadRequest(contatoResponse.Message);
-        if (!enderecoResponse.Success)
+        }
+
+        if (enderecoResponse.Status != CustomResultStatus.Success)
+
+        {
             return ResponseBadRequest(enderecoResponse.Message);
+        }
+
         var result = await _clienteService.SaveAsync(cliente);
-        if (!result.Success)
+        if (result.Status != CustomResultStatus.Success)
+
+        {
             return ResponseBadRequest(result.Message);
+        }
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return ResponseOk(response);
     }

@@ -71,17 +71,25 @@ public sealed class ClientesController(
             "Endereco",
             validacaoResponse
         );
-        if (!validacaoResponse.Success)
-            return ResponseBadRequest(validacaoResponse);
         var enderecoResponse = await _enderecoService.SaveAsync(endereco);
         var contatoResponse = await _contatoService.SaveAsync(contato);
-        if (!contatoResponse.Success)
+        if (contatoResponse.Status != CustomResultStatus.Success)
+        {
             return ResponseBadRequest(contatoResponse.Message);
-        if (!enderecoResponse.Success)
+        }
+
+        if (enderecoResponse.Status != CustomResultStatus.Success)
+
+        {
             return ResponseBadRequest(enderecoResponse.Message);
+        }
+
         var result = await _clienteService.SaveAsync(cliente);
-        if (!result.Success)
+        if (result.Status != CustomResultStatus.Success)
+
+        {
             return ResponseBadRequest(result.Message);
+        }
         var response = _mapper.Map<Cliente, ClienteResponseDto>(result.Cliente);
         return ResponseOk(response);
     }

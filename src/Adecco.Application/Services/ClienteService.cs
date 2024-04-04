@@ -1,4 +1,3 @@
-
 namespace Adecco.Application.Services;
 
 public sealed class ClienteService(
@@ -63,10 +62,10 @@ public sealed class ClienteService(
             _validacaoService.Validar(
                 cliente.Enderecos,
                 _validacaoService.ValidarEndereco,
-                "Endere�o",
+                "Endereco",
                 response
             );
-            if (!response.Success)
+            if (response.Status != CustomResultStatus.Success)
             {
                 return new ClienteResponse(response.ToString());
             }

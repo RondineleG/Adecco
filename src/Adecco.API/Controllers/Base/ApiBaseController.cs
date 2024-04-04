@@ -23,7 +23,7 @@ public abstract class ApiBaseController : ControllerBase
         Response(HttpStatusCode.BadRequest, mensagensErro);
 
     protected IActionResult ResponseBadRequest(CustomResponse validacaoResponse)
-    {
+    {   
         var mensagensErro = validacaoResponse.ToString();
         return Response(HttpStatusCode.BadRequest, mensagensErro);
     }

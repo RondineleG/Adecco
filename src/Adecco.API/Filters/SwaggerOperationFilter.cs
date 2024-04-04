@@ -1,6 +1,6 @@
-﻿namespace Adecco.API.Extensions;
+﻿namespace Adecco.API.Filters;
 
-public class SwaggerDefaultValues : IOperationFilter
+public class SwaggerOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {

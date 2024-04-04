@@ -6,6 +6,7 @@ public enum CustomResultStatus
     HasValidation,
     HasError,
     EntityNotFound,
+    EntityHasError,
     EntityAlreadyExists,
     NoContent
 }
@@ -35,44 +36,110 @@ public interface IRequestEntityWarning : ICustomResult
     EntityWarning? EntityWarning { get; }
 }
 
-public class CustomCustomResult : ICustomResultValidations, ICustomResultError, IRequestEntityWarning
+public class CustomResult : ICustomResultValidations, ICustomResultError, IRequestEntityWarning
 {
-    public static CustomCustomResult Success()
-        => new CustomCustomResult { Status = CustomResultStatus.Success };
-    public static CustomCustomResult WithNoContent()
-        => new CustomCustomResult { Status = CustomResultStatus.NoContent };
-    public static CustomCustomResult EntityNotFound(string entity, object id, string description)
-        => new()
+    public string Id { get; set; } = string.Empty;
+    public DateTime Date { get; set; } = DateTime.Now;
+    public string Message { get; set; } = string.Empty;
+
+    public CustomResult()
+    {
+        Status = CustomResultStatus.Success;
+    }
+
+    public CustomResult(string message)
+    {
+        AddError(message);
+    }
+
+    public CustomResult(string id, string message)
+    {
+        Id = id;
+        Message = message;
+    }
+
+    public CustomResultStatus Status { get; set; }
+    public List<string> GeneralErrors { get; set; } = [];
+
+    public Dictionary<string, List<string>> EntityErrors { get; set; } = [];
+
+    public void AddError(string message)
+    {
+        Status = CustomResultStatus.HasError;
+        GeneralErrors.Add(message);
+    }
+
+    public void AddEntityError(string entity, string message)
+    {
+        Status = CustomResultStatus.EntityHasError;
+        if (!EntityErrors.TryGetValue(entity, out var value))
         {
+            value = [];
+            EntityErrors[entity] = value;
+        }
+        value.Add(message);
+    }
+
+    public delegate CustomResult CustomResultConstructor(string id, DateTime date, string message);
+    public override string ToString()
+    {
+        var messages = new List<string>();
+
+        if (GeneralErrors.Count != 0)
+        {
+            messages.AddRange(GeneralErrors);
+        }
+
+        foreach (var entityError in EntityErrors)
+        {
+            foreach (var error in entityError.Value)
+            {
+                messages.Add($"{entityError.Key}: {error}");
+            }
+        }
+        return string.Join("; ", messages);
+    }
+    public static CustomResult Success()
+        => new CustomResult { Status = CustomResultStatus.Success };
+    public static CustomResult WithNoContent()
+        => new CustomResult { Status = CustomResultStatus.NoContent };
+    public static CustomResult EntityNotFound(string entity, object id, string description)
+        => new()
+        {                               
             Status = CustomResultStatus.EntityNotFound,
             EntityWarning = new EntityWarning(entity, id, description)
         };
-    public static CustomCustomResult EntityAlreadyExists(string entity, object id, string description)
+
+    public static CustomResult EntityHasError(string entity, object id, string description)
+     => new()
+     {
+         Status = CustomResultStatus.EntityHasError,
+         EntityWarning = new EntityWarning(entity, id, description)
+     };
+    public static CustomResult EntityAlreadyExists(string entity, object id, string description)
         => new()
         {
             Status = CustomResultStatus.EntityAlreadyExists,
             EntityWarning = new EntityWarning(entity, id, description)
         };
-    public static CustomCustomResult WithError(string message)
+    public static CustomResult WithError(string message)
         => new()
         {
             Status = CustomResultStatus.HasError,
             Error = new Error(message)
         };
-    public static CustomCustomResult WithError(Exception exception)
+    public static CustomResult WithError(Exception exception)
         => WithError(exception.Message);
-    public static CustomCustomResult WithValidations(params Validation[] validations)
+    public static CustomResult WithValidations(params Validation[] validations)
         => new()
         {
             Status = CustomResultStatus.HasValidation,
             Validations = validations
         };
-    public static CustomCustomResult WithValidations(IEnumerable<Validation> validations)
+    public static CustomResult WithValidations(IEnumerable<Validation> validations)
         => WithValidations(validations.ToArray());
-    public static CustomCustomResult WithValidations(string propertyName, string description)
+    public static CustomResult WithValidations(string propertyName, string description)
         => WithValidations(new Validation(propertyName, description));
-
-    public CustomResultStatus Status { get; protected init; }
 
     public IEnumerable<Validation> Validations { get; protected init; } = Enumerable.Empty<Validation>();
 
@@ -81,7 +148,7 @@ public class CustomCustomResult : ICustomResultValidations, ICustomResultError, 
     public EntityWarning? EntityWarning { get; protected init; }
 }
 
-public class CustomResult<T> : CustomCustomResult, ICustomResult<T>
+public class CustomResult<T> : CustomResult, ICustomResult<T>
 {
     public static CustomResult<T> Success(T data)
         => new()
@@ -100,6 +167,13 @@ public class CustomResult<T> : CustomCustomResult, ICustomResult<T>
             Status = CustomResultStatus.EntityNotFound,
             EntityWarning = new EntityWarning(entity, id, description)
         };
+
+    public new  static CustomResult<T> EntityHasError(string entity, object id, string description)
+ => new()
+ {
+     Status = CustomResultStatus.EntityHasError,
+     EntityWarning = new EntityWarning(entity, id, description)
+ };
     public new static CustomResult<T> EntityAlreadyExists(string entity, object id, string description)
         => new()
         {
@@ -137,13 +211,13 @@ public record Error(string Description);
 
 public record EntityWarning(string Name, object Id, string Message);
 
-public class CustomResultException(CustomCustomResult customResult) : Exception
+public class CustomResultException(CustomResult customResult) : Exception
 {
-    public CustomCustomResult CustomResult => customResult;
+    public CustomResult CustomResult => customResult;
 
     public CustomResultException(params Validation[] validations)
-        : this(CustomCustomResult.WithValidations(validations)) { }
+        : this(CustomResult.WithValidations(validations)) { }
 
     public CustomResultException(Exception exception)
-        : this(CustomCustomResult.WithError(exception)) { }
+        : this(CustomResult.WithError(exception)) { }
 }

@@ -1,32 +1,48 @@
 ﻿namespace Adecco.Core.Abstractions;
 
-public sealed class CustomResponse
+public class CustomResponse
 {
+    public string Id { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
+    public string Message { get; set; } = string.Empty;
+
     public CustomResponse()
     {
-        Success = true;
+        Status = CustomResultStatus.Success;
     }
 
-    public bool Success { get; set; }
+    public CustomResponse(string message)
+    {
+        AddError(message);
+    }
+
+    public CustomResponse(string id, string message)
+    {
+        Id = id;
+        Date = DateTime.Now;
+        Message = message;
+    }
+  
+
+    public CustomResultStatus Status { get; set; }      
     public List<string> GeneralErrors { get; set; } = [];
 
     public Dictionary<string, List<string>> EntityErrors { get; set; } = [];
 
     public void AddError(string message)
     {
-        Success = false;
+        Status = CustomResultStatus.HasError;
         GeneralErrors.Add(message);
     }
 
     public void AddEntityError(string entity, string message)
     {
-        Success = false;
+        Status = CustomResultStatus.EntityHasError;
         if (!EntityErrors.TryGetValue(entity, out var value))
         {
             value = [];
             EntityErrors[entity] = value;
         }
-
         value.Add(message);
     }
 
@@ -34,7 +50,7 @@ public sealed class CustomResponse
     {
         var messages = new List<string>();
 
-        if (GeneralErrors.Any())
+        if (GeneralErrors.Count != 0)
         {
             messages.AddRange(GeneralErrors);
         }

@@ -57,7 +57,7 @@ public sealed class EnderecosController(
             "Endereco",
             validacaoResponse
         );
-        if (!validacaoResponse.Success)
+        if (validacaoResponse.Status != CustomResultStatus.Success)
             return ResponseBadRequest(validacaoResponse);
         var result = await _enderecoService.SaveAsync(endereco);
         if (!result.Success)

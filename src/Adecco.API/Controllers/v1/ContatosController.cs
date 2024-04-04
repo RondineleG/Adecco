@@ -55,7 +55,7 @@ public sealed class ContatosController(
             "Contato",
             validacaoResponse
         );
-        if (!validacaoResponse.Success)
+        if (validacaoResponse.Status != CustomResultStatus.Success)
             return ResponseBadRequest(validacaoResponse);
         var result = await _contatoService.SaveAsync(contato);
         if (!result.Success)

@@ -171,7 +171,7 @@ public sealed class ValidacaoService : IValidacaoService
         IEnumerable<T> entidades,
         Func<T, CustomValidationResult> funcValidacao,
         string nomeEntidade,
-        CustomResponse response
+        CustomResult response
     )
     {
         foreach (var entidade in entidades)
@@ -193,7 +193,7 @@ public sealed class ValidacaoService : IValidacaoService
         T entidade,
         Func<T, CustomValidationResult> funcValidacao,
         string nomeEntidade,
-        CustomResponse response
+        CustomResult response
     )
     {
         var resultado = funcValidacao(entidade);
@@ -203,7 +203,7 @@ public sealed class ValidacaoService : IValidacaoService
     public void AdicionarErroSeInvalido(
         CustomValidationResult resultado,
         string contexto,
-        CustomResponse response
+        CustomResult response
     )
     {
         if (!resultado.IsValid)
@@ -260,5 +260,20 @@ public sealed class ValidacaoService : IValidacaoService
         digito += resto.ToString();
 
         return cpf.EndsWith(digito);
+    }
+
+    public void AdicionarErroSeInvalido(CustomValidationResult resultado, string contexto, CustomResponse response)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Validar<T>(T entidade, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Validar<T>(IEnumerable<T> entidades, Func<T, CustomValidationResult> funcValidacao, string nomeEntidade, CustomResponse response)
+    {
+        throw new NotImplementedException();
     }
 }

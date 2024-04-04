@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Adecco.API.Extensions;
+namespace Adecco.API.LogConfigurations;
 
 public class CsvLogFormatterConfiguration : ConsoleFormatter, IDisposable
 {
@@ -51,4 +51,7 @@ public class CsvLogFormatterConfiguration : ConsoleFormatter, IDisposable
     }
 
     public void Dispose() => _optionsReloadToken.Dispose();
+
+ 
 }
+

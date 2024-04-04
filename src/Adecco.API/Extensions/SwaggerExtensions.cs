@@ -1,4 +1,6 @@
-﻿namespace Adecco.API.Extensions;
+﻿using Adecco.API.Filters;
+
+namespace Adecco.API.Extensions;
 
 public static class SwaggerExtensions
 {
@@ -32,7 +34,7 @@ public static class SwaggerExtensions
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
         services.AddSwaggerGen(options =>
         {
-            options.OperationFilter<SwaggerDefaultValues>();
+            options.OperationFilter<SwaggerOperationFilter>();
         });
         return services;
     }

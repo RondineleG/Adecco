@@ -6,7 +6,7 @@ public class CustomResponseTest
     public void CustomResponse_Deve_Inicializar_Com_Sucesso_True()
     {
         var response = new CustomResponse();
-        response.Success.Should().BeTrue();
+        response.Status.Should().Be(CustomResultStatus.Success);
         response.GeneralErrors.Should().BeEmpty();
         response.EntityErrors.Should().BeEmpty();
     }
@@ -17,7 +17,7 @@ public class CustomResponseTest
         var response = new CustomResponse();
         response.AddError("Erro geral");
 
-        response.Success.Should().BeFalse();
+        response.Status.Should().NotBe(CustomResultStatus.Success);
         response.GeneralErrors.Should().ContainSingle().And.Contain("Erro geral");
     }
 
@@ -27,7 +27,7 @@ public class CustomResponseTest
         var response = new CustomResponse();
         response.AddEntityError("Entidade1", "Erro de entidade");
 
-        response.Success.Should().BeFalse();
+        response.Status.Should().NotBe(CustomResultStatus.Success);
         response.EntityErrors.Should().HaveCount(1);
         response.EntityErrors["Entidade1"].Should().ContainSingle().And.Contain("Erro de entidade");
     }

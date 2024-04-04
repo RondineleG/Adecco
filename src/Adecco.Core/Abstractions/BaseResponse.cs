@@ -5,6 +5,7 @@ public abstract class BaseResponse
     protected BaseResponse()
     {
         Message = string.Empty;
+        Status = CustomResultStatus.Success;
     }
 
     protected BaseResponse(bool success, string message)
@@ -15,4 +16,5 @@ public abstract class BaseResponse
 
     public bool Success { get; protected set; }
     public string Message { get; protected set; }
+    public CustomResultStatus Status { get; protected set; }
 }

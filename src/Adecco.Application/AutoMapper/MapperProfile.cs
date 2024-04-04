@@ -34,6 +34,7 @@ public sealed class MapperProfile : Profile
         CreateMap<EnderecoRequestDto, EnderecoResponseDto>();
 
         CreateMap<Cliente, ClienteResponseDto>();
+        CreateMap<CustomResult<Cliente>, CustomResult<ClienteResponseDto>>();
         CreateMap<ClienteRequestDto, Cliente>();
     }
 
@@ -57,5 +58,43 @@ public sealed class MapperProfile : Profile
                 "Valor inválido para o tipo de contato"
             );
         return (ETipoEndereco)byteValue;
+    }
+}
+
+
+public static class CustomResultMapperExtensions
+{
+    public static CustomResult<TDestination> MapCustomResult<TSource, TDestination>(
+        this CustomResult<TSource> source,
+        IMapper mapper)
+    {
+        if (source == null)
+            return CustomResult<TDestination>.WithNoContent();
+
+        if (source.Status == CustomResultStatus.Success && source.Data != null)
+        {
+            var destinationData = mapper.Map<TDestination>(source.Data);
+            return CustomResult<TDestination>.Success(destinationData);
+        }
+
+        if (source.Status == CustomResultStatus.HasError && source.Error != null)
+            return CustomResult<TDestination>.WithError(source.Error.Description);
+
+        if (source.Status == CustomResultStatus.HasValidation && source.Validations != null)
+            return CustomResult<TDestination>.WithValidations(source.Validations.ToArray());
+
+        if (source.Status == CustomResultStatus.EntityNotFound && source.EntityWarning != null)
+            return CustomResult<TDestination>.EntityNotFound(
+                source.EntityWarning.Name,
+                source.EntityWarning.Id,
+                source.EntityWarning.Message);
+
+        if (source.Status == CustomResultStatus.EntityAlreadyExists && source.EntityWarning != null)
+            return CustomResult<TDestination>.EntityAlreadyExists(
+                source.EntityWarning.Name,
+                source.EntityWarning.Id,
+                source.EntityWarning.Message);
+
+        return CustomResult<TDestination>.WithNoContent();
     }
 }

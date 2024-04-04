@@ -7,6 +7,6 @@ namespace Adecco.API.Attributes;
 )]
 public class CustomResponseAttribute : ProducesResponseTypeAttribute
 {
-    public CustomResponseAttribute(int statusCode)
+    public CustomResponseAttribute(int statusCode) 
         : base(typeof(ApiCustomResult), statusCode) { }
 }

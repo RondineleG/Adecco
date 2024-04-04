@@ -12,7 +12,7 @@ public sealed class ClienteRequestDto
         Endereco = new EnderecoRequestDto();
     }
 
-    [Required(ErrorMessage = "Campo {0} obrigat�rio")]
+    [Required(ErrorMessage = "Campo {0} obrigatório")]
     [MaxLength(50)]
     public string Nome { get; set; }
 
@@ -20,11 +20,11 @@ public sealed class ClienteRequestDto
     [MaxLength(30)]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Campo {0} obrigat�rio")]
+    [Required(ErrorMessage = "Campo {0} obrigatório")]
     [StringLength(11)]
     public string CPF { get; set; }
 
-    [Required(ErrorMessage = "Campo {0} obrigat�rio")]
+    [Required(ErrorMessage = "Campo {0} obrigatório")]
     [StringLength(10)]
     public string RG { get; set; }
 
