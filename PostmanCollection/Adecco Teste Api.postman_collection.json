@@ -1,0 +1,2578 @@
+{
+	"info": {
+		"_postman_id": "d1a06830-d03c-4f6b-96ba-598b1837dc5f",
+		"name": "Adecco Teste Api",
+		"description": "Adecco Teste Api\n\nContact Support:\n Name: Rondinele Guimarães\n Email: rondineleg@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7603708"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "clientes",
+							"item": [
+								{
+									"name": "cliente",
+									"item": [
+										{
+											"name": "listar",
+											"item": [
+												{
+													"name": "/api/v1/clientes/cliente/listar",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/cliente/listar?nome=<string>&email=<string>&cpf=<string>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"cliente",
+																"listar"
+															],
+															"query": [
+																{
+																	"key": "nome",
+																	"value": "<string>"
+																},
+																{
+																	"key": "email",
+																	"value": "<string>"
+																},
+																{
+																	"key": "cpf",
+																	"value": "<string>"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/cliente/listar?nome=<string>&email=<string>&cpf=<string>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"cliente",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "nome",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "email",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "cpf",
+																			"value": "<string>"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Not Found",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/cliente/listar?nome=<string>&email=<string>&cpf=<string>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"cliente",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "nome",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "email",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "cpf",
+																			"value": "<string>"
+																		}
+																	]
+																}
+															},
+															"status": "Not Found",
+															"code": 404,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/cliente/listar?nome=<string>&email=<string>&cpf=<string>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"cliente",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "nome",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "email",
+																			"value": "<string>"
+																		},
+																		{
+																			"key": "cpf",
+																			"value": "<string>"
+																		}
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "criar",
+									"item": [
+										{
+											"name": "/api/v1/clientes/criar",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/clientes/criar",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"clientes",
+														"criar"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Created",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/criar",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"criar"
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Bad Request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/criar",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"criar"
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Server Error",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/criar",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"criar"
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "atualizar",
+									"item": [
+										{
+											"name": "{clienteId}",
+											"item": [
+												{
+													"name": "/api/v1/clientes/atualizar/:clienteId",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/atualizar/:clienteId?enderecoId=<integer>&contatoId=<integer>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"atualizar",
+																":clienteId"
+															],
+															"query": [
+																{
+																	"key": "enderecoId",
+																	"value": "<integer>"
+																},
+																{
+																	"key": "contatoId",
+																	"value": "<integer>"
+																}
+															],
+															"variable": [
+																{
+																	"key": "clienteId",
+																	"value": "<integer>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/atualizar/:clienteId?enderecoId=<integer>&contatoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"atualizar",
+																		":clienteId"
+																	],
+																	"query": [
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "contatoId",
+																			"value": "<integer>"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Bad Request",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/atualizar/:clienteId?enderecoId=<integer>&contatoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"atualizar",
+																		":clienteId"
+																	],
+																	"query": [
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "contatoId",
+																			"value": "<integer>"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"contato\": {\n    \"ddd\": \"<integer>\",\n    \"nome\": \"<string>\",\n    \"telefone\": \"<double>\",\n    \"tipoContato\": \"<integer>\"\n  },\n  \"cpf\": \"<string>\",\n  \"email\": \"<string>\",\n  \"endereco\": {\n    \"bairro\": \"<string>\",\n    \"cep\": \"<string>\",\n    \"cidade\": \"<string>\",\n    \"estado\": \"<string>\",\n    \"logradouro\": \"<string>\",\n    \"nome\": \"<string>\",\n    \"numero\": \"<string>\",\n    \"tipoEndereco\": \"<integer>\",\n    \"complemento\": \"<string>\",\n    \"referencia\": \"<string>\"\n  },\n  \"nome\": \"<string>\",\n  \"rg\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/atualizar/:clienteId?enderecoId=<integer>&contatoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"atualizar",
+																		":clienteId"
+																	],
+																	"query": [
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "contatoId",
+																			"value": "<integer>"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "remover",
+									"item": [
+										{
+											"name": "{clienteId}",
+											"item": [
+												{
+													"name": "/api/v1/clientes/remover/:clienteId",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/clientes/remover/:clienteId",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"clientes",
+																"remover",
+																":clienteId"
+															],
+															"variable": [
+																{
+																	"key": "clienteId",
+																	"value": "<integer>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/remover/:clienteId",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"remover",
+																		":clienteId"
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Bad Request",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/remover/:clienteId",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"remover",
+																		":clienteId"
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/clientes/remover/:clienteId",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"clientes",
+																		"remover",
+																		":clienteId"
+																	],
+																	"variable": [
+																		{
+																			"key": "clienteId"
+																		}
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "enderecos",
+							"item": [
+								{
+									"name": "endereco",
+									"item": [
+										{
+											"name": "listar",
+											"item": [
+												{
+													"name": "/api/v1/enderecos/endereco/listar",
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/enderecos/endereco/listar?clienteId=<integer>&enderecoId=<integer>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"enderecos",
+																"endereco",
+																"listar"
+															],
+															"query": [
+																{
+																	"key": "clienteId",
+																	"value": "<integer>"
+																},
+																{
+																	"key": "enderecoId",
+																	"value": "<integer>"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/listar?clienteId=<integer>&enderecoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Not Found",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/listar?clienteId=<integer>&enderecoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "Not Found",
+															"code": 404,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/listar?clienteId=<integer>&enderecoId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"listar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		},
+																		{
+																			"key": "enderecoId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "criar",
+											"item": [
+												{
+													"name": "/api/v1/enderecos/endereco/criar",
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/enderecos/endereco/criar?clienteId=<integer>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"enderecos",
+																"endereco",
+																"criar"
+															],
+															"query": [
+																{
+																	"key": "clienteId",
+																	"value": "<integer>"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Created",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/criar?clienteId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"criar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "Created",
+															"code": 201,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Bad Request",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/criar?clienteId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"criar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "POST",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/criar?clienteId=<integer>",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"criar"
+																	],
+																	"query": [
+																		{
+																			"key": "clienteId",
+																			"value": "<integer>"
+																		}
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "atualizar{enderecoId}",
+											"item": [
+												{
+													"name": "/api/v1/enderecos/endereco/atualizar{{enderecoId}}",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/enderecos/endereco/atualizar{{enderecoId}}",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"enderecos",
+																"endereco",
+																"atualizar{{enderecoId}}"
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/atualizar{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"atualizar{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Bad Request",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/atualizar{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"atualizar{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"bairro\": \"<string>\",\n  \"cep\": \"<string>\",\n  \"cidade\": \"<string>\",\n  \"estado\": \"<string>\",\n  \"logradouro\": \"<string>\",\n  \"nome\": \"<string>\",\n  \"numero\": \"<string>\",\n  \"tipoEndereco\": \"<integer>\",\n  \"complemento\": \"<string>\",\n  \"referencia\": \"<string>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/atualizar{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"atualizar{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": "remover{enderecoId}",
+											"item": [
+												{
+													"name": "/api/v1/enderecos/endereco/remover{{enderecoId}}",
+													"request": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "text/plain"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/enderecos/endereco/remover{{enderecoId}}",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"enderecos",
+																"endereco",
+																"remover{{enderecoId}}"
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Success",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/remover{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"remover{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Bad Request",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/remover{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"remover{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "Bad Request",
+															"code": 400,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														},
+														{
+															"name": "Server Error",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "text/plain"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/enderecos/endereco/remover{{enderecoId}}",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"enderecos",
+																		"endereco",
+																		"remover{{enderecoId}}"
+																	]
+																}
+															},
+															"status": "Internal Server Error",
+															"code": 500,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "cliente",
+			"item": [
+				{
+					"name": "listar",
+					"item": [
+						{
+							"name": "{clienteId}",
+							"item": [
+								{
+									"name": "/cliente/listar/:clienteId",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/cliente/listar/:clienteId?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"cliente",
+												"listar",
+												":clienteId"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											],
+											"variable": [
+												{
+													"key": "clienteId",
+													"value": "<integer>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/cliente/listar/:clienteId?api-version=1.0",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"cliente",
+														"listar",
+														":clienteId"
+													],
+													"query": [
+														{
+															"key": "api-version",
+															"value": "1.0",
+															"description": "(Required) The requested API version"
+														}
+													],
+													"variable": [
+														{
+															"key": "clienteId"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Not Found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "text/plain"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/cliente/listar/:clienteId?api-version=1.0",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"cliente",
+														"listar",
+														":clienteId"
+													],
+													"query": [
+														{
+															"key": "api-version",
+															"value": "1.0",
+															"description": "(Required) The requested API version"
+														}
+													],
+													"variable": [
+														{
+															"key": "clienteId"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\"\n}"
+										},
+										{
+											"name": "Server Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/cliente/listar/:clienteId?api-version=1.0",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"cliente",
+														"listar",
+														":clienteId"
+													],
+													"query": [
+														{
+															"key": "api-version",
+															"value": "1.0",
+															"description": "(Required) The requested API version"
+														}
+													],
+													"variable": [
+														{
+															"key": "clienteId"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "contato",
+			"item": [
+				{
+					"name": "listar",
+					"item": [
+						{
+							"name": "/contato/listar",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contato/listar?clienteId=<integer>&contatoId=<integer>&api-version=1.0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contato",
+										"listar"
+									],
+									"query": [
+										{
+											"key": "clienteId",
+											"value": "<integer>"
+										},
+										{
+											"key": "contatoId",
+											"value": "<integer>"
+										},
+										{
+											"key": "api-version",
+											"value": "1.0",
+											"description": "(Required) The requested API version"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/listar?clienteId=<integer>&contatoId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"listar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "contatoId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Not Found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/listar?clienteId=<integer>&contatoId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"listar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "contatoId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Server Error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/listar?clienteId=<integer>&contatoId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"listar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "contatoId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "criar",
+					"item": [
+						{
+							"name": "/contato/criar",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contato/criar?clienteId=<integer>&api-version=1.0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contato",
+										"criar"
+									],
+									"query": [
+										{
+											"key": "clienteId",
+											"value": "<integer>"
+										},
+										{
+											"key": "api-version",
+											"value": "1.0",
+											"description": "(Required) The requested API version"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/criar?clienteId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"criar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/criar?clienteId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"criar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Server Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/criar?clienteId=<integer>&api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"criar"
+											],
+											"query": [
+												{
+													"key": "clienteId",
+													"value": "<integer>"
+												},
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "atualizar{contatoId}",
+					"item": [
+						{
+							"name": "/contato/atualizar{{contatoId}}",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/contato/atualizar{{contatoId}}?api-version=1.0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contato",
+										"atualizar{{contatoId}}"
+									],
+									"query": [
+										{
+											"key": "api-version",
+											"value": "1.0",
+											"description": "(Required) The requested API version"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/atualizar{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"atualizar{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/atualizar{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"atualizar{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Server Error",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ddd\": \"<integer>\",\n  \"nome\": \"<string>\",\n  \"telefone\": \"<double>\",\n  \"tipoContato\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/contato/atualizar{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"atualizar{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "remover{contatoId}",
+					"item": [
+						{
+							"name": "/contato/remover{{contatoId}}",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/contato/remover{{contatoId}}?api-version=1.0",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"contato",
+										"remover{{contatoId}}"
+									],
+									"query": [
+										{
+											"key": "api-version",
+											"value": "1.0",
+											"description": "(Required) The requested API version"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/remover{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"remover{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/remover{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"remover{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								},
+								{
+									"name": "Server Error",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "text/plain"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/contato/remover{{contatoId}}?api-version=1.0",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"contato",
+												"remover{{contatoId}}"
+											],
+											"query": [
+												{
+													"key": "api-version",
+													"value": "1.0",
+													"description": "(Required) The requested API version"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 417,\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"nullable\": true,\n    \"readOnly\": true\n  },\n  \"errors\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		},
+		{
+			"key": "enderecoId",
+			"value": "<integer>"
+		},
+		{
+			"key": "enderecoId",
+			"value": "<integer>"
+		},
+		{
+			"key": "contatoId",
+			"value": "<integer>"
+		},
+		{
+			"key": "contatoId",
+			"value": "<integer>"
+		}
+	]
+}
