@@ -31,24 +31,31 @@ public static class NativeInjectorConfig
             app.UseDeveloperExceptionPage();
             app.UseCustomSwaggerUI();
         }
+
         if (app.Environment.IsProduction())
         {
             app.UseHsts();
-            app.UseCustomWelcomePage(
-                new CustomWelcomePageOptions
+
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/"), appBuilder =>
+            {
+                appBuilder.UseCustomWelcomePage(
+                    new CustomWelcomePageOptions
+                    {
+                        Title = @"<p><h3>Adecco Teste Api</h3></p>",
+                        Body = @"<p class=""card-text"">Esta é uma página de produção</p>
+                         <p class=""card-text"">Se você está vendo isso, a produção está funcionando!</p>",
+                        Message = "API em execução"
+                    }
+                );
+            });
+
+            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/"), appBuilder =>
+            {
+                appBuilder.Use(async (context, next) =>
                 {
-                    Title =
-                        @"<p>
-                         <h3>Adecco Teste Api </h3>
-                        </p>",
-                    Body =
-                        @"
-                                <p class=""card-text"">Essa e uma pagina de produção</p>
-                                <p class=""card-text"">Se esta vendo isso, prod esta funcionando!</p>
-                                ",
-                    Message = $"API em execução",
-                }
-            );
+                    await next();
+                });
+            });
         }
         app.UseHttpsRedirection();
         app.UseRouting();
