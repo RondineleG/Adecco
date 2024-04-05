@@ -28,7 +28,7 @@ public sealed class ClientesController(
     [CustomResponse(StatusCodes.Status200OK)]
     [CustomResponse(StatusCodes.Status404NotFound)]
     [CustomResponse(StatusCodes.Status500InternalServerError)]
-    [HttpGet("cliente/listar")]
+    [HttpGet("listar")]
     public async Task<IActionResult> ListAsync(string nome, string email, string cpf)
     {
 
@@ -58,7 +58,7 @@ public sealed class ClientesController(
     /// <response code="200">Retorna o cliente encontrado.</response>
     /// <response code="404">Se o cliente não for encontrado.</response>
     /// <response code="500">Se ocorrer um erro interno no servidor.</response>
-    [HttpGet("/cliente/listar/{clienteId}")]
+    [HttpGet("listar/{clienteId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

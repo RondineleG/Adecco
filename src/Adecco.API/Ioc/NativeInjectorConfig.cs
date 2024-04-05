@@ -49,7 +49,7 @@ public static class NativeInjectorConfig
                 );
             });
 
-            app.UseWhen(context => !context.Request.Path.StartsWithSegments("/"), appBuilder =>
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
             {
                 appBuilder.Use(async (context, next) =>
                 {
